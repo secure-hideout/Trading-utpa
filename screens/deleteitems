@@ -1,0 +1,1314 @@
+dashboard.js
+
+
+import React, { useState } from 'react';
+import { View, Text, Image, TouchableOpacity, TextInput, Modal, Button } from 'react-native';
+
+import { Ionicons } from '@expo/vector-icons';
+
+import Deposit from './Deposite';
+import CardItems  from './CardItems';
+import MyWatchList from './MyWatchList';
+
+// import ListComponent from './ListComponent';
+
+
+
+const Dashboard = () => {
+  const [isSearchVisible, setSearchVisible] = useState(false);
+  // const [isModalVisible, setModalVisible] = useState(false);
+  // const [modalText, setModalText] = useState('');
+
+  const toggleSearch = () => {
+    setSearchVisible(!isSearchVisible);
+  };
+
+  // const handleDepositClick = () => {
+  //   console.log('Deposit clicked');
+  //   setModalText('Deposit clicked');
+  //   setModalVisible(true);
+  // };
+
+  // const handleWithdrawClick = () => {
+  //   console.log('Withdraw clicked');
+  //   setModalText('Withdraw clicked');
+  //   setModalVisible(true);
+  // };
+
+  // const closeModal = () => {
+  //   setModalVisible(false);
+  // };
+
+  // const [isMtdModalVisible, setIsMtdModalVisible] = useState(false);
+  // const [isYtdModalVisible, setIsYtdModalVisible] = useState(false);
+
+  // const toggleMtdModal = () => {
+  //   setIsMtdModalVisible(!isMtdModalVisible);
+  // };
+
+  // const toggleYtdModal = () => {
+  //   setIsYtdModalVisible(!isYtdModalVisible);
+  // };
+
+
+
+
+  const cardData=[{"name":"Crypto","value":"$23,500","changePercentage":"+5.9%","logo":"https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430"},
+  {"name":"NSE","value":"$23,500","changePercentage":"+5.9%","logo":"https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430"},
+  {"name":"BSE","value":"$23,500","changePercentage":"+5.9%","logo":"https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430"},
+  {"name":"Comodity","value":"$23","changePercentage":"+5.9%","logo":"https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430"}
+];
+  
+
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.nav}>
+        <View style={styles.leftContent}>
+          <Image
+            style={styles.logo}
+            source={require("../assets/mask-group.png")}
+          />
+          <Text style={styles.welcomeText}>Welcome </Text>
+          <Text style={styles.userName}>Satyam</Text>
+        </View>
+        <TouchableOpacity onPress={toggleSearch}>
+          <Image
+            style={styles.rightImage1}
+            source={require("../assets/mask-group2.svg")} // Change to your search icon image source
+          />
+
+        </TouchableOpacity>
+        <Image
+            style={styles.rightImage}
+            source={require("../assets/mask-group1.svg")}
+          />
+      </View>
+
+     
+      {isSearchVisible ? (
+        <TextInput
+          style={styles.searchBox}
+          placeholder="Search"
+          onChangeText={(text) => {
+            // Handle search input changes
+          }}
+        />
+      ) : (
+
+        <View style={styles.container2}>
+          <View style={styles.portfolioContainer}>
+            <Text style={styles.valueText}>Current portfolio value</Text>
+            <View style={styles.valueAmount}>
+              <Text style={styles.amountText}>$23,500</Text>
+              <Text style={styles.decimalText}>.49</Text>
+              <View style={styles.greenBox}>
+                <Text style={styles.percentText}>+5.9%</Text>
+              </View>
+            </View>
+
+
+  
+  
+
+
+  {/* <View style={styles.container3}>
+  <Deposit />
+  </View> */}
+  <Deposit></Deposit>
+
+  {/* <View style = {styles.container4}>
+    <MyWatchList />
+    </View> */}
+
+  <MyWatchList></MyWatchList>
+
+
+{/* 5th container grid  */}
+<View style={styles.container5}>
+  
+      {cardData.map((item, index) => {
+        return   <CardItems name={item.name} symbl={item.symbl} value={item.value} changePercentage={item.changePercentage}/>
+     
+      })}
+
+     </View>
+  </View>
+  </View>
+      )}
+      
+    </View>
+  );
+};
+
+const styles = {
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+    padding: 20,
+  },
+  nav: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderBottomWidth: 1,
+    borderColor: '#ccc',
+    paddingVertical: 10,
+  },
+  leftContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  logo: {
+    width: 40,
+    height: 40,
+    marginRight: 10,
+  },
+  welcomeText: {
+    fontSize: 18,
+    
+  },
+  userName: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  rightImage: {
+    width: 40,
+    height: 40,
+    marginLeft: 10,
+  },
+
+ rightImage1: {
+  width: 40,
+  height: 40,
+  marginLeft: 90,
+ },
+  searchBox: {
+    // marginTop: 10,
+    // borderWidth: 1,
+    // borderColor: '#ccc',
+    // padding: 10,
+    marginTop: 16, // Add margin to separate the search box from the content
+    paddingHorizontal: 16,
+    height: 40,
+    borderWidth: 1,
+    borderColor: 'lightgray',
+    borderRadius: 8,
+    marginHorizontal: 16,
+  },
+
+
+  //second container 
+
+  container2: {
+    position: 'absolute',
+    top: 100,
+    left: '50%',
+    marginLeft: -171.5,
+    alignItems: 'flex-start', // Center the content horizontally
+  },
+  valueText: {
+    // fontSize: 16,
+    // fontWeight: 'bold',
+    // color: 'darkgray',
+    //fontFamily:'sFProDisplay',
+    fontWeight:500,
+    fontSize:20,
+    lineHeight:19.09,
+    color:'#A1A1A1',
+  },
+  portfolioContainer: {
+    flexDirection: 'column', // Display items horizontally
+    //alignItems: 'center', // Center the content horizontally
+  },
+  valueAmount: {
+    flexDirection: 'row', // Display items horizontally
+    alignItems: 'center', // Center the content horizontally
+  },
+  amountText: {
+    // fontSize: 32,
+    fontWeight:700,
+    fontSize:32,
+    lineHeight:38.19,
+    color:'#1C1E32',
+
+  },
+  decimalText: {
+    fontWeight:700,
+    fontSize:32,
+    lineHeight:38.19,
+    color:'#A1A1A1',
+  },
+  greenBox: {
+    marginLeft: 10,
+    backgroundColor: '#EAC9B1',
+    width: 60,
+    height: 30,
+    borderRadius: 18, // You can adjust this value for rounded corners
+    justifyContent: 'center', // Center the content vertically
+    alignItems: 'center', // Center the content horizontally
+  },
+  percentText: {
+    fontWeight:500,
+    fontSize:10,
+    lineHeight:11.93,
+    color:"#1C1E32",
+  },
+
+
+
+
+  
+  //container 3
+
+  container3: {
+    paddingVertical:10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft:0,
+  },
+  ellipse: {
+    width: 166,
+    height: 48,
+    //left:16,
+    borderRadius: 100,
+    backgroundColor: '#ECECEC',
+    justifyContent: 'center',
+    alignItems: 'center',
+    //paddingLeft: 16,
+
+    // width:166,
+    // height:48,
+   
+    // left:16,
+    // borderRadius:100,
+    // backgroundColor: '#ECECEC',
+
+
+  },
+  circle: {
+    width: 40,
+    height: 40,
+    borderRadius: 100,
+    backgroundColor: '#B1A4FF',
+    position: 'absolute',
+    left: 0,
+    marginLeft:5,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  spacing: {
+    width: 50,
+  },
+  text: {
+    marginLeft: 16,
+    fontSize: 20,
+    color: 'black',
+    textAlign:'center',
+    color:'#1C1E32',
+    
+    
+  },
+  withdrawText: {
+    marginRight: -10, // Adjust this value as needed
+    lineHeight:19.09,
+    fontWeight:54,
+  },
+  withdrawText2: {
+    marginRight: -10,
+    lineHeight:19.09,
+    fontWeight:54,
+    
+   
+  },
+
+//container 4 
+
+container4: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  padding: 16,
+  backgroundColor: '#F5F5F5',
+},
+title: {
+  fontSize: 18,
+  fontWeight: 'bold',
+},
+buttonsContainer: {
+  flexDirection: 'row',
+},
+button: {
+  marginLeft: 8,
+  paddingVertical: 4,
+  paddingHorizontal: 8,
+  backgroundColor: '#ECECEC',
+  borderRadius: 4,
+},
+buttonText: {
+  fontSize: 14,
+  color: 'black',
+},
+
+modalCloseButton: {
+  marginTop: 16,
+  padding: 8,
+  backgroundColor: '#ECECEC',
+  borderRadius: 4,
+},
+modalCloseButtonText: {
+  fontSize: 14,
+  color: 'black',
+},
+
+
+
+//5th 
+container5: {
+  flex: 1,
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  padding:0,
+},
+gridContainer: {
+  flex: 1,
+  alignItems: 'center',
+  height:100,
+  
+  margin: 5,
+  borderRadius: 10,
+  backgroundColor: 'lightgray',
+},
+firstLine: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  marginBottom: 10,
+  
+},
+secondLine: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  marginTop:20,
+  
+},
+logo2: {
+  width: 20,
+  height: 20,
+  marginBottom:8,
+},
+textContainer: {
+  marginLeft: 5,
+},
+gridText: {
+  fontSize: 16,
+  fontWeight: 'bold',
+ 
+},
+gridSubText: {
+  fontSize: 12,
+  color: 'gray',
+  fontWeight: 'bold',
+  marginLeft: 3,
+},
+value2: {
+  fontSize: 10,
+  fontWeight: 'bold',
+  
+},
+button2: {
+  backgroundColor: 'blue',
+  borderRadius:5 ,
+  padding: 1,
+  marginLeft: 5,
+},
+buttonValue: {
+  color: 'white',
+  fontSize: 10,
+  fontWeight: 'bold',
+},
+};
+
+export default Dashboard;
+
+
+
+Header.js (not working)
+
+import React, { useState } from 'react';
+// import { View, Text, Image, TouchableOpacity, TextInput, Modal, Button } from 'react-native';
+
+// const Header = () => {
+
+//     const [isSearchVisible, setSearchVisible] = useState(false);
+//     const toggleSearch = () => {
+//         setSearchVisible(!isSearchVisible);
+//     };
+    
+
+//     return(
+//     <View style={styles.container}>
+//       <View style={styles.nav}>
+//         <View style={styles.leftContent}>
+//           <Image
+//             style={styles.logo}
+//             source={require("../assets/mask-group.png")}
+//           />
+//           <Text style={styles.welcomeText}>Welcome </Text>
+//           <Text style={styles.userName}>Satyam</Text>
+//         </View>
+//         <TouchableOpacity onPress={toggleSearch}>
+//           <Image
+//             style={styles.rightImage1}
+//             source={require("../assets/mask-group2.svg")} // Change to your search icon image source
+//           />
+
+//         </TouchableOpacity>
+//         <Image
+//             style={styles.rightImage}
+//             source={require("../assets/mask-group1.svg")}
+//           />
+//       </View>
+
+     
+//       {isSearchVisible ? (
+//         <TextInput
+//           style={styles.searchBox}
+//           placeholder="Search"
+//           onChangeText={(text) => {
+//             // Handle search input changes
+//           }}
+//         />
+//       ) : null}
+      
+//     </View>
+//   );
+// };
+
+// const styles = {
+//   container: {
+//     flex: 1,
+//     backgroundColor: 'white',
+//     padding: 20,
+//   },
+//   nav: {
+//     flexDirection: 'row',
+//     alignItems: 'center',
+//     justifyContent: 'space-between',
+//     borderBottomWidth: 1,
+//     borderColor: '#ccc',
+//     paddingVertical: 10,
+//   },
+//   leftContent: {
+//     flexDirection: 'row',
+//     alignItems: 'center',
+//   },
+//   logo: {
+//     width: 40,
+//     height: 40,
+//     marginRight: 10,
+//   },
+//   welcomeText: {
+//     fontSize: 18,
+//   },
+//   userName: {
+//     fontSize: 18,
+//     fontWeight: 'bold',
+//   },
+//   rightImage: {
+//     width: 40,
+//     height: 40,
+//     marginLeft: 10,
+//   },
+//   rightImage1: {
+//     width: 40,
+//     height: 40,
+//     marginLeft: 90,
+//   },
+//   searchBox: {
+//     marginTop: 16,
+//     paddingHorizontal: 16,
+//     height: 40,
+//     borderWidth: 1,
+//     borderColor: 'lightgray',
+//     borderRadius: 8,
+//     marginHorizontal: 16,
+//   },
+// };
+
+// export default Header;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// // import React, { useState } from 'react';
+// // import { View, Text, Image, TouchableOpacity, TextInput, Modal, Button } from 'react-native';
+
+// // const Header = () => {
+
+// //     const [isSearchVisible, setSearchVisible] = useState(false);
+// //     const toggleSearch = () => {
+// //         setSearchVisible(!isSearchVisible);
+// //       };
+    
+
+// //     return(
+// //     <View style={styles.container}>
+// //       <View style={styles.nav}>
+// //         <View style={styles.leftContent}>
+// //           <Image
+// //             style={styles.logo}
+// //             source={require("../assets/mask-group.png")}
+// //           />
+// //           <Text style={styles.welcomeText}>Welcome </Text>
+// //           <Text style={styles.userName}>Satyam</Text>
+// //         </View>
+// //         <TouchableOpacity onPress={toggleSearch}>
+// //           <Image
+// //             style={styles.rightImage1}
+// //             source={require("../assets/mask-group2.svg")} // Change to your search icon image source
+// //           />
+
+// //         </TouchableOpacity>
+// //         <Image
+// //             style={styles.rightImage}
+// //             source={require("../assets/mask-group1.svg")}
+// //           />
+// //       </View>
+
+     
+// //       {isSearchVisible ? (
+// //         <TextInput
+// //           style={styles.searchBox}
+// //           placeholder="Search"
+// //           onChangeText={(text) => {
+// //             // Handle search input changes
+// //           }}
+// //         />
+// //       ) : (
+// //       );
+      
+// // };
+
+
+// //     const styles = {
+// //         container: {
+// //           flex: 1,
+// //           backgroundColor: 'white',
+// //           padding: 20,
+// //         },
+// //         nav: {
+// //           flexDirection: 'row',
+// //           alignItems: 'center',
+// //           justifyContent: 'space-between',
+// //           borderBottomWidth: 1,
+// //           borderColor: '#ccc',
+// //           paddingVertical: 10,
+// //         },
+// //         leftContent: {
+// //           flexDirection: 'row',
+// //           alignItems: 'center',
+// //         },
+// //         logo: {
+// //           width: 40,
+// //           height: 40,
+// //           marginRight: 10,
+// //         },
+// //         welcomeText: {
+// //           fontSize: 18,
+          
+// //         },
+// //         userName: {
+// //           fontSize: 18,
+// //           fontWeight: 'bold',
+// //         },
+// //         rightImage: {
+// //           width: 40,
+// //           height: 40,
+// //           marginLeft: 10,
+// //         },
+      
+// //        rightImage1: {
+// //         width: 40,
+// //         height: 40,
+// //         marginLeft: 90,
+// //        },
+// //         searchBox: {
+// //           // marginTop: 10,
+// //           // borderWidth: 1,
+// //           // borderColor: '#ccc',
+// //           // padding: 10,
+// //           marginTop: 16, // Add margin to separate the search box from the content
+// //           paddingHorizontal: 16,
+// //           height: 40,
+// //           borderWidth: 1,
+// //           borderColor: 'lightgray',
+// //           borderRadius: 8,
+// //           marginHorizontal: 16,
+// //         },
+// // }
+
+// // export default Header;
+
+
+Mywatchlist.js 
+import React, { useState } from 'react';
+import { View, Text, Image, TouchableOpacity, TextInput, Modal, Button } from 'react-native';
+
+const MyWatchList = () => {
+
+  const [isMtdModalVisible, setIsMtdModalVisible] = useState(false);
+  const [isYtdModalVisible, setIsYtdModalVisible] = useState(false);
+
+  const toggleMtdModal = () => {
+    setIsMtdModalVisible(!isMtdModalVisible);
+  };
+
+  const toggleYtdModal = () => {
+    setIsYtdModalVisible(!isYtdModalVisible);
+  };
+  
+    return(
+    <View style={styles.container4}>
+      <Text style={styles.title}>My Watchlist</Text>
+      <View style={styles.buttonsContainer}>
+        <TouchableOpacity style={styles.button} onPress={toggleMtdModal}>
+          <Text style={styles.buttonText}>MTD</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={toggleYtdModal}>
+          <Text style={styles.buttonText}>YTD</Text>
+        </TouchableOpacity>
+      </View>
+      
+
+      <Modal visible={isMtdModalVisible} animationType="slide">
+        <View style={styles.modalContainer}>
+          <Text style={styles.modalTitle}>MTD Modal</Text>
+          {/* Add your MTD modal content here */}
+          <TouchableOpacity style={styles.modalCloseButton} onPress={toggleMtdModal}>
+            <Text style={styles.modalCloseButtonText}>Close</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
+
+      {/* YTD Modal */}
+      <Modal visible={isYtdModalVisible} animationType="slide">
+        <View style={styles.modalContainer}>
+          <Text style={styles.modalTitle}>YTD Modal</Text>
+          {/* Add your YTD modal content here */}
+          <TouchableOpacity style={styles.modalCloseButton} onPress={toggleYtdModal}>
+            <Text style={styles.modalCloseButtonText}>Close</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
+    </View>
+    );
+};
+
+const styles = {
+    container4: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: 16,
+        backgroundColor: '#F5F5F5',
+      },
+      title: {
+        fontSize: 18,
+        fontWeight: 'bold',
+      },
+      buttonsContainer: {
+        flexDirection: 'row',
+      },
+      button: {
+        marginLeft: 8,
+        paddingVertical: 4,
+        paddingHorizontal: 8,
+        backgroundColor: '#ECECEC',
+        borderRadius: 4,
+      },
+      buttonText: {
+        fontSize: 14,
+        color: 'black',
+      },
+      
+      modalCloseButton: {
+        marginTop: 16,
+        padding: 8,
+        backgroundColor: '#ECECEC',
+        borderRadius: 4,
+      },
+      modalCloseButtonText: {
+        fontSize: 14,
+        color: 'black',
+      },
+}
+
+export default MyWatchList;
+
+App.js 
+
+import * as React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
+import LoginForm from "./screens/LoginForm";
+import Dashboard02 from "./screens/Dashboard02";
+import List from "./screens/List";
+
+const Stack = createNativeStackNavigator();
+
+function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Login" component={LoginForm} />
+        <Stack.Screen
+          name="Dashboard02"
+          component={Dashboard02}
+          options={{ headerShown: false }} />
+        <Stack.Screen name="List" component={List} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+
+export default App;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// const Stack = createNativeStackNavigator();
+// import * as React from "react";
+// import { NavigationContainer } from "@react-navigation/native";
+// import { createStackNavigator } from '@react-navigation/stack';
+// import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
+// import LoginForm from './LoginForm';
+
+// import Dashboard02 from "./screens/Dashboard02";
+
+// import List from './screens/List'; // Import the 'Next' screen
+
+// const App = () => {
+//   const [hideSplashScreen, setHideSplashScreen] = React.useState(true);
+//   const Stack = createStackNavigator();
+
+//   return (
+//     <>
+//       <NavigationContainer>
+//         {hideSplashScreen ? (
+//           <Stack.Navigator screenOptions={{ headerShown: false }}>
+
+//             <Stack.Screen name="Login" component={LoginForm} />
+            
+//             <Stack.Screen
+//               name="Dashboard02"
+//               component={Dashboard02}
+//               options={{ headerShown: false }}  />
+//               <Stack.Screen name="List" component={List} />
+           
+//           </Stack.Navigator>
+//         ) : null}
+//       </NavigationContainer>
+//     </>
+//   );
+// };
+// export default App;
+
+
+CardItems.js 
+
+import React, { useState } from 'react';
+import { View, Text, Image, TouchableOpacity, TextInput, Modal, Button } from 'react-native';
+
+import { Ionicons } from '@expo/vector-icons';
+
+
+
+const CardItems = ({log,name,symbl,value,changePercentage}) => {
+ 
+  return (
+
+
+<View style={styles.container5}>
+      <View style={styles.gridContainer}>
+        {/* First Line */}
+        <View style={styles.firstLine}>
+          {/* <Image style={styles.logo2} source={require('../assets/ethereumsvgrepocom-1.svg')} /> */}
+          <View style={styles.textContainer}>
+            <Text style={styles.gridText}>{name}</Text>
+          </View>
+        </View>
+        {/* Second Line */}
+        <View style={styles.secondLine}>
+          <Text style={styles.value2}>{value}</Text>
+          <TouchableOpacity style={styles.button2}>
+            <Text style={styles.buttonValue}>{changePercentage}</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+</View>
+
+
+ 
+)};
+
+const styles = {
+
+container5: {
+  flex: 1,
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  padding:0,
+},
+gridContainer: {
+  flex: 1,
+  alignItems: 'center',
+  height:100,
+  
+  margin: 5,
+  borderRadius: 10,
+  backgroundColor: 'lightgray',
+},
+firstLine: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  marginBottom: 10,
+  
+},
+secondLine: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  marginTop:20,
+  
+},
+logo2: {
+  width: 20,
+  height: 20,
+  marginBottom:8,
+},
+textContainer: {
+  marginLeft: 5,
+},
+gridText: {
+  fontSize: 16,
+  fontWeight: 'bold',
+ 
+},
+gridSubText: {
+  fontSize: 12,
+  color: 'gray',
+  fontWeight: 'bold',
+  marginLeft: 3,
+},
+value2: {
+  fontSize: 10,
+  fontWeight: 'bold',
+  
+},
+button2: {
+  backgroundColor: 'blue',
+  borderRadius:5 ,
+  padding: 1,
+  marginLeft: 5,
+},
+buttonValue: {
+  color: 'white',
+  fontSize: 10,
+  fontWeight: 'bold',
+},
+};
+
+
+export default CardItems;
+
+
+
+
+
+
+Deposite.js
+import React, { useState } from 'react';
+import { View, Text, Image, TouchableOpacity, TextInput, Modal, Button } from 'react-native';
+
+import { Ionicons } from '@expo/vector-icons';
+
+
+const Deposit = () => {
+    const [isModalVisible, setModalVisible] = useState(false);
+    const [modalText, setModalText] = useState('');
+
+    const handleDepositClick = () => {
+        console.log('Deposit clicked');
+        setModalText('Deposit clicked');
+        setModalVisible(true);
+      };
+    
+      const handleWithdrawClick = () => {
+        console.log('Withdraw clicked');
+        setModalText('Withdraw clicked');
+        setModalVisible(true);
+      };
+    
+      const closeModal = () => {
+        setModalVisible(false);
+      };
+    
+    return (
+<View>
+<View style={styles.container3}>
+<TouchableOpacity onPress={handleDepositClick} style={styles.ellipse}>
+<View style={styles.circle}>
+<Ionicons name="arrow-up-outline" size={30} color="black" />
+</View>
+<Text style={[styles.text, styles.withdrawText2]}>Deposit</Text>
+</TouchableOpacity>
+<View style={styles.spacing} />
+<TouchableOpacity onPress={handleWithdrawClick} style={styles.ellipse}>
+<View style={styles.circle}>
+<Ionicons name="arrow-down-outline" size={30} color="black" />
+</View>
+<Text style={[styles.text, styles.withdrawText]}>Withdraw</Text>
+</TouchableOpacity>
+<Modal visible={isModalVisible} animationType="slide">
+<View style={styles.modalContainer}>
+<Text>{modalText}</Text>
+<Button title="Close" onPress={closeModal} />
+</View>
+</Modal>
+</View>
+</View>
+    );
+};
+
+const styles = {
+    container3: {
+        paddingVertical:10,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginLeft:0,
+      },
+      ellipse: {
+        width: 166,
+        height: 48,
+        //left:16,
+        borderRadius: 100,
+        backgroundColor: '#ECECEC',
+        justifyContent: 'center',
+        alignItems: 'center',
+        //paddingLeft: 16,
+    
+        // width:166,
+        // height:48,
+       
+        // left:16,
+        // borderRadius:100,
+        // backgroundColor: '#ECECEC',
+    
+    
+      },
+      circle: {
+        width: 40,
+        height: 40,
+        borderRadius: 100,
+        backgroundColor: '#B1A4FF',
+        position: 'absolute',
+        left: 0,
+        marginLeft:5,
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
+      spacing: {
+        width: 50,
+      },
+      text: {
+        marginLeft: 16,
+        fontSize: 20,
+        color: 'black',
+        textAlign:'center',
+        color:'#1C1E32',
+        
+        
+      },
+      withdrawText: {
+        marginRight: -10, // Adjust this value as needed
+        lineHeight:19.09,
+        fontWeight:54,
+      },
+      withdrawText2: {
+        marginRight: -10,
+        lineHeight:19.09,
+        fontWeight:54,
+        
+       
+      },
+      
+      container5: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        padding:0,
+      },
+      gridContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        height:100,
+        
+        margin: 5,
+        borderRadius: 10,
+        backgroundColor: 'lightgray',
+      },
+      firstLine: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 10,
+        
+      },
+      secondLine: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop:20,
+        
+      },
+      logo2: {
+        width: 20,
+        height: 20,
+        marginBottom:8,
+      },
+      textContainer: {
+        marginLeft: 5,
+      },
+      gridText: {
+        fontSize: 16,
+        fontWeight: 'bold',
+       
+      },
+      gridSubText: {
+        fontSize: 12,
+        color: 'gray',
+        fontWeight: 'bold',
+        marginLeft: 3,
+      },
+      value2: {
+        fontSize: 10,
+        fontWeight: 'bold',
+        
+      },
+      button2: {
+        backgroundColor: 'blue',
+        borderRadius:5 ,
+        padding: 1,
+        marginLeft: 5,
+      },
+      buttonValue: {
+        color: 'white',
+        fontSize: 10,
+        fontWeight: 'bold',
+      },
+}
+
+export default Deposit;
+
+
+
+
+
+
+
+
+
+dasboard 
+import React, { useState } from 'react';
+import { View, Text, Image, TouchableOpacity, TextInput, Modal, Button, ScrollView } from 'react-native';
+
+import { Ionicons } from '@expo/vector-icons';
+import MyPortfolio from './MyPortfolio';
+import Deposit from './Deposite';
+import CardItems  from './CardItems';
+import MyWatchList from './MyWatchList';
+import CryptoAssets from './CriptoAssets';
+import AssetItem from './AssetItem';
+
+// import ListComponent from './ListComponent';
+
+
+
+const Dashboard = () => {
+  const [isSearchVisible, setSearchVisible] = useState(false);
+  // const [isModalVisible, setModalVisible] = useState(false);
+  // const [modalText, setModalText] = useState('');
+
+  const toggleSearch = () => {
+    setSearchVisible(!isSearchVisible);
+  };
+
+  // const handleDepositClick = () => {
+  //   console.log('Deposit clicked');
+  //   setModalText('Deposit clicked');
+  //   setModalVisible(true);
+  // };
+
+  // const handleWithdrawClick = () => {
+  //   console.log('Withdraw clicked');
+  //   setModalText('Withdraw clicked');
+  //   setModalVisible(true);
+  // };
+
+  // const closeModal = () => {
+  //   setModalVisible(false);
+  // };
+
+  // const [isMtdModalVisible, setIsMtdModalVisible] = useState(false);
+  // const [isYtdModalVisible, setIsYtdModalVisible] = useState(false);
+
+  // const toggleMtdModal = () => {
+  //   setIsMtdModalVisible(!isMtdModalVisible);
+  // };
+
+  // const toggleYtdModal = () => {
+  //   setIsYtdModalVisible(!isYtdModalVisible);
+  // };
+
+
+
+
+  const cardData=[{"name":"Crypto","value":"$23,500.69","changePercentage":"+5.9%","logo":"https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430"},
+  {"name":"NSE","value":"$23,500","changePercentage":"+5.9%","logo":"https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430"},
+  {"name":"BSE","value":"$23,500","changePercentage":"+5.9%","logo":"https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430"},
+  {"name":"Comodity","value":"$23","changePercentage":"+5.9%","logo":"https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430"}
+];
+  
+
+
+  return (
+    //<View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
+      <View style={styles.nav}>
+        <View style={styles.leftContent}>
+          <Image
+            style={styles.logo}
+            source={require("../assets/mask-group.png")}
+          />
+          <Text style={styles.welcomeText}>Welcome </Text>
+          <Text style={styles.userName}>Satyam</Text>
+        </View>
+        <TouchableOpacity onPress={toggleSearch}>
+          <Image
+            style={styles.rightImage1}
+            source={require("../assets/mask-group2.svg")} // Change to your search icon image source
+          />
+
+        </TouchableOpacity>
+        <Image
+            style={styles.rightImage}
+            source={require("../assets/mask-group1.svg")}
+          />
+      </View>
+
+     
+      {isSearchVisible ? (
+        <TextInput
+          style={styles.searchBox}
+          placeholder="Search"
+          onChangeText={(text) => {
+            // Handle search input changes
+          }}
+        />
+      ) : (
+
+        <View style={styles.container2}>
+          <View style={styles.portfolioContainer}>
+            <Text style={styles.valueText}>Current portfolio value</Text>
+            <View style={styles.valueAmount}>
+              <Text style={styles.amountText}>$23,500</Text>
+              <Text style={styles.decimalText}>.49</Text>
+              <View style={styles.greenBox}>
+                <Text style={styles.percentText}>+5.9%</Text>
+              </View>
+            </View>
+
+
+  
+  
+
+
+  {/* <View style={styles.container3}>
+  <Deposit />
+  </View> */}
+  <Deposit></Deposit>
+
+  {/* <View style = {styles.container4}>
+    <MyWatchList />
+    </View> */}
+
+  <MyWatchList></MyWatchList>
+
+
+{/* 5th container grid  */}
+<View style={styles.container5}>
+  
+      {cardData.map((item, index) => {
+        return   <CardItems name={item.name} symbl={item.symbl} value={item.value} changePercentage={item.changePercentage}/>
+     
+      })}
+
+     </View>
+
+     <CryptoAssets></CryptoAssets>
+    <AssetItem></AssetItem>
+   
+     
+     
+  </View>
+  </View>
+      )}
+      
+    {/* </View> */}
+    </ScrollView>
+  );
+};
