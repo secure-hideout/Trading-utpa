@@ -40,7 +40,7 @@ const SeeAllItems = () => {
         <TouchableOpacity onPress={handleBack} style={styles.leftContainer}>
           <Ionicons name="arrow-back-outline" size={24} color="black" />
         </TouchableOpacity>
-        <Text style={styles.backText}>Crypto Asset List</Text>
+        <Text style={styles.backText}>My Watch List</Text>
         <TouchableOpacity onPress={handleFilter} style={styles.rightContainer}>
           <Image source={require('../assets/filter.png')} style={styles.filterImage} />
         </TouchableOpacity>
