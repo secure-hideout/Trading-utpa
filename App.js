@@ -7,6 +7,12 @@ import LoginForm from "./screens/LoginForm";
 import Dashboard02 from "./screens/Dashboard02";
 import List from "./screens/List";
 import SeeAllItems from './screens/SeeAllItems';
+import SearchBarList from "./screens/SearchBarList";
+import NotificationPage from "./screens/NotificationPage";
+import ListItemDeatails from "./screens/ListItemDeatails";
+import UserDetails from "./screens/UserDetails";
+import ViewPortfolio from "./screens/ViewPortfolio";
+import AssetListDetails from "./screens/AssetListDetails";
 
 const Stack = createNativeStackNavigator();
 
@@ -21,6 +27,12 @@ function App() {
           options={{ headerShown: false }} />
         <Stack.Screen name="List" component={List} />
         <Stack.Screen name="SeeAllItems" component={SeeAllItems} />
+        <Stack.Screen name="SearchBarList" component={SearchBarList} />
+        <Stack.Screen name = "NotificationPage" component={NotificationPage} />
+        <Stack.Screen name = "ListItemDeatails" component={ListItemDeatails} />
+        <Stack.Screen name = "UserDetails" component={UserDetails} />
+        <Stack.Screen name = "ViewPortfolio" component={ViewPortfolio} />
+        <Stack.Screen name = "AssetListDetails" component={AssetListDetails} />
       </Stack.Navigator>
     </NavigationContainer>
   );

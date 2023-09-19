@@ -1,3 +1,6 @@
+//cryptoAsset list
+
+
 import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, TextInput, Modal, Button } from 'react-native';
 
@@ -5,25 +8,50 @@ const MyWatchList = () => {
 
   const [isMtdModalVisible, setIsMtdModalVisible] = useState(false);
   const [isYtdModalVisible, setIsYtdModalVisible] = useState(false);
+  const [activeButton, setActiveButton] = useState('MTD');
 
   const toggleMtdModal = () => {
     setIsMtdModalVisible(!isMtdModalVisible);
+    setActiveButton('MTD');
   };
-
+  
   const toggleYtdModal = () => {
     setIsYtdModalVisible(!isYtdModalVisible);
+    setActiveButton('YTD');
   };
+  
+ 
   
     return(
     <View style={styles.container4}>
-      <Text style={styles.title}>My Watchlist</Text>
+      <Text style={styles.title}>Crypto Asset List</Text>
       <View style={styles.buttonsContainer}>
-        <TouchableOpacity style={styles.button} onPress={toggleMtdModal}>
-          <Text style={styles.buttonText}>MTD</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={toggleYtdModal}>
-          <Text style={styles.buttonText}>YTD</Text>
-        </TouchableOpacity>
+      {/* <TouchableOpacity 
+  style={[styles.button, activeButton === 'MTD' ? styles.buttonActive : {}]} 
+  onPress={toggleMtdModal}
+>
+  <Text style={styles.buttonText}>MTD</Text>
+</TouchableOpacity>
+<TouchableOpacity 
+  style={[styles.button, activeButton === 'YTD' ? styles.buttonActive : {}]} 
+  onPress={toggleYtdModal}
+>
+  <Text style={styles.buttonText}>YTD</Text>
+</TouchableOpacity> */}
+<TouchableOpacity 
+  style={[styles.button, activeButton === 'MTD' ? styles.buttonActive : {}]} 
+  onPress={toggleMtdModal}
+>
+  <Text style={activeButton === 'MTD' ? styles.buttonTextActive : styles.buttonText}>MTD</Text>
+</TouchableOpacity>
+<TouchableOpacity 
+  style={[styles.button, activeButton === 'YTD' ? styles.buttonActive : {}]} 
+  onPress={toggleYtdModal}
+>
+  <Text style={activeButton === 'YTD' ? styles.buttonTextActive : styles.buttonText}>YTD</Text>
+</TouchableOpacity>
+
+
       </View>
       
 
@@ -53,17 +81,19 @@ const MyWatchList = () => {
 
 const styles = {
     container4: {
-      padding:10,
-       borderRadius:20,
+      padding:15,
+       //borderRadius:20,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         //padding: 13,
-        backgroundColor: '#F5F5F5',
+        backgroundColor: '#FFFFFF',
       },
       title: {
         fontSize: 18,
-        fontWeight: 'bold',
+        fontWeight: '500',
+        color: '#A1A1A1',
+        lineHeight: 19.09,
       },
       buttonsContainer: {
         flexDirection: 'row',
@@ -74,12 +104,28 @@ const styles = {
         paddingHorizontal: 8,
         backgroundColor: '#1C1E32',
         borderRadius: 10,
-        backgroundColor:'black',
+        //backgroundColor:'black',
       },
+
+      buttonActive: {
+        backgroundColor:'rgba(236, 236, 236, 1)',  // This color is just an example. You can choose your preferred active color.
+        
+      },
+
+
+      buttonTextActive: {
+        fontSize: 12,
+        color: 'rgba(28, 30, 50, 1)',  // This color is just an example. Choose your preferred active text color.
+        fontWeight: 600,
+        lineHeight: 11.93,
+        textAlign: 'center',
+      },
+      
+
       buttonText: {
-        fontSize: 10,
+        fontSize: 12,
         color: '#FFFFFF',
-        fontWeight:900,
+        fontWeight:600,
         lineHeight:11.93,
         textAlign:'center',
       },
@@ -97,3 +143,9 @@ const styles = {
 }
 
 export default MyWatchList;
+
+
+
+
+
+

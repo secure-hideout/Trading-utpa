@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff', // Background color for the entire screen
+    backgroundColor: 'black', // Background color for the entire screen
   },
   header: {
     fontSize: 24,

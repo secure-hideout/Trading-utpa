@@ -1,18 +1,15 @@
-//SeeAlll item button click 
 
+//when Search icon click this page appears
 import React from 'react';
 import { View, TextInput, Text, TouchableOpacity, StyleSheet, Image, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import AssetItem from './AssetItem';
 
-const SeeAllItems = () => {
+const SearchBarList = () => {
   const navigation = useNavigation();
- 
 
   const handleBack = () => {
-    
-
     navigation.navigate('Dashboard02');
   };
 
@@ -24,9 +21,8 @@ const SeeAllItems = () => {
     // Open keyboard or perform additional actions
   };
 
-
   const assetData = [
-    {name2:'Crpto', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"+7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg' },
+    {name2:'Crpto', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"+7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
     {name2:'nse', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"+7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
     {name2:'bse', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"+7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
     {name2:'comodity', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"+7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
@@ -46,7 +42,7 @@ const SeeAllItems = () => {
         <TouchableOpacity onPress={handleBack} style={styles.leftContainer}>
           <Ionicons name="arrow-back-outline" size={24} color="black" />
         </TouchableOpacity>
-        <Text style={styles.backText}>My Watch List</Text>
+        <Text style={styles.backText}>Cripto Asset List</Text>
         <TouchableOpacity onPress={handleFilter} style={styles.rightContainer}>
           <Image source={require('../assets/filter.png')} style={styles.filterImage} />
         </TouchableOpacity>
@@ -64,15 +60,15 @@ const SeeAllItems = () => {
           />
         </TouchableOpacity>
       </View>
+      {/* <View style={styles.containerItem}> */}
       <View style={styles.containerItem}>
-
-        
       {assetData.map((item, index) => {
-        return <AssetItem name2={item.name2}
-         name3={item.name3} value={item.value}
-          decimalValue={item.decimalValue}
-          changePercentage={item.changePercentage}
-           onPress={() => navigation.navigate('ListItemDeatails')} />;
+        return <AssetItem name2={item.name2} 
+        name3={item.name3}
+        value={item.value}
+        decimalValue={item.decimalValue}
+        changePercentage={item.changePercentage} 
+        onPress={() => navigation.navigate('AssetListDetails')} />;
       })}
       </View>
     </View>
@@ -87,12 +83,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'flex-start',
     paddingVertical: 30,
-    backgroundColor: '#f5f5f5',
-    //backgroundColor: 'rgba(227, 233, 240, 1)',
+   //backgroundColor:'black',
+   backgroundColor: '#f5f5f5',
   },
 
   filterImage:{
-    width: 30,
+   width: 30,
     height: 30,
     marginLeft: 10,
   },
@@ -136,12 +132,16 @@ const styles = StyleSheet.create({
   containerItem: {
     flex: 1,
     width: '100%',
-    backgroundColor: 'rgba(227, 233, 240, 1)',
+    //backgroundColor: 'black',
+    
   },
+
+
+  
  
 });
 
-export default SeeAllItems;
+export default SearchBarList ;
 
 
 

@@ -1,21 +1,36 @@
-
-
-
 import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, TextInput } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const Header = () => {
+  const navigation = useNavigation();
   const [isSearchVisible, setSearchVisible] = useState(false);
 
   const toggleSearch = () => {
-    console.log(isSearchVisible);
+    //console.log(isSearchVisible);
     setSearchVisible(!isSearchVisible);
+    if (!isSearchVisible) {
+      navigation.navigate('SearchBarList');
+    }
+
+    
+  };
+  const toggleNotifications = () => {
+    navigation.navigate('NotificationPage');
+
+    //notification content  
+  };
+  const toggleUser = () => {
+    navigation.navigate('UserDetails');
+
+    //notification content  
   };
 
   return (
     <>
       <View style={styles.container}>
         <View style={styles.nav}>
+        <TouchableOpacity onPress={toggleUser}>
           <View style={styles.leftContent}>
             <Image
               style={styles.logo}
@@ -24,40 +39,109 @@ const Header = () => {
             <Text style={styles.welcomeText}>Welcome </Text>
             <Text style={styles.userName}>Satyam</Text>
           </View>
+          </TouchableOpacity>
           <View style={styles.rightImageContainer}>
             <TouchableOpacity onPress={toggleSearch}>
               <Image
                 style={styles.rightImage}
                 source={require("../assets/mask-group2.svg")} // Change to your search icon image source
               />
+     
             </TouchableOpacity>
+
+            <TouchableOpacity onPress={toggleNotifications}>
+
             <Image
               style={styles.rightImage}
               source={require("../assets/mask-group1.svg")}
             />
+            </TouchableOpacity>
+           
           </View>
         </View>
       </View>
-      {isSearchVisible ? (
-        <TextInput
-          style={styles.searchBox}
-          placeholder="Search"
-          onChangeText={(text) => {
-            console.log(text);
-          }}
-        />
-      ) : (
-        <></>
-      )}
     </>
   );
 };
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//opening searchbar code 
+// import React, { useState } from 'react';
+// import { View, Text, Image, TouchableOpacity, TextInput } from 'react-native';
+
+// const Header = () => {
+//   const [isSearchVisible, setSearchVisible] = useState(false);
+
+//   const toggleSearch = () => {
+//     console.log(isSearchVisible);
+//     setSearchVisible(!isSearchVisible);
+//   };
+
+//   return (
+//     <>
+//       <View style={styles.container}>
+//         <View style={styles.nav}>
+//           <View style={styles.leftContent}>
+//             <Image
+//               style={styles.logo}
+//               source={require("../assets/mask-group.png")}
+//             />
+//             <Text style={styles.welcomeText}>Welcome </Text>
+//             <Text style={styles.userName}>Satyam</Text>
+//           </View>
+//           <View style={styles.rightImageContainer}>
+//             <TouchableOpacity onPress={toggleSearch}>
+//               <Image
+//                 style={styles.rightImage}
+//                 source={require("../assets/mask-group2.svg")} // Change to your search icon image source
+//               />
+//             </TouchableOpacity>
+//             <Image
+//               style={styles.rightImage}
+//               source={require("../assets/mask-group1.svg")}
+//             />
+//           </View>
+//         </View>
+//       </View>
+//       {isSearchVisible ? (
+//         <TextInput
+//           style={styles.searchBox}
+//           placeholder="Search"
+//           onChangeText={(text) => {
+//             console.log(text);
+//           }}
+//         />
+//       ) : (
+//         <></>
+//       )}
+//     </>
+//   );
+// };
+
 const styles = {
   container: {
     flex: 1,
-    backgroundColor: 'white',
-    padding: 20,
+    backgroundColor: '#FFFFFF',
+    padding: 10,
+    //height:900,
+    marginTop:10,
   },
   nav: {
     flexDirection: 'row',
@@ -72,24 +156,35 @@ const styles = {
     alignItems: 'center',
   },
   logo: {
-    width: 40,
-    height: 40,
+    width: 30,
+    height: 30,
     marginRight: 10,
   },
   welcomeText: {
+    // fontSize: 14,figma font size its look small 
     fontSize: 18,
+    fontWeight:700,
+    lineHeight:21,
+    fontFamily:'SFProDisplay',
+    color:'#1C1E32',
   },
   userName: {
     fontSize: 18,
-    fontWeight: 'bold',
+    
+    fontWeight:600,
+    lineHeight:21,
+    
+    color:'#1C1E32',
+    fontFamily: 'SFProDisplay',
+  
   },
   rightImageContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   rightImage: {
-    width: 40,
-    height: 40,
+    width: 30,
+    height: 30,
     marginLeft: 10,
   },
   searchBox: {

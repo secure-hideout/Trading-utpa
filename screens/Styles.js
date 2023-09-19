@@ -1,7 +1,3 @@
-
-
-
-
 export const styles = {
     container3: {
       //paddingVertical: 40,
@@ -14,6 +10,7 @@ export const styles = {
       //backgroundColor: '#1C1E32',
       marginLeft:-15,
       //marginLeft: 0,
+      backgroundColor:'#FFFFFF',
     },
     ellipse: {
       width: 166,
@@ -39,20 +36,26 @@ export const styles = {
     },
     text: {
       marginLeft: 16,
-      fontSize: 20,
-      color: 'black',
-      textAlign: 'center',
-      color: '#1C1E32',
+      
+      //color: 'black',
+      //textAlign: 'center',
+      
+      
     },
     withdrawText: {
       marginRight: -10,
       lineHeight: 19.09,
-      fontWeight: 54,
+      fontSize: 20,
+      textAlign: 'center',
+      fontWeight:500,
+      color: '#1C1E32',
     },
     withdrawText2: {
       marginRight: -10,
       lineHeight: 19.09,
-      fontWeight: 54,
+      fontSize: 20,
+      fontWeight:500,
+      color: '#1C1E32',
     },
     
   };
