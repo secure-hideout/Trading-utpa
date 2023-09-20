@@ -8,6 +8,7 @@ import MyWatchList from './MyWatchList';
 import CardItems from './CardItems';
 
 import CryptoAssets from './CriptoAssets';
+//import SeeAllItems from './SeeAllItems';
 //import AssetItem from './AssetItem';
 
 const Dashboard = () => {
@@ -19,13 +20,13 @@ const Dashboard = () => {
   ];
 
   const assetData = [
-    {name2:'Crpto', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"+7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
+    {name2:'Crpto', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"-7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
     {name2:'nse', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"+7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
-    {name2:'bse', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"+7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
+    {name2:'bse', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"-7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
     {name2:'comodity', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"+7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
     {name2:'tata', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"+7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
     {name2:'apple', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"+7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
-    {name2:'tesla', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"+7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
+    {name2:'tesla', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"-7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
     {name2:'twitter', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"+7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
     {name2:'facebook', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"+7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
     {name2:'google', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"+7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
@@ -46,11 +47,14 @@ const Dashboard = () => {
        
         <View style={styles.container5}>
         {cardData.map((item, index) => {
-        return <CardItems name={item.name} symbl={item.symbl} value={item.value} changePercentage={item.changePercentage} color={item.backgroundColor} />;
+        return <CardItems  key={index} name={item.name} symbl={item.symbl} value={item.value} changePercentage={item.changePercentage} color={item.backgroundColor} />;
         })}
         </View>
 
-      <CryptoAssets data={assetData}/>
+      <CryptoAssets data={assetData}
+      
+      />
+      
       
 
 

@@ -14,7 +14,10 @@ import UserDetails from "./screens/UserDetails";
 import ViewPortfolio from "./screens/ViewPortfolio";
 import AssetListDetails from "./screens/AssetListDetails";
 
+import WebSocketComponent from "./screens/WebSocketComponent";
+
 const Stack = createNativeStackNavigator();
+
 
 function App() {
   return (
@@ -33,6 +36,8 @@ function App() {
         <Stack.Screen name = "UserDetails" component={UserDetails} />
         <Stack.Screen name = "ViewPortfolio" component={ViewPortfolio} />
         <Stack.Screen name = "AssetListDetails" component={AssetListDetails} />
+
+        <Stack.Screen name = "WebSocketComponent" component={WebSocketComponent} />
       </Stack.Navigator>
     </NavigationContainer>
   );

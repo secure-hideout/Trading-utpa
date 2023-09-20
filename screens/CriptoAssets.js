@@ -7,9 +7,20 @@ import { AntDesign } from '@expo/vector-icons';
 const CryptoAssets = ({ data }) => {
 const navigation = useNavigation();
 
+  // const handleSeeAll = () => {
+  //   navigation.navigate('SeeAllItems');
+  // };
+
+
+
+
   const handleSeeAll = () => {
-    navigation.navigate('SeeAllItems');
+    navigation.navigate('SeeAllItems', { assetData: data });
   };
+  
+
+
+
 
   return (
     <View style={styles.containerAssets}>
