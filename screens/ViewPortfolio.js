@@ -7,7 +7,8 @@ const ViewPortfolio = () => {
   const navigation = useNavigation();
 
   const goBack = () => {
-    navigation.goBack('Dashboard02');
+    // navigation.goBack('Dashboard02');rewritten like below for navigate 
+    navigation.navigate('Home');
   };
 
   return (

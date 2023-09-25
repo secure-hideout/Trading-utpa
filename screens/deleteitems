@@ -1,3 +1,99 @@
+before bottom 
+import React, {  useRef } from 'react';
+import { View,  ScrollView } from 'react-native';
+import { StyleSheet } from 'react-native';
+
+import Header from './Header';
+import MyPortfolio from './MyPortfolio';
+import Deposit from './Deposite';
+import MyWatchList from './MyWatchList';
+import CardItems from './CardItems';
+import CryptoAssets from './CriptoAssets';
+import { SafeAreaView } from 'react-native';
+import  BottomTabBar  from './BottomTabBar';
+//import BottomTabBar from './navigation/BottomTabBar';
+
+
+
+const Dashboard = () => {
+  const cardData = [
+    { name: 'Crypto', value: '$23,500.69', changePercentage: '+5.9%', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: "#C1C2EB" },
+    { name: 'NSE', value: '$23,500', changePercentage: '+5.9%', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: '#B7DDD2'},
+    { name: 'BSE', value: '$23,500', changePercentage: '+5.9%', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: "#C1C2EB" },
+    { name: 'Comodity', value: '$23', changePercentage: '+5.9%', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430',backgroundColor: '#B7DDD2' }
+  ];
+
+  const assetData = [
+    {name2:'Crpto', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"-7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
+    {name2:'nse', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"+7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
+    {name2:'bse', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"-7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
+    {name2:'comodity', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"+7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
+    {name2:'tata', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"+7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
+    {name2:'apple', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"+7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
+    {name2:'tesla', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"-7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
+    {name2:'twitter', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"+7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
+    {name2:'facebook', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"+7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
+    {name2:'google', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"+7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
+
+  ];
+
+
+  //for scroll bottom minus icon 
+
+  const scrollViewRef = useRef(null);
+
+  const scrollToBottom = () => {
+    scrollViewRef.current.scrollToEnd({ animated: true });
+  };
+
+
+  return (
+    <SafeAreaView style={{flex:1}}>
+    <ScrollView ref={scrollViewRef} style={styles.root}>
+
+        <Header />
+        <MyPortfolio />
+        <Deposit />
+        <MyWatchList />
+ 
+        <View style={styles.container5}>
+        {cardData.map((item, index) => {
+        return <CardItems  key={index} name={item.name} symbl={item.symbl} value={item.value} changePercentage={item.changePercentage} color={item.backgroundColor} />;
+        })}
+        </View>
+
+      <CryptoAssets data={assetData} onScrollToBottom={scrollToBottom} />
+
+
+      <BottomTabBar />
+    </ScrollView>
+    </SafeAreaView>
+  );
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 dashboard.js
 
 

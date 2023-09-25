@@ -19,10 +19,11 @@ const WithDraw = () => {
   return (
     <View>
       <TouchableOpacity onPress={handleWithdrawClick} style={styles.ellipse}>
-        <View style={styles.circle}>
-          <Ionicons name="arrow-down-outline" size={30} color="black" />
-        </View>
+      
         <Text style={[styles.text, styles.withdrawText]}>Withdraw</Text>
+        <View style={styles.circle}>
+          <Ionicons name="arrow-up-outline" size={30} color="black" />
+        </View>
       </TouchableOpacity>
       <Modal visible={isModalVisible} animationType="slide">
         <View style={styles.modalContainer}>

@@ -2,26 +2,23 @@
 
 import React from 'react';
 import { View, TextInput, Text, TouchableOpacity, StyleSheet, Image, ScrollView } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+//import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import AssetItem from './AssetItem';
 
-// const SeeAllItems = () => {
-//   const navigation = useNavigation();
- 
 
-// const SeeAllItems = () => {
   const SeeAllItems = ({ navigation, route }) => {
-  // const navigation = useNavigation();
+  
 
 
-
+  
+  
 
   
   const handleBack = () => {
     
 
-    navigation.navigate('Dashboard02');
+    navigation.navigate('Home');//rewritten Dashboard to home 
   };
 
   const handleFilter = () => {
@@ -98,6 +95,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'flex-start',
+    marginTop:10,
     paddingVertical: 30,
     backgroundColor: '#f5f5f5',
     //backgroundColor: 'rgba(227, 233, 240, 1)',

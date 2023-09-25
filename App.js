@@ -1,50 +1,92 @@
+
+
 import * as React from "react";
+import { useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { StyleSheet, SafeAreaView } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+
+import BottomTabBar from './screens/BottomTabBar';
 
 import LoginForm from "./screens/LoginForm";
-import Dashboard02 from "./screens/Dashboard02";
-import List from "./screens/List";
-import SeeAllItems from './screens/SeeAllItems';
-import SearchBarList from "./screens/SearchBarList";
-import NotificationPage from "./screens/NotificationPage";
+
+
 import ListItemDeatails from "./screens/ListItemDeatails";
+import NotificationPage from "./screens/NotificationPage";
 import UserDetails from "./screens/UserDetails";
 import ViewPortfolio from "./screens/ViewPortfolio";
 import AssetListDetails from "./screens/AssetListDetails";
-
-import WebSocketComponent from "./screens/WebSocketComponent";
+import MyWatchList from "./screens/MyWatchList";
+import CryptoAssets from "./screens/CriptoAssets";
+import SeeAllItems from "./screens/SeeAllItems";
 
 const Stack = createNativeStackNavigator();
 
+// function MainStack() {
+//   return (
+//     <Stack.Navigator screenOptions={{ headerShown: false }}>
+//       <Stack.Screen name="BottomTabs" component={BottomTabBar} />
+//       <Stack.Screen name="ListItemDeatails" component={ListItemDeatails} />
+//       <Stack.Screen name="UserDetails" component={UserDetails} />
+//       <Stack.Screen name="ViewPortfolio" component={ViewPortfolio} />
+//       <Stack.Screen name="AssetListDetails" component={AssetListDetails} />
+//       {/* ... Add other screens as required ... */}
+//     </Stack.Navigator>
+//   );
+// }
+
+
+function MainStack({ isLoggedIn, setIsLoggedIn }) {
+  return (
+    // <Stack.Navigator screenOptions={{ headerShown: false }}>
+    //   <Stack.Screen 
+    //     name="BottomTabs" 
+    //     children={(props) => <BottomTabBar {...props} isLoggedIn={isLoggedIn} onSuccessfulLogin={() => setIsLoggedIn(true)} />}
+    //   />
+
+
+    <Stack.Navigator initialRouteName={isLoggedIn ? "BottomTabs" : "Login"} screenOptions={{ headerShown: false }}>
+    <Stack.Screen 
+      name="Login"
+      children={(props) => <LoginForm {...props} onSuccessfulLogin={() => setIsLoggedIn(true)} />}
+    />
+    <Stack.Screen 
+      name="BottomTabs" 
+      children={(props) => <BottomTabBar {...props} isLoggedIn={isLoggedIn} onSuccessfulLogin={() => setIsLoggedIn(true)} />}
+    />
+    
+      <Stack.Screen name="ListItemDeatails" component={ListItemDeatails} />
+      <Stack.Screen name="UserDetails" component={UserDetails} />
+      <Stack.Screen name="ViewPortfolio" component={ViewPortfolio} />
+      <Stack.Screen name="AssetListDetails" component={AssetListDetails} />
+      <Stack.Screen name="NotificationPage" component={NotificationPage} />
+      <Stack.Screen name="MyWatchList" component={MyWatchList} />
+      <Stack.Screen name="CryptoAssets" component={CryptoAssets} />
+      <Stack.Screen name="SeeAllItems" component={SeeAllItems} />
+      
+
+      
+    </Stack.Navigator>
+  );
+}
 
 function App() {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Login" component={LoginForm} />
-        <Stack.Screen
-          name="Dashboard02"
-          component={Dashboard02}
-          options={{ headerShown: false }} />
-        <Stack.Screen name="List" component={List} />
-        <Stack.Screen name="SeeAllItems" component={SeeAllItems} />
-        <Stack.Screen name="SearchBarList" component={SearchBarList} />
-        <Stack.Screen name = "NotificationPage" component={NotificationPage} />
-        <Stack.Screen name = "ListItemDeatails" component={ListItemDeatails} />
-        <Stack.Screen name = "UserDetails" component={UserDetails} />
-        <Stack.Screen name = "ViewPortfolio" component={ViewPortfolio} />
-        <Stack.Screen name = "AssetListDetails" component={AssetListDetails} />
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-        <Stack.Screen name = "WebSocketComponent" component={WebSocketComponent} />
-      </Stack.Navigator>
-    </NavigationContainer>
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <NavigationContainer>
+          {/* <MainStack /> */}
+          <MainStack isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+        </NavigationContainer>
+      </GestureHandlerRootView>
+    </SafeAreaView>
   );
 }
 
 export default App;
-// export default App;
 
 
 
@@ -65,41 +107,101 @@ export default App;
 
 
 
+
+
+
+// import * as React from "react";
+// import { useState } from "react";
+// import { NavigationContainer } from "@react-navigation/native";
+// import { createNativeStackNavigator } from "@react-navigation/native-stack";
+// import { StyleSheet, SafeAreaView } from 'react-native';
+// import { GestureHandlerRootView } from 'react-native-gesture-handler';
+
+// import BottomTabBar from './screens/BottomTabBar';
+// import ListItemDeatails from "./screens/ListItemDeatails";
+// import NotificationPage from "./screens/NotificationPage";
+// import UserDetails from "./screens/UserDetails";
+// import ViewPortfolio from "./screens/ViewPortfolio";
+// import AssetListDetails from "./screens/AssetListDetails";
+// import MyWatchList from "./screens/MyWatchList";
+// import CryptoAssets from "./screens/CriptoAssets";
+// import SeeAllItems from "./screens/SeeAllItems";
 
 // const Stack = createNativeStackNavigator();
-// import * as React from "react";
-// import { NavigationContainer } from "@react-navigation/native";
-// import { createStackNavigator } from '@react-navigation/stack';
-// import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-// import LoginForm from './LoginForm';
+// // function MainStack() {
+// //   return (
+// //     <Stack.Navigator screenOptions={{ headerShown: false }}>
+// //       <Stack.Screen name="BottomTabs" component={BottomTabBar} />
+// //       <Stack.Screen name="ListItemDeatails" component={ListItemDeatails} />
+// //       <Stack.Screen name="UserDetails" component={UserDetails} />
+// //       <Stack.Screen name="ViewPortfolio" component={ViewPortfolio} />
+// //       <Stack.Screen name="AssetListDetails" component={AssetListDetails} />
+// //       {/* ... Add other screens as required ... */}
+// //     </Stack.Navigator>
+// //   );
+// // }
 
-// import Dashboard02 from "./screens/Dashboard02";
 
-// import List from './screens/List'; // Import the 'Next' screen
+// function MainStack({ isLoggedIn, setIsLoggedIn }) {
+//   return (
+//     <Stack.Navigator screenOptions={{ headerShown: false }}>
+//       <Stack.Screen 
+//         name="BottomTabs" 
+//         children={(props) => <BottomTabBar {...props} isLoggedIn={isLoggedIn} onSuccessfulLogin={() => setIsLoggedIn(true)} />}
+//       />
+//       <Stack.Screen name="ListItemDeatails" component={ListItemDeatails} />
+//       <Stack.Screen name="UserDetails" component={UserDetails} />
+//       <Stack.Screen name="ViewPortfolio" component={ViewPortfolio} />
+//       <Stack.Screen name="AssetListDetails" component={AssetListDetails} />
+//       <Stack.Screen name="NotificationPage" component={NotificationPage} />
+//       <Stack.Screen name="MyWatchList" component={MyWatchList} />
+//       <Stack.Screen name="CryptoAssets" component={CryptoAssets} />
+//       <Stack.Screen name="SeeAllItems" component={SeeAllItems} />
+      
 
-// const App = () => {
-//   const [hideSplashScreen, setHideSplashScreen] = React.useState(true);
-//   const Stack = createStackNavigator();
+      
+//     </Stack.Navigator>
+//   );
+// }
+
+// function App() {
+//   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 //   return (
-//     <>
-//       <NavigationContainer>
-//         {hideSplashScreen ? (
-//           <Stack.Navigator screenOptions={{ headerShown: false }}>
-
-//             <Stack.Screen name="Login" component={LoginForm} />
-            
-//             <Stack.Screen
-//               name="Dashboard02"
-//               component={Dashboard02}
-//               options={{ headerShown: false }}  />
-//               <Stack.Screen name="List" component={List} />
-           
-//           </Stack.Navigator>
-//         ) : null}
-//       </NavigationContainer>
-//     </>
+//     <SafeAreaView style={{ flex: 1 }}>
+//       <GestureHandlerRootView style={{ flex: 1 }}>
+//         <NavigationContainer>
+//           {/* <MainStack /> */}
+//           <MainStack isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+//         </NavigationContainer>
+//       </GestureHandlerRootView>
+//     </SafeAreaView>
 //   );
-// };
+// }
+
 // export default App;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

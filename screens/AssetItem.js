@@ -24,11 +24,12 @@ const AssetItem = ({
       <View style={styles.containerAssetItem}>
         <View style={styles.leftContent}>
           {/* If SVGs are used, the import and component might need changes */}
-          {/* <Image style={styles.logo} source={{ uri: logo }} /> */}
-          <Image style={styles.logo} source={require('../assets/bitcoinsvgrepocom-1.svg')} />
-          {/* <Image style={styles.logo} >{logo}</Image> */}
+          
+          {/* if we need logo and btc uncommand it */}
+          {/* <Image style={styles.logo} source={require('../assets/bitcoinsvgrepocom-1.svg')} /> */}
+        
           <Text style={styles.Text}>{name2}</Text>
-          <Text style={styles.span}>{name3}</Text>
+          {/* <Text style={styles.span}>{name3}</Text> */}
         </View>
         <View style={styles.rightContent}>
           <Text style={styles.value}>{value}</Text>

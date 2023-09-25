@@ -1,26 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { View, Text, Image, TouchableOpacity, TextInput, Modal, Button, ScrollView } from 'react-native';
+import { StyleSheet, SafeAreaView } from 'react-native';
+
 
 import Header from './Header';
 import MyPortfolio from './MyPortfolio';
 import Deposit from './Deposite';
 import MyWatchList from './MyWatchList';
 import CardItems from './CardItems';
-
 import CryptoAssets from './CriptoAssets';
-//import SeeAllItems from './SeeAllItems';
-//import AssetItem from './AssetItem';
+//import  BottomTabBar  from './BottomTabBar';
+
+
 
 const Dashboard = () => {
   const cardData = [
-    { name: 'Crypto', value: '$23,500.69', changePercentage: '+5.9%', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: "#C1C2EB" },
+    { name: 'Crypto', value: '$23,500', changePercentage: '+5.9%', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: "#C1C2EB" },
     { name: 'NSE', value: '$23,500', changePercentage: '+5.9%', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: '#B7DDD2'},
     { name: 'BSE', value: '$23,500', changePercentage: '+5.9%', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: "#C1C2EB" },
     { name: 'Comodity', value: '$23', changePercentage: '+5.9%', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430',backgroundColor: '#B7DDD2' }
   ];
 
   const assetData = [
-    {name2:'Crpto', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"-7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
+    {name2:'Crpto',name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"-7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
     {name2:'nse', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"+7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
     {name2:'bse', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"-7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
     {name2:'comodity', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"+7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
@@ -33,44 +35,48 @@ const Dashboard = () => {
 
   ];
 
+
+  //for scroll bottom minus icon 
+
+  const scrollViewRef = useRef(null);
+
+  const scrollToBottom = () => {
+    scrollViewRef.current.scrollToEnd({ animated: true });
+  };
+
+
   return (
-    <ScrollView >
-      
-
-
+  <SafeAreaView style={{flex:1}}>
+    <ScrollView ref={scrollViewRef} style={styles.root}>
         <Header />
         <MyPortfolio />
         <Deposit />
         <MyWatchList />
-
-
-       
+ 
         <View style={styles.container5}>
         {cardData.map((item, index) => {
         return <CardItems  key={index} name={item.name} symbl={item.symbl} value={item.value} changePercentage={item.changePercentage} color={item.backgroundColor} />;
         })}
         </View>
 
-      <CryptoAssets data={assetData}
-      
-      />
-      
-      
+      {/* <CryptoAssets data={assetData}/> */}
+      <CryptoAssets data={assetData} onScrollToBottom={scrollToBottom} />
 
-
-    
-      {/* <View style={styles.containerItem}>
-      {assetData.map((item, index) => {
-        return <AssetItem name2={item.name2} name3={item.name3} value={item.value} decimalValue={item.decimalValue} changePercentage={item.changePercentage} />;
-      })}
-      </View> */}
-
-    </ScrollView>
+        {/* <BottomTabBar /> */}
+        </ScrollView>
+        </SafeAreaView>
   );
 };
 
 
-const styles = {
+// const styles = {
+  const styles = StyleSheet.create({
+
+
+    root: {
+      backgroundColor: '#FFFFFF',
+      flex: 1
+    },
 
   container: {
     flex: 1,
@@ -201,26 +207,30 @@ container2: {
     justifyContent: 'center',
     alignItems: 'center',
     //backgroundColor: '#1C1E32',
-    marginLeft:-15,
+    //marginLeft:-15,
     //marginLeft: 0,
     backgroundColor:'#FFFFFF',
   },
   ellipse: {
-    width: 166,
-    height: 48,
+    // width: 166,
+    // height: 48,
+    width: 170,
+    height: 50,
     borderRadius: 100,
     backgroundColor: '#ECECEC',
     justifyContent: 'center',
     alignItems: 'center',
   },
   circle: {
-    width: 40,
-    height: 40,
+    // width: 40,
+    // height: 40,
+    width: 45,
+    height: 45,
     borderRadius: 100,
     backgroundColor: '#B1A4FF',
     position: 'absolute',
     left: 0,
-    marginLeft: 5,
+    //marginLeft: 5,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -439,54 +449,7 @@ assetText: {
 
 
 
-
-
-
-
-
-
-
-//old
-// containerAssets: {
-//   marginTop:20,
-//   padding: 7,
-//   flexDirection: 'column',  // Keep it 'column' since you want items to stack vertically
-//   //backgroundColor: '#FFFFFF',
-//   backgroundColor:'rgba(227, 233, 240, 1)',
-  
-// },
-// headerContainer: {
-//   flexDirection: 'row', // This will make children align horizontally
-//   alignItems: 'center',  // Vertically align items in the middle
-//   justifyContent: 'space-between',  // This will space out the text and button
-//   marginBottom: 10, // Add some space between the header and the assets list
-// },
-// button: {
-//   marginLeft: 8,
-//   paddingVertical: 4,
-//   paddingHorizontal: 8,
-//   backgroundColor: '#1C1E32',
-//   borderRadius: 10,
-// },
-// buttonText: {
-//   fontSize: 12,
-//   color: '#FFFFFF',
-//   fontWeight: 600,
-//   lineHeight: 11.93,
-//   textAlign: 'center',
-// },
-// assetText: {
-//   fontSize: 18,
-//   fontWeight: 700,
-//   lineHeight: 19.93,
-//   fontFamily: 'SFProDisplay',
-//   color: 'rgba(28, 30, 50, 1)',
-// },
-
-
  // asset items 
-
-
  containerAssetItem: {
  
 
@@ -543,14 +506,14 @@ value: {
  // marginBottom: 4,
  marginRight:3,
   color: '#1C1E32',
-  lineHeight: 22, // Adjust the lineHeight as needed
+  lineHeight: 22, 
 },
 decimal: {
   fontSize: 16,
   marginRight:3,
   color: '#A1A1A1',
   fontWeight: 'bold',
-  lineHeight: 22, // Adjust the lineHeight to match value
+  lineHeight: 22, 
 },
 
 
@@ -574,7 +537,7 @@ changePercentage: {
   left:4,
   
 },
-  };
+  });
 
      
     

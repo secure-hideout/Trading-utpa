@@ -10,7 +10,7 @@ const SearchBarList = () => {
   const navigation = useNavigation();
 
   const handleBack = () => {
-    navigation.navigate('Dashboard02');
+    navigation.navigate('Home');
   };
 
   const handleFilter = () => {
@@ -88,6 +88,7 @@ const styles = StyleSheet.create({
     paddingVertical: 30,
    //backgroundColor:'black',
    backgroundColor: '#f5f5f5',
+   margin:10,
   },
 
   filterImage:{

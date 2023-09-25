@@ -26,7 +26,7 @@ const Deposit = () => {
       <View style={styles.container3}>
         <TouchableOpacity onPress={handleDepositClick} style={styles.ellipse}>
           <View style={styles.circle}>
-            <Ionicons name="arrow-up-outline" size={30} color="black" />
+            <Ionicons name="arrow-down-outline" size={30} color="black" />
           </View>
           <Text style={[styles.text, styles.withdrawText2]}>Deposit</Text>
         </TouchableOpacity>

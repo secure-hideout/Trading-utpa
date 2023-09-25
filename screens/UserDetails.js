@@ -2,12 +2,14 @@ import React from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
-// 
+//import Dashboard02 from './Dashboard02';
+
 const UserDetails = () => {
   const navigation = useNavigation();
 
   const goBack = () => {
-    navigation.goBack('Dashboard02');
+    // navigation.goBack('Dashboard02'); rewritten like below for navigate 
+    navigation.navigate('Home');
   };
 
   return (
