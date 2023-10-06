@@ -136,6 +136,26 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: 'black',
   },
+
+
+
+  //styles for model container
+
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalTitle: {
+    fontSize: 20,
+    marginBottom: 20,
+  },
+  modalCloseButton: {
+    marginTop: 20,
+    paddingVertical: 10,
+    background: '#ECECEC',
+  },
 });
 
 export default MyWatchList;

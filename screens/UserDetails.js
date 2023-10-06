@@ -9,7 +9,8 @@ const UserDetails = () => {
 
   const goBack = () => {
     // navigation.goBack('Dashboard02'); rewritten like below for navigate 
-    navigation.navigate('Home');
+    // navigation.navigate('Home'); without home
+    navigation.navigate('WatchList');
   };
 
   return (

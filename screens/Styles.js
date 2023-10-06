@@ -137,4 +137,17 @@ export const styles = StyleSheet.create({
     fontWeight: '500',
     color: '#1C1E32',
   },
+
+
+  //styles for model container
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalText: {
+    fontSize: 20,
+    marginBottom: 20,
+  },
 });

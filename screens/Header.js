@@ -2,15 +2,26 @@ import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, TextInput, SafeAreaView, StyleSheet, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-const Header = () => {
+// const Header = () => {
+//   const navigation = useNavigation();
+//   const [isSearchVisible, setSearchVisible] = useState(false);
+
+//   const toggleSearch = () => {
+//     setSearchVisible(!isSearchVisible);
+//     if (!isSearchVisible) {
+//       // navigation.navigate('SearchBarList');
+//       navigation.navigate('SearchBarList',{ assetData: assetData }); //renamed SearchBarList to WatchList
+//     }
+//   };
+
+const Header = ({ assetData }) => {
   const navigation = useNavigation();
   const [isSearchVisible, setSearchVisible] = useState(false);
 
   const toggleSearch = () => {
     setSearchVisible(!isSearchVisible);
     if (!isSearchVisible) {
-      // navigation.navigate('SearchBarList');
-      navigation.navigate('WatchList'); //renamed SearchBarList to WatchList
+      navigation.navigate('SearchBarList', { assetData: assetData });
     }
   };
 

@@ -1,17 +1,11 @@
 
 
 
-
-
-
-
-
-
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-const CardItems = ({ name, value, changePercentage, color }) => {
+const CardItems = ({ name, value, changePercentage, color, onClick }) => {
   const navigation = useNavigation();
 
   const toggleCryptoAssetDetail = () => {
@@ -21,7 +15,9 @@ const CardItems = ({ name, value, changePercentage, color }) => {
   };
 
   return (
-    <TouchableOpacity style={styles.container5} onPress={toggleCryptoAssetDetail}>
+    // <TouchableOpacity style={styles.container5} onPress={toggleCryptoAssetDetail}>
+
+     <TouchableOpacity style={styles.container5} onPress={() => onClick()}>
       <View style={[styles.container5, { backgroundColor: color }]}>
         <View style={styles.gridContainer}>
           <View style={styles.firstLine}>
@@ -40,6 +36,57 @@ const CardItems = ({ name, value, changePercentage, color }) => {
     </TouchableOpacity>
   );
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import React from 'react';
+// import { View, Text, TouchableOpacity } from 'react-native';
+// import { useNavigation } from '@react-navigation/native';
+
+// const CardItems = ({ name, value, changePercentage, color, onClick }) => {
+//   const navigation = useNavigation();
+
+//   const toggleCryptoAssetDetail = () => {
+//     navigation.navigate('AssetListDetails');
+
+//     //notification content  
+//   };
+
+//   return (
+//     // <TouchableOpacity style={styles.container5} onPress={toggleCryptoAssetDetail}>
+
+//      <TouchableOpacity style={styles.container5} onPress={() => onClick()}>
+//       <View style={[styles.container5, { backgroundColor: color }]}>
+//         <View style={styles.gridContainer}>
+//           <View style={styles.firstLine}>
+//             <View style={styles.textContainer}>
+//               <Text style={styles.gridText}>{name}</Text>
+//             </View>
+//           </View>
+//           <View style={styles.secondLine}>
+//             <Text style={styles.value2}>{value}</Text>
+//             <TouchableOpacity style={styles.button2}>
+//               <Text style={styles.buttonValue}>{changePercentage}</Text>
+//             </TouchableOpacity>
+//           </View>
+//         </View>
+//       </View>
+//     </TouchableOpacity>
+//   );
+// };
+
+
 
 const styles = {
 

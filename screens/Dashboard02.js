@@ -1,27 +1,58 @@
-import React, { useState, useRef } from 'react';
+
+
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { View, Text, Image, TouchableOpacity, TextInput, Modal, Button, ScrollView } from 'react-native';
 import { StyleSheet, SafeAreaView } from 'react-native';
+//import React, { useContext } from 'react';
 
-
+import AssetDataContext from './AssetDataContext';
 import Header from './Header';
 import MyPortfolio from './MyPortfolio';
 import Deposit from './Deposite';
 import MyWatchList from './MyWatchList';
 import CardItems from './CardItems';
-import CryptoAssets from './CriptoAssets';
+import CriptoAssets from './CriptoAssets';
 //import  BottomTabBar  from './BottomTabBar';
+//import SearchBarList from './SearchBarList';
+
+//import AssetListDetails from './AssetListDetails';
+import ViewPortfolio from './ViewPortfolio';
 
 
 
 const Dashboard = () => {
+  const { assetData, setAssetData } = useContext(AssetDataContext);
+  const [watchlist, setWatchlist] = useState([]);
+  // const [selectedCard, setSelectedCard] = useState('crypto');
+  const [selectedAsset, setSelectedAsset] = useState(null);
+  const [selectedCard, setSelectedCard] = useState('Crypto');
+
+
+  // const handleCardItemClick = (cardName) => {
+  //   setSelectedCard(cardName);
+  // };
+
+
+  // const addToWatchlist = (item) => {
+  //   if (!watchlist.some((watchlistItem) => watchlistItem.name2 === item.name2)) {
+  //     setWatchlist((prevWatchlist) => [...prevWatchlist, item]);
+  //   }
+  // };
+  
   const cardData = [
     { name: 'Crypto', value: '$23,500', changePercentage: '+5.9%', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: "#C1C2EB" },
     { name: 'NSE', value: '$23,500', changePercentage: '+5.9%', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: '#B7DDD2'},
     { name: 'BSE', value: '$23,500', changePercentage: '+5.9%', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: "#C1C2EB" },
     { name: 'Comodity', value: '$23', changePercentage: '+5.9%', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430',backgroundColor: '#B7DDD2' }
   ];
+  useEffect(() => {
+    setSelectedAsset(cardData[0]); // Set the default to the "Crypto" card
+  }, []);
 
-  const assetData = [
+
+  useEffect(() => {
+    
+    setAssetData([
     {name2:'Crpto',name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"-7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
     {name2:'nse', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"+7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
     {name2:'bse', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"-7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
@@ -33,7 +64,9 @@ const Dashboard = () => {
     {name2:'facebook', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"+7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
     {name2:'google', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"+7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
 
-  ];
+  ]);
+}, []);
+
 
 
   //for scroll bottom minus icon 
@@ -48,25 +81,173 @@ const Dashboard = () => {
   return (
   <SafeAreaView style={{flex:1}}>
     <ScrollView ref={scrollViewRef} style={styles.root}>
-        <Header />
+        {/* <Header /> */}
+        <Header assetData={assetData} />
+
         <MyPortfolio />
         <Deposit />
         <MyWatchList />
  
         <View style={styles.container5}>
         {cardData.map((item, index) => {
-        return <CardItems  key={index} name={item.name} symbl={item.symbl} value={item.value} changePercentage={item.changePercentage} color={item.backgroundColor} />;
+        return(
+           <CardItems  key={index} name={item.name} symbl={item.symbl} value={item.value} changePercentage={item.changePercentage} color={item.backgroundColor} onClick={() =>setSelectedCard(item.name)} />
+        );
         })}
         </View>
 
-      {/* <CryptoAssets data={assetData}/> */}
-      <CryptoAssets data={assetData} onScrollToBottom={scrollToBottom} />
+      
 
-        {/* <BottomTabBar /> */}
+
+        <CriptoAssets onScrollToBottom={scrollToBottom} data={watchlist}  assetData={assetData}>
+
+        <ViewPortfolio assetData={assetData} selectedCard={selectedCard} />
+        </CriptoAssets>
+
+     
+ 
+     
+      
+
+        
         </ScrollView>
         </SafeAreaView>
   );
-};
+
+      };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import React, { useState, useEffect, useRef, useContext } from 'react';
+// import { View, Text, Image, TouchableOpacity, TextInput, Modal, Button, ScrollView } from 'react-native';
+// import { StyleSheet, SafeAreaView } from 'react-native';
+// //import React, { useContext } from 'react';
+
+// import AssetDataContext from './AssetDataContext';
+// import Header from './Header';
+// import MyPortfolio from './MyPortfolio';
+// import Deposit from './Deposite';
+// import MyWatchList from './MyWatchList';
+// import CardItems from './CardItems';
+// import CriptoAssets from './CriptoAssets';
+// //import  BottomTabBar  from './BottomTabBar';
+// //import SearchBarList from './SearchBarList';
+
+// //import AssetListDetails from './AssetListDetails';
+// import ViewPortfolio from './ViewPortfolio';
+
+
+
+// const Dashboard = () => {
+//   const { assetData, setAssetData } = useContext(AssetDataContext);
+//   const [watchlist, setWatchlist] = useState([]);
+//   // const [selectedCard, setSelectedCard] = useState('crypto');
+//   const [selectedAsset, setSelectedAsset] = useState(null);
+
+//   // const handleCardItemClick = (cardName) => {
+//   //   setSelectedCard(cardName);
+//   // };
+
+
+//   // const addToWatchlist = (item) => {
+//   //   if (!watchlist.some((watchlistItem) => watchlistItem.name2 === item.name2)) {
+//   //     setWatchlist((prevWatchlist) => [...prevWatchlist, item]);
+//   //   }
+//   // };
+  
+//   const cardData = [
+//     { name: 'Crypto', value: '$23,500', changePercentage: '+5.9%', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: "#C1C2EB" },
+//     { name: 'NSE', value: '$23,500', changePercentage: '+5.9%', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: '#B7DDD2'},
+//     { name: 'BSE', value: '$23,500', changePercentage: '+5.9%', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: "#C1C2EB" },
+//     { name: 'Comodity', value: '$23', changePercentage: '+5.9%', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430',backgroundColor: '#B7DDD2' }
+//   ];
+//   useEffect(() => {
+//     setSelectedAsset(cardData[0]); // Set the default to the "Crypto" card
+//   }, []);
+
+
+//   useEffect(() => {
+    
+//     setAssetData([
+//     {name2:'Crpto',name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"-7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
+//     {name2:'nse', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"+7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
+//     {name2:'bse', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"-7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
+//     {name2:'comodity', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"+7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
+//     {name2:'tata', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"+7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
+//     {name2:'apple', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"+7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
+//     {name2:'tesla', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"-7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
+//     {name2:'twitter', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"+7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
+//     {name2:'facebook', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"+7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
+//     {name2:'google', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"+7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
+
+//   ]);
+// }, []);
+
+
+
+//   //for scroll bottom minus icon 
+
+//   const scrollViewRef = useRef(null);
+
+//   const scrollToBottom = () => {
+//     scrollViewRef.current.scrollToEnd({ animated: true });
+//   };
+
+
+//   return (
+//   <SafeAreaView style={{flex:1}}>
+//     <ScrollView ref={scrollViewRef} style={styles.root}>
+//         {/* <Header /> */}
+//         <Header assetData={assetData} />
+
+//         <MyPortfolio />
+//         <Deposit />
+//         <MyWatchList />
+ 
+//         <View style={styles.container5}>
+//         {cardData.map((item, index) => {
+//         return(
+//            <CardItems  key={index} name={item.name} symbl={item.symbl} value={item.value} changePercentage={item.changePercentage} color={item.backgroundColor} onClick={() =>setSelectedAsset(item)} />
+//         );
+//         })}
+//         </View>
+
+      
+// {/* 
+//       <CriptoAssets data={watchlist}
+//         selectedCard={selectedCard} />  */}
+//         <CriptoAssets onScrollToBottom={scrollToBottom} data={watchlist} selectedAsset={selectedAsset} />
+
+
+
+     
+//      {/* <CriptoAssets assetListDetailsComponent={<AssetListDetails />} /> */}
+     
+      
+
+        
+//         </ScrollView>
+//         </SafeAreaView>
+//   );
+
+//       };
+
+
+
+
 
 
 // const styles = {

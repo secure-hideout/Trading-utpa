@@ -9,7 +9,8 @@ const Settings = () => {
 
   const goBack = () => {
     // navigation.goBack('Dashboard02'); rewritten like below for navigate 
-    navigation.navigate('Home');
+    // navigation.navigate('Home'); withouthome
+    navigation.navigate('Profile');
   };
 
   return (
