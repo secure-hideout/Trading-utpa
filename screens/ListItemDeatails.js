@@ -28,6 +28,7 @@ const styles = {
     backgroundColor: '#f5f5f5',
     paddingVertical: 30,
     // paddingHorizontal: 20,
+    marginTop:10,
   },
   backButton: {
     marginRight: 10,

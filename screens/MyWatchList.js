@@ -1,4 +1,4 @@
-//cryptoAsset list
+//cryptoAsset list mtd and tyd buttons
 
 
 import React, { useState } from 'react';
@@ -15,46 +15,34 @@ const MyWatchList = () => {
     setIsMtdModalVisible(!isMtdModalVisible);
     setActiveButton('MTD');
   };
-  
+
   const toggleYtdModal = () => {
     setIsYtdModalVisible(!isYtdModalVisible);
     setActiveButton('YTD');
   };
-  
- 
-  
-    return(
+
+
+
+  return (
     <View style={styles.container4}>
       <Text style={styles.title}>Crypto Asset List</Text>
       <View style={styles.buttonsContainer}>
-      {/* <TouchableOpacity 
-  style={[styles.button, activeButton === 'MTD' ? styles.buttonActive : {}]} 
-  onPress={toggleMtdModal}
->
-  <Text style={styles.buttonText}>MTD</Text>
-</TouchableOpacity>
-<TouchableOpacity 
-  style={[styles.button, activeButton === 'YTD' ? styles.buttonActive : {}]} 
-  onPress={toggleYtdModal}
->
-  <Text style={styles.buttonText}>YTD</Text>
-</TouchableOpacity> */}
-<TouchableOpacity 
-  style={[styles.button, activeButton === 'MTD' ? styles.buttonActive : {}]} 
-  onPress={toggleMtdModal}
->
-  <Text style={activeButton === 'MTD' ? styles.buttonTextActive : styles.buttonText}>MTD</Text>
-</TouchableOpacity>
-<TouchableOpacity 
-  style={[styles.button, activeButton === 'YTD' ? styles.buttonActive : {}]} 
-  onPress={toggleYtdModal}
->
-  <Text style={activeButton === 'YTD' ? styles.buttonTextActive : styles.buttonText}>YTD</Text>
-</TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.button, activeButton === 'MTD' ? styles.buttonActive : {}]}
+          onPress={toggleMtdModal}
+        >
+          <Text style={activeButton === 'MTD' ? styles.buttonTextActive : styles.buttonText}>MTD</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.button, activeButton === 'YTD' ? styles.buttonActive : {}]}
+          onPress={toggleYtdModal}
+        >
+          <Text style={activeButton === 'YTD' ? styles.buttonTextActive : styles.buttonText}>YTD</Text>
+        </TouchableOpacity>
 
 
       </View>
-      
+
 
       <Modal visible={isMtdModalVisible} animationType="slide">
         <View style={styles.modalContainer}>
@@ -77,7 +65,7 @@ const MyWatchList = () => {
         </View>
       </Modal>
     </View>
-    );
+  );
 };
 
 
@@ -159,89 +147,3 @@ const styles = StyleSheet.create({
 });
 
 export default MyWatchList;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const styles = {
-//     container4: {
-//       padding:15,
-//        //borderRadius:20,
-//         flexDirection: 'row',
-//         justifyContent: 'space-between',
-//         alignItems: 'center',
-//         //padding: 13,
-//         backgroundColor: '#FFFFFF',
-//       },
-//       title: {
-//         fontSize: 18,
-//         fontWeight: '500',
-//         color: '#A1A1A1',
-//         lineHeight: 19.09,
-//       },
-//       buttonsContainer: {
-//         flexDirection: 'row',
-//       },
-//       button: {
-//         marginLeft: 8,
-//         paddingVertical: 4,
-//         paddingHorizontal: 8,
-//         backgroundColor: '#1C1E32',
-//         borderRadius: 10,
-//         //backgroundColor:'black',
-//       },
-
-//       buttonActive: {
-//         backgroundColor:'rgba(236, 236, 236, 1)',  // This color is just an example. You can choose your preferred active color.
-        
-//       },
-
-
-//       buttonTextActive: {
-//         fontSize: 12,
-//         color: 'rgba(28, 30, 50, 1)',  // This color is just an example. Choose your preferred active text color.
-//         fontWeight: 600,
-//         lineHeight: 11.93,
-//         textAlign: 'center',
-//       },
-      
-
-//       buttonText: {
-//         fontSize: 12,
-//         color: '#FFFFFF',
-//         fontWeight:600,
-//         lineHeight:11.93,
-//         textAlign:'center',
-//       },
-      
-//       modalCloseButton: {
-//         marginTop: 16,
-//         padding: 8,
-//         backgroundColor: '#ECECEC',
-//         borderRadius: 4,
-//       },
-//       modalCloseButtonText: {
-//         fontSize: 14,
-//         color: 'black',
-//       },
-// }
-
-// export default MyWatchList;
-
-
-
-
-
-

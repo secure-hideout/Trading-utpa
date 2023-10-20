@@ -1,44 +1,16 @@
-
-
-
-
-//My Watchlist only delete action both sides
-
+//My Watchlist 
 import React from 'react';
-import { useContext, useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, Image } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { AntDesign } from '@expo/vector-icons';
-import AssetDataContext from './AssetDataContext'; 
+import { useContext, useState } from "react";
+import { View, Text, TouchableOpacity } from 'react-native';
 
-//import AssetListDetails from './AssetListDetails';
+import { AntDesign } from '@expo/vector-icons';
 
 import ViewPortfolio from './ViewPortfolio';
 
 
 const CryptoAssets = ({ data, onScrollToBottom ,selectedAsset, children}) => {
-const navigation = useNavigation();
-
-// const { assetData,watchlist  } = useContext(AssetDataContext);
-const { watchlist } = useContext(AssetDataContext);
 const [ setSelectedAsset] = useState({name:'Crypto'})
-
-
-
-
-  const filterAssetDataByWatchlist = (assetData, watchlist) => {
-    return assetData.filter((item) =>
-      watchlist.some((watchlistItem) => watchlistItem.name2 === item.name2)
-    );
-  };
-
-
-  const handleSeeAll = () => {
-    const watchlistData = filterAssetDataByWatchlist(assetData, watchlist);
-    navigation.navigate('SeeAllItems', { watchlistData });
-  };
-  
-  const handleCardItemClick = (asset) => {
+    const handleCardItemClick = (asset) => {
     setSelectedAsset(asset);
   };
 
@@ -54,14 +26,8 @@ const [ setSelectedAsset] = useState({name:'Crypto'})
         </View>
       </View>
       <View style={styles.headerContainer}>
-        {/* <Text style={styles.assetText}>My Watchlist</Text> */}
         <Text style={styles.assetText}>My Portfolio</Text>
-        {/* <TouchableOpacity style={styles.button} onPress={handleSeeAll}> */}
-          {/* <Text style={styles.buttonText}>See All</Text> */}
-        {/* </TouchableOpacity> */}
       </View>
-
-{/* Render the AssetListDetails component if selectedAsset is not null */}
 {selectedAsset && (
         <ViewPortfolio assetData={selectedAsset} />
       )}
@@ -89,111 +55,6 @@ const [ setSelectedAsset] = useState({name:'Crypto'})
 };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// //My Watchlist only delete action both sides
-
-// import React from 'react';
-// import { useContext, useState, useEffect } from "react";
-// import { View, Text, TouchableOpacity, Image } from 'react-native';
-// import { useNavigation } from '@react-navigation/native';
-// import { AntDesign } from '@expo/vector-icons';
-// import AssetDataContext from './AssetDataContext'; 
-
-// //import AssetListDetails from './AssetListDetails';
-
-// import ViewPortfolio from './ViewPortfolio';
-
-
-// const CryptoAssets = ({ data, onScrollToBottom ,selectedAsset}) => {
-// const navigation = useNavigation();
-
-// // const { assetData,watchlist  } = useContext(AssetDataContext);
-// const { watchlist } = useContext(AssetDataContext);
-// const [ setSelectedAsset] = useState({name:'Crypto'})
-
-
-
-
-//   const filterAssetDataByWatchlist = (assetData, watchlist) => {
-//     return assetData.filter((item) =>
-//       watchlist.some((watchlistItem) => watchlistItem.name2 === item.name2)
-//     );
-//   };
-
-
-//   const handleSeeAll = () => {
-//     const watchlistData = filterAssetDataByWatchlist(assetData, watchlist);
-//     navigation.navigate('SeeAllItems', { watchlistData });
-//   };
-  
-//   const handleCardItemClick = (asset) => {
-//     setSelectedAsset(asset);
-//   };
-
-//   return (
-//     <View style={styles.containerAssets}>
-//       <View style={styles.imageContainer}>
-//         <View style={styles.logo}>
-//           <AntDesign style={styles.minusIcon} name="minus" 
-//           size={50} 
-//           color="black"
-//           onPress={onScrollToBottom}  
-//             />
-//         </View>
-//       </View>
-//       <View style={styles.headerContainer}>
-//         {/* <Text style={styles.assetText}>My Watchlist</Text> */}
-//         <Text style={styles.assetText}>My Portfolio</Text>
-//         {/* <TouchableOpacity style={styles.button} onPress={handleSeeAll}> */}
-//           {/* <Text style={styles.buttonText}>See All</Text> */}
-//         {/* </TouchableOpacity> */}
-//       </View>
-
-// {/* Render the AssetListDetails component if selectedAsset is not null */}
-// {selectedAsset && (
-//         <ViewPortfolio assetData={selectedAsset} />
-//       )}
-
-//       {/* Render the CardItems components */}
-//       {data.map((item, index) => {
-//         return (
-//           <TouchableOpacity
-//             key={index}
-//             style={styles.cardItem}
-//             onPress={() => handleCardItemClick(item)}
-//           >
-//             <View style={styles.cardContent}>
-//               <Text>{item.name}</Text>
-//               <Text>{item.value}</Text>
-//               <Text>{item.changePercentage}</Text>
-//             </View>
-//           </TouchableOpacity>
-//         );
-//       })}
- 
-//     </View>
-//   );
-// };
 
 
 const styles = {
@@ -248,7 +109,7 @@ const styles = {
     fontSize: 18,
     fontWeight: 700,
     lineHeight: 19.93,
-    fontFamily: 'SFProDisplay',
+    // fontFamily: 'SFProDisplay',
     color: 'rgba(28, 30, 50, 1)',
   },
 };

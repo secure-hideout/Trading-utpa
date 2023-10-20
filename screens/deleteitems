@@ -1,6 +1,63 @@
-before bottom 
-import React, {  useRef } from 'react';
-import { View,  ScrollView } from 'react-native';
+useEffect(() => {
+  const myHeaders = new Headers();
+  myHeaders.append("Authorization", `Bearer ${token}`);
+
+  const requestOptions = {
+    method: 'POST',
+    headers: myHeaders,
+    redirect: 'follow'
+  };
+
+  fetch("http://10.0.2.2:80/api/user/watchlist", requestOptions)
+    .then(response => response.json())
+    .then(data => {
+      // Assume you have an endpoint like http://10.0.2.2:80/api/instrument/details/:id
+      // which gives details for a specific instrument by its ID.
+      const fetchDetailsPromises = data.map(item =>
+        fetch(`http://10.0.2.2:80/api/instrument/details/${item.InstrumentId}`, requestOptions)
+          .then(res => res.json())
+      );
+
+      return Promise.all(fetchDetailsPromises).then(detailsArray => {
+        return data.map((item, index) => ({
+          name2: item.InstrumentType,
+          name3: `ID: ${item.InstrumentId}`,
+          value: detailsArray[index].value,  // fetched value from instrument details
+          decimalValue: detailsArray[index].decimalValue,
+          changePercentage: detailsArray[index].changePercentage,
+          logo: detailsArray[index].logo
+        }));
+      });
+    })
+    .then(transformedData => setWatchlist(transformedData))
+    .catch(error => console.log('Error fetching watchlist:', error));
+}, []);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+before bottom
+import React, { useRef } from 'react';
+import { View, ScrollView } from 'react-native';
 import { StyleSheet } from 'react-native';
 
 import Header from './Header';
@@ -10,7 +67,7 @@ import MyWatchList from './MyWatchList';
 import CardItems from './CardItems';
 import CryptoAssets from './CriptoAssets';
 import { SafeAreaView } from 'react-native';
-import  BottomTabBar  from './BottomTabBar';
+import BottomTabBar from './BottomTabBar';
 //import BottomTabBar from './navigation/BottomTabBar';
 
 
@@ -18,22 +75,22 @@ import  BottomTabBar  from './BottomTabBar';
 const Dashboard = () => {
   const cardData = [
     { name: 'Crypto', value: '$23,500.69', changePercentage: '+5.9%', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: "#C1C2EB" },
-    { name: 'NSE', value: '$23,500', changePercentage: '+5.9%', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: '#B7DDD2'},
+    { name: 'NSE', value: '$23,500', changePercentage: '+5.9%', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: '#B7DDD2' },
     { name: 'BSE', value: '$23,500', changePercentage: '+5.9%', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: "#C1C2EB" },
-    { name: 'Comodity', value: '$23', changePercentage: '+5.9%', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430',backgroundColor: '#B7DDD2' }
+    { name: 'Comodity', value: '$23', changePercentage: '+5.9%', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: '#B7DDD2' }
   ];
 
   const assetData = [
-    {name2:'Crpto', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"-7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
-    {name2:'nse', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"+7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
-    {name2:'bse', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"-7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
-    {name2:'comodity', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"+7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
-    {name2:'tata', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"+7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
-    {name2:'apple', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"+7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
-    {name2:'tesla', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"-7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
-    {name2:'twitter', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"+7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
-    {name2:'facebook', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"+7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
-    {name2:'google', name3:"BTC", value:"$30,618", decimalValue:".60", changePercentage:"+7.90%",logo:'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg'},
+    { name2: 'Crpto', name3: "BTC", value: "$30,618", decimalValue: ".60", changePercentage: "-7.90%", logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg' },
+    { name2: 'nse', name3: "BTC", value: "$30,618", decimalValue: ".60", changePercentage: "+7.90%", logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg' },
+    { name2: 'bse', name3: "BTC", value: "$30,618", decimalValue: ".60", changePercentage: "-7.90%", logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg' },
+    { name2: 'comodity', name3: "BTC", value: "$30,618", decimalValue: ".60", changePercentage: "+7.90%", logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg' },
+    { name2: 'tata', name3: "BTC", value: "$30,618", decimalValue: ".60", changePercentage: "+7.90%", logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg' },
+    { name2: 'apple', name3: "BTC", value: "$30,618", decimalValue: ".60", changePercentage: "+7.90%", logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg' },
+    { name2: 'tesla', name3: "BTC", value: "$30,618", decimalValue: ".60", changePercentage: "-7.90%", logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg' },
+    { name2: 'twitter', name3: "BTC", value: "$30,618", decimalValue: ".60", changePercentage: "+7.90%", logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg' },
+    { name2: 'facebook', name3: "BTC", value: "$30,618", decimalValue: ".60", changePercentage: "+7.90%", logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg' },
+    { name2: 'google', name3: "BTC", value: "$30,618", decimalValue: ".60", changePercentage: "+7.90%", logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg' },
 
   ];
 
@@ -48,26 +105,29 @@ const Dashboard = () => {
 
 
   return (
-    <SafeAreaView style={{flex:1}}>
-    <ScrollView ref={scrollViewRef} style={styles.root}>
+    <SafeAreaView style= {{ flex: 1 }
+}>
+  <ScrollView ref={ scrollViewRef } style = { styles.root } >
 
-        <Header />
-        <MyPortfolio />
-        <Deposit />
-        <MyWatchList />
- 
-        <View style={styles.container5}>
-        {cardData.map((item, index) => {
-        return <CardItems  key={index} name={item.name} symbl={item.symbl} value={item.value} changePercentage={item.changePercentage} color={item.backgroundColor} />;
-        })}
-        </View>
+    <Header />
+    < MyPortfolio />
+    <Deposit />
+    < MyWatchList />
 
-      <CryptoAssets data={assetData} onScrollToBottom={scrollToBottom} />
+    <View style={ styles.container5 }>
+    {
+      cardData.map((item, index) => {
+        return <CardItems  key={ index } name = { item.name } symbl = { item.symbl } value = { item.value } changePercentage = { item.changePercentage } color = { item.backgroundColor } />;
+      })
+    }
+      < /View>
+
+      < CryptoAssets data = { assetData } onScrollToBottom = { scrollToBottom } />
 
 
-      <BottomTabBar />
-    </ScrollView>
-    </SafeAreaView>
+        <BottomTabBar />
+        < /ScrollView>
+        < /SafeAreaView>
   );
 };
 
@@ -103,7 +163,7 @@ import { View, Text, Image, TouchableOpacity, TextInput, Modal, Button } from 'r
 import { Ionicons } from '@expo/vector-icons';
 
 import Deposit from './Deposite';
-import CardItems  from './CardItems';
+import CardItems from './CardItems';
 import MyWatchList from './MyWatchList';
 
 // import ListComponent from './ListComponent';
@@ -149,91 +209,94 @@ const Dashboard = () => {
 
 
 
-  const cardData=[{"name":"Crypto","value":"$23,500","changePercentage":"+5.9%","logo":"https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430"},
-  {"name":"NSE","value":"$23,500","changePercentage":"+5.9%","logo":"https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430"},
-  {"name":"BSE","value":"$23,500","changePercentage":"+5.9%","logo":"https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430"},
-  {"name":"Comodity","value":"$23","changePercentage":"+5.9%","logo":"https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430"}
-];
-  
+  const cardData = [{ "name": "Crypto", "value": "$23,500", "changePercentage": "+5.9%", "logo": "https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430" },
+  { "name": "NSE", "value": "$23,500", "changePercentage": "+5.9%", "logo": "https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430" },
+  { "name": "BSE", "value": "$23,500", "changePercentage": "+5.9%", "logo": "https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430" },
+  { "name": "Comodity", "value": "$23", "changePercentage": "+5.9%", "logo": "https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430" }
+  ];
+
 
 
   return (
-    <View style={styles.container}>
-      <View style={styles.nav}>
-        <View style={styles.leftContent}>
-          <Image
-            style={styles.logo}
-            source={require("../assets/mask-group.png")}
-          />
-          <Text style={styles.welcomeText}>Welcome </Text>
-          <Text style={styles.userName}>Satyam</Text>
-        </View>
-        <TouchableOpacity onPress={toggleSearch}>
-          <Image
-            style={styles.rightImage1}
-            source={require("../assets/mask-group2.svg")} // Change to your search icon image source
-          />
-
-        </TouchableOpacity>
+    <View style= { styles.container } >
+    <View style={ styles.nav }>
+      <View style={ styles.leftContent }>
         <Image
-            style={styles.rightImage}
-            source={require("../assets/mask-group1.svg")}
-          />
-      </View>
+            style={ styles.logo }
+  source = { require("../assets/mask-group.png") }
+    />
+    <Text style={ styles.welcomeText }> Welcome < /Text>
+      < Text style = { styles.userName } > Satyam < /Text>
+        < /View>
+        < TouchableOpacity onPress = { toggleSearch } >
+          <Image
+            style={ styles.rightImage1 }
+  source = { require("../assets/mask-group2.svg") } // Change to your search icon image source
+    />
 
-     
-      {isSearchVisible ? (
-        <TextInput
-          style={styles.searchBox}
-          placeholder="Search"
-          onChangeText={(text) => {
-            // Handle search input changes
-          }}
-        />
+    </TouchableOpacity>
+    < Image
+  style = { styles.rightImage }
+  source = { require("../assets/mask-group1.svg") }
+    />
+    </View>
+
+
+  {
+    isSearchVisible ? (
+      <TextInput
+          style= { styles.searchBox }
+          placeholder = "Search"
+    onChangeText = {(text) => {
+  // Handle search input changes
+}}
+/>
       ) : (
 
-        <View style={styles.container2}>
-          <View style={styles.portfolioContainer}>
-            <Text style={styles.valueText}>Current portfolio value</Text>
-            <View style={styles.valueAmount}>
-              <Text style={styles.amountText}>$23,500</Text>
-              <Text style={styles.decimalText}>.49</Text>
-              <View style={styles.greenBox}>
-                <Text style={styles.percentText}>+5.9%</Text>
-              </View>
-            </View>
+  <View style= { styles.container2 } >
+  <View style={ styles.portfolioContainer }>
+    <Text style={ styles.valueText }> Current portfolio value < /Text>
+      < View style = { styles.valueAmount } >
+        <Text style={ styles.amountText }> $23, 500 < /Text>
+          < Text style = { styles.decimalText } > .49 < /Text>
+            < View style = { styles.greenBox } >
+              <Text style={ styles.percentText }> +5.9 % </Text>
+                < /View>
+                < /View>
 
 
-  
-  
 
 
-  {/* <View style={styles.container3}>
+
+
+{/* <View style={styles.container3}>
   <Deposit />
   </View> */}
-  <Deposit></Deposit>
+<Deposit></Deposit>
 
-  {/* <View style = {styles.container4}>
+{/* <View style = {styles.container4}>
     <MyWatchList />
     </View> */}
 
-  <MyWatchList></MyWatchList>
+<MyWatchList></MyWatchList>
 
 
-{/* 5th container grid  */}
-<View style={styles.container5}>
-  
-      {cardData.map((item, index) => {
-        return   <CardItems name={item.name} symbl={item.symbl} value={item.value} changePercentage={item.changePercentage}/>
+{/* 5th container grid  */ }
+<View style={ styles.container5 }>
+
+{
+  cardData.map((item, index) => {
+    return <CardItems name={ item.name } symbl = { item.symbl } value = { item.value } changePercentage = { item.changePercentage } />
      
-      })}
+      })
+}
 
-     </View>
-  </View>
-  </View>
+  < /View>
+  < /View>
+  < /View>
       )}
-      
-    </View>
+
+</View>
   );
 };
 
@@ -262,7 +325,7 @@ const styles = {
   },
   welcomeText: {
     fontSize: 18,
-    
+
   },
   userName: {
     fontSize: 18,
@@ -274,11 +337,11 @@ const styles = {
     marginLeft: 10,
   },
 
- rightImage1: {
-  width: 40,
-  height: 40,
-  marginLeft: 90,
- },
+  rightImage1: {
+    width: 40,
+    height: 40,
+    marginLeft: 90,
+  },
   searchBox: {
     // marginTop: 10,
     // borderWidth: 1,
@@ -308,10 +371,10 @@ const styles = {
     // fontWeight: 'bold',
     // color: 'darkgray',
     //fontFamily:'sFProDisplay',
-    fontWeight:500,
-    fontSize:20,
-    lineHeight:19.09,
-    color:'#A1A1A1',
+    fontWeight: 500,
+    fontSize: 20,
+    lineHeight: 19.09,
+    color: '#A1A1A1',
   },
   portfolioContainer: {
     flexDirection: 'column', // Display items horizontally
@@ -323,17 +386,17 @@ const styles = {
   },
   amountText: {
     // fontSize: 32,
-    fontWeight:700,
-    fontSize:32,
-    lineHeight:38.19,
-    color:'#1C1E32',
+    fontWeight: 700,
+    fontSize: 32,
+    lineHeight: 38.19,
+    color: '#1C1E32',
 
   },
   decimalText: {
-    fontWeight:700,
-    fontSize:32,
-    lineHeight:38.19,
-    color:'#A1A1A1',
+    fontWeight: 700,
+    fontSize: 32,
+    lineHeight: 38.19,
+    color: '#A1A1A1',
   },
   greenBox: {
     marginLeft: 10,
@@ -345,24 +408,24 @@ const styles = {
     alignItems: 'center', // Center the content horizontally
   },
   percentText: {
-    fontWeight:500,
-    fontSize:10,
-    lineHeight:11.93,
-    color:"#1C1E32",
+    fontWeight: 500,
+    fontSize: 10,
+    lineHeight: 11.93,
+    color: "#1C1E32",
   },
 
 
 
 
-  
+
   //container 3
 
   container3: {
-    paddingVertical:10,
+    paddingVertical: 10,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft:0,
+    marginLeft: 0,
   },
   ellipse: {
     width: 166,
@@ -376,7 +439,7 @@ const styles = {
 
     // width:166,
     // height:48,
-   
+
     // left:16,
     // borderRadius:100,
     // backgroundColor: '#ECECEC',
@@ -390,7 +453,7 @@ const styles = {
     backgroundColor: '#B1A4FF',
     position: 'absolute',
     left: 0,
-    marginLeft:5,
+    marginLeft: 5,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -401,135 +464,135 @@ const styles = {
     marginLeft: 16,
     fontSize: 20,
     color: 'black',
-    textAlign:'center',
-    color:'#1C1E32',
-    
-    
+    textAlign: 'center',
+    color: '#1C1E32',
+
+
   },
   withdrawText: {
     marginRight: -10, // Adjust this value as needed
-    lineHeight:19.09,
-    fontWeight:54,
+    lineHeight: 19.09,
+    fontWeight: 54,
   },
   withdrawText2: {
     marginRight: -10,
-    lineHeight:19.09,
-    fontWeight:54,
-    
-   
+    lineHeight: 19.09,
+    fontWeight: 54,
+
+
   },
 
-//container 4 
+  //container 4 
 
-container4: {
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  padding: 16,
-  backgroundColor: '#F5F5F5',
-},
-title: {
-  fontSize: 18,
-  fontWeight: 'bold',
-},
-buttonsContainer: {
-  flexDirection: 'row',
-},
-button: {
-  marginLeft: 8,
-  paddingVertical: 4,
-  paddingHorizontal: 8,
-  backgroundColor: '#ECECEC',
-  borderRadius: 4,
-},
-buttonText: {
-  fontSize: 14,
-  color: 'black',
-},
+  container4: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 16,
+    backgroundColor: '#F5F5F5',
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  buttonsContainer: {
+    flexDirection: 'row',
+  },
+  button: {
+    marginLeft: 8,
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    backgroundColor: '#ECECEC',
+    borderRadius: 4,
+  },
+  buttonText: {
+    fontSize: 14,
+    color: 'black',
+  },
 
-modalCloseButton: {
-  marginTop: 16,
-  padding: 8,
-  backgroundColor: '#ECECEC',
-  borderRadius: 4,
-},
-modalCloseButtonText: {
-  fontSize: 14,
-  color: 'black',
-},
+  modalCloseButton: {
+    marginTop: 16,
+    padding: 8,
+    backgroundColor: '#ECECEC',
+    borderRadius: 4,
+  },
+  modalCloseButtonText: {
+    fontSize: 14,
+    color: 'black',
+  },
 
 
 
-//5th 
-container5: {
-  flex: 1,
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  padding:0,
-},
-gridContainer: {
-  flex: 1,
-  alignItems: 'center',
-  height:100,
-  
-  margin: 5,
-  borderRadius: 10,
-  backgroundColor: 'lightgray',
-},
-firstLine: {
-  flexDirection: 'row',
-  alignItems: 'center',
-  marginBottom: 10,
-  
-},
-secondLine: {
-  flexDirection: 'row',
-  alignItems: 'center',
-  marginTop:20,
-  
-},
-logo2: {
-  width: 20,
-  height: 20,
-  marginBottom:8,
-},
-textContainer: {
-  marginLeft: 5,
-},
-gridText: {
-  fontSize: 16,
-  fontWeight: 'bold',
- 
-},
-gridSubText: {
-  fontSize: 12,
-  color: 'gray',
-  fontWeight: 'bold',
-  marginLeft: 3,
-},
-value2: {
-  fontSize: 10,
-  fontWeight: 'bold',
-  
-},
-button2: {
-  backgroundColor: 'blue',
-  borderRadius:5 ,
-  padding: 1,
-  marginLeft: 5,
-},
-buttonValue: {
-  color: 'white',
-  fontSize: 10,
-  fontWeight: 'bold',
-},
+  //5th 
+  container5: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 0,
+  },
+  gridContainer: {
+    flex: 1,
+    alignItems: 'center',
+    height: 100,
+
+    margin: 5,
+    borderRadius: 10,
+    backgroundColor: 'lightgray',
+  },
+  firstLine: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+
+  },
+  secondLine: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 20,
+
+  },
+  logo2: {
+    width: 20,
+    height: 20,
+    marginBottom: 8,
+  },
+  textContainer: {
+    marginLeft: 5,
+  },
+  gridText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+
+  },
+  gridSubText: {
+    fontSize: 12,
+    color: 'gray',
+    fontWeight: 'bold',
+    marginLeft: 3,
+  },
+  value2: {
+    fontSize: 10,
+    fontWeight: 'bold',
+
+  },
+  button2: {
+    backgroundColor: 'blue',
+    borderRadius: 5,
+    padding: 1,
+    marginLeft: 5,
+  },
+  buttonValue: {
+    color: 'white',
+    fontSize: 10,
+    fontWeight: 'bold',
+  },
 };
 
 export default Dashboard;
 
 
 
-Header.js (not working)
+Header.js(not working)
 
 import React, { useState } from 'react';
 // import { View, Text, Image, TouchableOpacity, TextInput, Modal, Button } from 'react-native';
@@ -540,7 +603,7 @@ import React, { useState } from 'react';
 //     const toggleSearch = () => {
 //         setSearchVisible(!isSearchVisible);
 //     };
-    
+
 
 //     return(
 //     <View style={styles.container}>
@@ -566,7 +629,7 @@ import React, { useState } from 'react';
 //           />
 //       </View>
 
-     
+
 //       {isSearchVisible ? (
 //         <TextInput
 //           style={styles.searchBox}
@@ -576,7 +639,7 @@ import React, { useState } from 'react';
 //           }}
 //         />
 //       ) : null}
-      
+
 //     </View>
 //   );
 // };
@@ -670,7 +733,7 @@ import React, { useState } from 'react';
 // //     const toggleSearch = () => {
 // //         setSearchVisible(!isSearchVisible);
 // //       };
-    
+
 
 // //     return(
 // //     <View style={styles.container}>
@@ -696,7 +759,7 @@ import React, { useState } from 'react';
 // //           />
 // //       </View>
 
-     
+
 // //       {isSearchVisible ? (
 // //         <TextInput
 // //           style={styles.searchBox}
@@ -707,7 +770,7 @@ import React, { useState } from 'react';
 // //         />
 // //       ) : (
 // //       );
-      
+
 // // };
 
 
@@ -736,7 +799,7 @@ import React, { useState } from 'react';
 // //         },
 // //         welcomeText: {
 // //           fontSize: 18,
-          
+
 // //         },
 // //         userName: {
 // //           fontSize: 18,
@@ -747,7 +810,7 @@ import React, { useState } from 'react';
 // //           height: 40,
 // //           marginLeft: 10,
 // //         },
-      
+
 // //        rightImage1: {
 // //         width: 40,
 // //         height: 40,
@@ -771,7 +834,7 @@ import React, { useState } from 'react';
 // // export default Header;
 
 
-Mywatchlist.js 
+Mywatchlist.js
 import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, TextInput, Modal, Button } from 'react-native';
 
@@ -787,86 +850,86 @@ const MyWatchList = () => {
   const toggleYtdModal = () => {
     setIsYtdModalVisible(!isYtdModalVisible);
   };
-  
-    return(
-    <View style={styles.container4}>
-      <Text style={styles.title}>My Watchlist</Text>
-      <View style={styles.buttonsContainer}>
-        <TouchableOpacity style={styles.button} onPress={toggleMtdModal}>
-          <Text style={styles.buttonText}>MTD</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={toggleYtdModal}>
-          <Text style={styles.buttonText}>YTD</Text>
-        </TouchableOpacity>
-      </View>
-      
 
-      <Modal visible={isMtdModalVisible} animationType="slide">
-        <View style={styles.modalContainer}>
-          <Text style={styles.modalTitle}>MTD Modal</Text>
-          {/* Add your MTD modal content here */}
-          <TouchableOpacity style={styles.modalCloseButton} onPress={toggleMtdModal}>
-            <Text style={styles.modalCloseButtonText}>Close</Text>
-          </TouchableOpacity>
-        </View>
-      </Modal>
+  return (
+    <View style= { styles.container4 } >
+    <Text style={ styles.title }> My Watchlist < /Text>
+      < View style = { styles.buttonsContainer } >
+        <TouchableOpacity style={ styles.button } onPress = { toggleMtdModal } >
+          <Text style={ styles.buttonText }> MTD < /Text>
+            < /TouchableOpacity>
+            < TouchableOpacity style = { styles.button } onPress = { toggleYtdModal } >
+              <Text style={ styles.buttonText }> YTD < /Text>
+                < /TouchableOpacity>
+                < /View>
 
-      {/* YTD Modal */}
-      <Modal visible={isYtdModalVisible} animationType="slide">
-        <View style={styles.modalContainer}>
-          <Text style={styles.modalTitle}>YTD Modal</Text>
-          {/* Add your YTD modal content here */}
-          <TouchableOpacity style={styles.modalCloseButton} onPress={toggleYtdModal}>
-            <Text style={styles.modalCloseButtonText}>Close</Text>
-          </TouchableOpacity>
-        </View>
-      </Modal>
-    </View>
+
+                < Modal visible = { isMtdModalVisible } animationType = "slide" >
+                  <View style={ styles.modalContainer }>
+                    <Text style={ styles.modalTitle }> MTD Modal < /Text>
+  {/* Add your MTD modal content here */ }
+  <TouchableOpacity style={ styles.modalCloseButton } onPress = { toggleMtdModal } >
+    <Text style={ styles.modalCloseButtonText }> Close < /Text>
+      < /TouchableOpacity>
+      < /View>
+      < /Modal>
+
+  {/* YTD Modal */ }
+  <Modal visible={ isYtdModalVisible } animationType = "slide" >
+    <View style={ styles.modalContainer }>
+      <Text style={ styles.modalTitle }> YTD Modal < /Text>
+  {/* Add your YTD modal content here */ }
+  <TouchableOpacity style={ styles.modalCloseButton } onPress = { toggleYtdModal } >
+    <Text style={ styles.modalCloseButtonText }> Close < /Text>
+      < /TouchableOpacity>
+      < /View>
+      < /Modal>
+      < /View>
     );
 };
 
 const styles = {
-    container4: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: 16,
-        backgroundColor: '#F5F5F5',
-      },
-      title: {
-        fontSize: 18,
-        fontWeight: 'bold',
-      },
-      buttonsContainer: {
-        flexDirection: 'row',
-      },
-      button: {
-        marginLeft: 8,
-        paddingVertical: 4,
-        paddingHorizontal: 8,
-        backgroundColor: '#ECECEC',
-        borderRadius: 4,
-      },
-      buttonText: {
-        fontSize: 14,
-        color: 'black',
-      },
-      
-      modalCloseButton: {
-        marginTop: 16,
-        padding: 8,
-        backgroundColor: '#ECECEC',
-        borderRadius: 4,
-      },
-      modalCloseButtonText: {
-        fontSize: 14,
-        color: 'black',
-      },
+  container4: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 16,
+    backgroundColor: '#F5F5F5',
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  buttonsContainer: {
+    flexDirection: 'row',
+  },
+  button: {
+    marginLeft: 8,
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    backgroundColor: '#ECECEC',
+    borderRadius: 4,
+  },
+  buttonText: {
+    fontSize: 14,
+    color: 'black',
+  },
+
+  modalCloseButton: {
+    marginTop: 16,
+    padding: 8,
+    backgroundColor: '#ECECEC',
+    borderRadius: 4,
+  },
+  modalCloseButtonText: {
+    fontSize: 14,
+    color: 'black',
+  },
 }
 
 export default MyWatchList;
 
-App.js 
+App.js
 
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
@@ -882,15 +945,16 @@ const Stack = createNativeStackNavigator();
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Login" component={LoginForm} />
-        <Stack.Screen
+    <Stack.Navigator screenOptions= {{ headerShown: false }
+}>
+  <Stack.Screen name="Login" component = { LoginForm } />
+    <Stack.Screen
           name="Dashboard02"
-          component={Dashboard02}
-          options={{ headerShown: false }} />
-        <Stack.Screen name="List" component={List} />
-      </Stack.Navigator>
-    </NavigationContainer>
+component = { Dashboard02 }
+options = {{ headerShown: false }} />
+  < Stack.Screen name = "List" component = { List } />
+    </Stack.Navigator>
+    < /NavigationContainer>
   );
 }
 
@@ -939,13 +1003,13 @@ export default App;
 //           <Stack.Navigator screenOptions={{ headerShown: false }}>
 
 //             <Stack.Screen name="Login" component={LoginForm} />
-            
+
 //             <Stack.Screen
 //               name="Dashboard02"
 //               component={Dashboard02}
 //               options={{ headerShown: false }}  />
 //               <Stack.Screen name="List" component={List} />
-           
+
 //           </Stack.Navigator>
 //         ) : null}
 //       </NavigationContainer>
@@ -955,7 +1019,7 @@ export default App;
 // export default App;
 
 
-CardItems.js 
+CardItems.js
 
 import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, TextInput, Modal, Button } from 'react-native';
@@ -964,29 +1028,29 @@ import { Ionicons } from '@expo/vector-icons';
 
 
 
-const CardItems = ({log,name,symbl,value,changePercentage}) => {
- 
+const CardItems = ({ log, name, symbl, value, changePercentage }) => {
+
   return (
 
 
-<View style={styles.container5}>
-      <View style={styles.gridContainer}>
-        {/* First Line */}
-        <View style={styles.firstLine}>
-          {/* <Image style={styles.logo2} source={require('../assets/ethereumsvgrepocom-1.svg')} /> */}
-          <View style={styles.textContainer}>
-            <Text style={styles.gridText}>{name}</Text>
-          </View>
-        </View>
-        {/* Second Line */}
-        <View style={styles.secondLine}>
-          <Text style={styles.value2}>{value}</Text>
-          <TouchableOpacity style={styles.button2}>
-            <Text style={styles.buttonValue}>{changePercentage}</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-</View>
+    <View style= { styles.container5 } >
+    <View style={ styles.gridContainer }>
+      {/* First Line */ }
+      < View style = { styles.firstLine } >
+        {/* <Image style={styles.logo2} source={require('../assets/ethereumsvgrepocom-1.svg')} /> */ }
+        < View style = { styles.textContainer } >
+          <Text style={ styles.gridText }> { name } < /Text>
+            < /View>
+            < /View>
+  {/* Second Line */ }
+  <View style={ styles.secondLine }>
+    <Text style={ styles.value2 }> { value } < /Text>
+      < TouchableOpacity style = { styles.button2 } >
+        <Text style={ styles.buttonValue }> { changePercentage } < /Text>
+          < /TouchableOpacity>
+          < /View>
+          < /View>
+          < /View>
 
 
  
@@ -994,68 +1058,68 @@ const CardItems = ({log,name,symbl,value,changePercentage}) => {
 
 const styles = {
 
-container5: {
-  flex: 1,
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  padding:0,
-},
-gridContainer: {
-  flex: 1,
-  alignItems: 'center',
-  height:100,
-  
-  margin: 5,
-  borderRadius: 10,
-  backgroundColor: 'lightgray',
-},
-firstLine: {
-  flexDirection: 'row',
-  alignItems: 'center',
-  marginBottom: 10,
-  
-},
-secondLine: {
-  flexDirection: 'row',
-  alignItems: 'center',
-  marginTop:20,
-  
-},
-logo2: {
-  width: 20,
-  height: 20,
-  marginBottom:8,
-},
-textContainer: {
-  marginLeft: 5,
-},
-gridText: {
-  fontSize: 16,
-  fontWeight: 'bold',
- 
-},
-gridSubText: {
-  fontSize: 12,
-  color: 'gray',
-  fontWeight: 'bold',
-  marginLeft: 3,
-},
-value2: {
-  fontSize: 10,
-  fontWeight: 'bold',
-  
-},
-button2: {
-  backgroundColor: 'blue',
-  borderRadius:5 ,
-  padding: 1,
-  marginLeft: 5,
-},
-buttonValue: {
-  color: 'white',
-  fontSize: 10,
-  fontWeight: 'bold',
-},
+  container5: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 0,
+  },
+  gridContainer: {
+    flex: 1,
+    alignItems: 'center',
+    height: 100,
+
+    margin: 5,
+    borderRadius: 10,
+    backgroundColor: 'lightgray',
+  },
+  firstLine: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+
+  },
+  secondLine: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 20,
+
+  },
+  logo2: {
+    width: 20,
+    height: 20,
+    marginBottom: 8,
+  },
+  textContainer: {
+    marginLeft: 5,
+  },
+  gridText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+
+  },
+  gridSubText: {
+    fontSize: 12,
+    color: 'gray',
+    fontWeight: 'bold',
+    marginLeft: 3,
+  },
+  value2: {
+    fontSize: 10,
+    fontWeight: 'bold',
+
+  },
+  button2: {
+    backgroundColor: 'blue',
+    borderRadius: 5,
+    padding: 1,
+    marginLeft: 5,
+  },
+  buttonValue: {
+    color: 'white',
+    fontSize: 10,
+    fontWeight: 'bold',
+  },
 };
 
 
@@ -1074,178 +1138,178 @@ import { Ionicons } from '@expo/vector-icons';
 
 
 const Deposit = () => {
-    const [isModalVisible, setModalVisible] = useState(false);
-    const [modalText, setModalText] = useState('');
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [modalText, setModalText] = useState('');
 
-    const handleDepositClick = () => {
-        console.log('Deposit clicked');
-        setModalText('Deposit clicked');
-        setModalVisible(true);
-      };
-    
-      const handleWithdrawClick = () => {
-        console.log('Withdraw clicked');
-        setModalText('Withdraw clicked');
-        setModalVisible(true);
-      };
-    
-      const closeModal = () => {
-        setModalVisible(false);
-      };
-    
-    return (
-<View>
-<View style={styles.container3}>
-<TouchableOpacity onPress={handleDepositClick} style={styles.ellipse}>
-<View style={styles.circle}>
-<Ionicons name="arrow-up-outline" size={30} color="black" />
-</View>
-<Text style={[styles.text, styles.withdrawText2]}>Deposit</Text>
-</TouchableOpacity>
-<View style={styles.spacing} />
-<TouchableOpacity onPress={handleWithdrawClick} style={styles.ellipse}>
-<View style={styles.circle}>
-<Ionicons name="arrow-down-outline" size={30} color="black" />
-</View>
-<Text style={[styles.text, styles.withdrawText]}>Withdraw</Text>
-</TouchableOpacity>
-<Modal visible={isModalVisible} animationType="slide">
-<View style={styles.modalContainer}>
-<Text>{modalText}</Text>
-<Button title="Close" onPress={closeModal} />
-</View>
-</Modal>
-</View>
-</View>
+  const handleDepositClick = () => {
+    console.log('Deposit clicked');
+    setModalText('Deposit clicked');
+    setModalVisible(true);
+  };
+
+  const handleWithdrawClick = () => {
+    console.log('Withdraw clicked');
+    setModalText('Withdraw clicked');
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+  };
+
+  return (
+    <View>
+    <View style= { styles.container3 } >
+    <TouchableOpacity onPress={ handleDepositClick } style = { styles.ellipse } >
+      <View style={ styles.circle }>
+        <Ionicons name="arrow-up-outline" size = { 30} color = "black" />
+          </View>
+          < Text style = { [styles.text, styles.withdrawText2]} > Deposit < /Text>
+            < /TouchableOpacity>
+            < View style = { styles.spacing } />
+              <TouchableOpacity onPress={ handleWithdrawClick } style = { styles.ellipse } >
+                <View style={ styles.circle }>
+                  <Ionicons name="arrow-down-outline" size = { 30} color = "black" />
+                    </View>
+                    < Text style = { [styles.text, styles.withdrawText]} > Withdraw < /Text>
+                      < /TouchableOpacity>
+                      < Modal visible = { isModalVisible } animationType = "slide" >
+                        <View style={ styles.modalContainer }>
+                          <Text>{ modalText } < /Text>
+                          < Button title = "Close" onPress = { closeModal } />
+                            </View>
+                            < /Modal>
+                            < /View>
+                            < /View>
     );
 };
 
 const styles = {
-    container3: {
-        paddingVertical:10,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginLeft:0,
-      },
-      ellipse: {
-        width: 166,
-        height: 48,
-        //left:16,
-        borderRadius: 100,
-        backgroundColor: '#ECECEC',
-        justifyContent: 'center',
-        alignItems: 'center',
-        //paddingLeft: 16,
-    
-        // width:166,
-        // height:48,
-       
-        // left:16,
-        // borderRadius:100,
-        // backgroundColor: '#ECECEC',
-    
-    
-      },
-      circle: {
-        width: 40,
-        height: 40,
-        borderRadius: 100,
-        backgroundColor: '#B1A4FF',
-        position: 'absolute',
-        left: 0,
-        marginLeft:5,
-        justifyContent: 'center',
-        alignItems: 'center',
-      },
-      spacing: {
-        width: 50,
-      },
-      text: {
-        marginLeft: 16,
-        fontSize: 20,
-        color: 'black',
-        textAlign:'center',
-        color:'#1C1E32',
-        
-        
-      },
-      withdrawText: {
-        marginRight: -10, // Adjust this value as needed
-        lineHeight:19.09,
-        fontWeight:54,
-      },
-      withdrawText2: {
-        marginRight: -10,
-        lineHeight:19.09,
-        fontWeight:54,
-        
-       
-      },
-      
-      container5: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        padding:0,
-      },
-      gridContainer: {
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        height:100,
-        
-        margin: 5,
-        borderRadius: 10,
-        backgroundColor: 'lightgray',
-      },
-      firstLine: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginBottom: 10,
-        
-      },
-      secondLine: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginTop:20,
-        
-      },
-      logo2: {
-        width: 20,
-        height: 20,
-        marginBottom:8,
-      },
-      textContainer: {
-        marginLeft: 5,
-      },
-      gridText: {
-        fontSize: 16,
-        fontWeight: 'bold',
-       
-      },
-      gridSubText: {
-        fontSize: 12,
-        color: 'gray',
-        fontWeight: 'bold',
-        marginLeft: 3,
-      },
-      value2: {
-        fontSize: 10,
-        fontWeight: 'bold',
-        
-      },
-      button2: {
-        backgroundColor: 'blue',
-        borderRadius:5 ,
-        padding: 1,
-        marginLeft: 5,
-      },
-      buttonValue: {
-        color: 'white',
-        fontSize: 10,
-        fontWeight: 'bold',
-      },
+  container3: {
+    paddingVertical: 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 0,
+  },
+  ellipse: {
+    width: 166,
+    height: 48,
+    //left:16,
+    borderRadius: 100,
+    backgroundColor: '#ECECEC',
+    justifyContent: 'center',
+    alignItems: 'center',
+    //paddingLeft: 16,
+
+    // width:166,
+    // height:48,
+
+    // left:16,
+    // borderRadius:100,
+    // backgroundColor: '#ECECEC',
+
+
+  },
+  circle: {
+    width: 40,
+    height: 40,
+    borderRadius: 100,
+    backgroundColor: '#B1A4FF',
+    position: 'absolute',
+    left: 0,
+    marginLeft: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  spacing: {
+    width: 50,
+  },
+  text: {
+    marginLeft: 16,
+    fontSize: 20,
+    color: 'black',
+    textAlign: 'center',
+    color: '#1C1E32',
+
+
+  },
+  withdrawText: {
+    marginRight: -10, // Adjust this value as needed
+    lineHeight: 19.09,
+    fontWeight: 54,
+  },
+  withdrawText2: {
+    marginRight: -10,
+    lineHeight: 19.09,
+    fontWeight: 54,
+
+
+  },
+
+  container5: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 0,
+  },
+  gridContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: 100,
+
+    margin: 5,
+    borderRadius: 10,
+    backgroundColor: 'lightgray',
+  },
+  firstLine: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+
+  },
+  secondLine: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 20,
+
+  },
+  logo2: {
+    width: 20,
+    height: 20,
+    marginBottom: 8,
+  },
+  textContainer: {
+    marginLeft: 5,
+  },
+  gridText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+
+  },
+  gridSubText: {
+    fontSize: 12,
+    color: 'gray',
+    fontWeight: 'bold',
+    marginLeft: 3,
+  },
+  value2: {
+    fontSize: 10,
+    fontWeight: 'bold',
+
+  },
+  button2: {
+    backgroundColor: 'blue',
+    borderRadius: 5,
+    padding: 1,
+    marginLeft: 5,
+  },
+  buttonValue: {
+    color: 'white',
+    fontSize: 10,
+    fontWeight: 'bold',
+  },
 }
 
 export default Deposit;
@@ -1258,14 +1322,14 @@ export default Deposit;
 
 
 
-dasboard 
+dasboard
 import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, TextInput, Modal, Button, ScrollView } from 'react-native';
 
 import { Ionicons } from '@expo/vector-icons';
 import MyPortfolio from './MyPortfolio';
 import Deposit from './Deposite';
-import CardItems  from './CardItems';
+import CardItems from './CardItems';
 import MyWatchList from './MyWatchList';
 import CryptoAssets from './CriptoAssets';
 import AssetItem from './AssetItem';
@@ -1313,98 +1377,101 @@ const Dashboard = () => {
 
 
 
-  const cardData=[{"name":"Crypto","value":"$23,500.69","changePercentage":"+5.9%","logo":"https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430"},
-  {"name":"NSE","value":"$23,500","changePercentage":"+5.9%","logo":"https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430"},
-  {"name":"BSE","value":"$23,500","changePercentage":"+5.9%","logo":"https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430"},
-  {"name":"Comodity","value":"$23","changePercentage":"+5.9%","logo":"https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430"}
-];
-  
+  const cardData = [{ "name": "Crypto", "value": "$23,500.69", "changePercentage": "+5.9%", "logo": "https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430" },
+  { "name": "NSE", "value": "$23,500", "changePercentage": "+5.9%", "logo": "https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430" },
+  { "name": "BSE", "value": "$23,500", "changePercentage": "+5.9%", "logo": "https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430" },
+  { "name": "Comodity", "value": "$23", "changePercentage": "+5.9%", "logo": "https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430" }
+  ];
+
 
 
   return (
     //<View style={styles.container}>
-    <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.nav}>
-        <View style={styles.leftContent}>
-          <Image
-            style={styles.logo}
-            source={require("../assets/mask-group.png")}
-          />
-          <Text style={styles.welcomeText}>Welcome </Text>
-          <Text style={styles.userName}>Satyam</Text>
-        </View>
-        <TouchableOpacity onPress={toggleSearch}>
-          <Image
-            style={styles.rightImage1}
-            source={require("../assets/mask-group2.svg")} // Change to your search icon image source
-          />
-
-        </TouchableOpacity>
+    <ScrollView contentContainerStyle= { styles.container } >
+    <View style={ styles.nav }>
+      <View style={ styles.leftContent }>
         <Image
-            style={styles.rightImage}
-            source={require("../assets/mask-group1.svg")}
-          />
-      </View>
+            style={ styles.logo }
+  source = { require("../assets/mask-group.png") }
+    />
+    <Text style={ styles.welcomeText }> Welcome < /Text>
+      < Text style = { styles.userName } > Satyam < /Text>
+        < /View>
+        < TouchableOpacity onPress = { toggleSearch } >
+          <Image
+            style={ styles.rightImage1 }
+  source = { require("../assets/mask-group2.svg") } // Change to your search icon image source
+    />
 
-     
-      {isSearchVisible ? (
-        <TextInput
-          style={styles.searchBox}
-          placeholder="Search"
-          onChangeText={(text) => {
-            // Handle search input changes
-          }}
-        />
+    </TouchableOpacity>
+    < Image
+  style = { styles.rightImage }
+  source = { require("../assets/mask-group1.svg") }
+    />
+    </View>
+
+
+  {
+    isSearchVisible ? (
+      <TextInput
+          style= { styles.searchBox }
+          placeholder = "Search"
+    onChangeText = {(text) => {
+  // Handle search input changes
+}}
+/>
       ) : (
 
-        <View style={styles.container2}>
-          <View style={styles.portfolioContainer}>
-            <Text style={styles.valueText}>Current portfolio value</Text>
-            <View style={styles.valueAmount}>
-              <Text style={styles.amountText}>$23,500</Text>
-              <Text style={styles.decimalText}>.49</Text>
-              <View style={styles.greenBox}>
-                <Text style={styles.percentText}>+5.9%</Text>
-              </View>
-            </View>
+  <View style= { styles.container2 } >
+  <View style={ styles.portfolioContainer }>
+    <Text style={ styles.valueText }> Current portfolio value < /Text>
+      < View style = { styles.valueAmount } >
+        <Text style={ styles.amountText }> $23, 500 < /Text>
+          < Text style = { styles.decimalText } > .49 < /Text>
+            < View style = { styles.greenBox } >
+              <Text style={ styles.percentText }> +5.9 % </Text>
+                < /View>
+                < /View>
 
 
-  
-  
 
 
-  {/* <View style={styles.container3}>
+
+
+{/* <View style={styles.container3}>
   <Deposit />
   </View> */}
-  <Deposit></Deposit>
+<Deposit></Deposit>
 
-  {/* <View style = {styles.container4}>
+{/* <View style = {styles.container4}>
     <MyWatchList />
     </View> */}
 
-  <MyWatchList></MyWatchList>
+<MyWatchList></MyWatchList>
 
 
-{/* 5th container grid  */}
-<View style={styles.container5}>
-  
-      {cardData.map((item, index) => {
-        return   <CardItems name={item.name} symbl={item.symbl} value={item.value} changePercentage={item.changePercentage}/>
+{/* 5th container grid  */ }
+<View style={ styles.container5 }>
+
+{
+  cardData.map((item, index) => {
+    return <CardItems name={ item.name } symbl = { item.symbl } value = { item.value } changePercentage = { item.changePercentage } />
      
-      })}
+      })
+}
 
-     </View>
+  < /View>
 
-     <CryptoAssets></CryptoAssets>
-    <AssetItem></AssetItem>
-   
-     
-     
-  </View>
-  </View>
+  < CryptoAssets > </CryptoAssets>
+  < AssetItem > </AssetItem>
+
+
+
+  < /View>
+  < /View>
       )}
-      
-    {/* </View> */}
-    </ScrollView>
+
+{/* </View> */ }
+</ScrollView>
   );
 };

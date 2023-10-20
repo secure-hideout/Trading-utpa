@@ -1,35 +1,17 @@
-//only searcch bar visible
-
+// BottomTabBar.js
 import React, { useContext } from 'react';
-//import Animated from 'react-native-reanimated';
-
-
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Dashboard02 from "../screens/Dashboard02";
 import { CardStyleInterpolators } from "@react-navigation/stack";
-import ViewPortfolio from "./ViewPortfolio";
 import UserDetails from "../screens/UserDetails";
 import Settings from "../screens/Settings";
 import SeeAllItems from '../screens/SeeAllItems';
 import AssetDataContext from "../screens/AssetDataContext";
-//import CriptoAssets from "../screens/CriptoAssets";
+import { TAB_ICONS } from '../screens/TabIcons'; // Import the tab icons
 
 const Tab = createBottomTabNavigator();
-
-const iconMap = {
-   Portfolio:'ios-briefcase',
-  WatchList: 'ios-list',
-  // Home: 'ios-home',
-  Profile:'ios-person',
-  
-  Setting: 'ios-settings',
-  
- 
-
-  
-};
 
 const BottomTabBar = ({ isLoggedIn, onSuccessfulLogin }) => {
   const { assetData } = useContext(AssetDataContext);
@@ -37,22 +19,18 @@ const BottomTabBar = ({ isLoggedIn, onSuccessfulLogin }) => {
     <Tab.Navigator 
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
-          let iconName = iconMap[route.name];
+          let iconName = TAB_ICONS[route.name];
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, // This provides the animation
+        cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
         tabBarActiveTintColor: '#A936F1',
         tabBarInactiveTintColor: '#1C1E32',
-        
         tabBarStyle: {
-          backgroundColor: '#ECECEC', // Your preferred background color
+          backgroundColor: '#ECECEC',
         },
         headerShown: false,
       })}
     >
-      {/* <Tab.Screen name="Login">
-        {(props) => <LoginForm {...props} onSuccessfulLogin={onSuccessfulLogin} />}
-      </Tab.Screen> */}
 
       <Tab.Screen name="Portfolio">
         {(props) => {
@@ -62,13 +40,9 @@ const BottomTabBar = ({ isLoggedIn, onSuccessfulLogin }) => {
             return <Text>Please log in first!</Text>;
           }
         }}
-      </Tab.Screen>
-
-      {/* <Tab.Screen name="WatchList" component={SearchBarList} /> */}
-     
+      </Tab.Screen> 
 
       <Tab.Screen name="WatchList" component={SeeAllItems} />
-      {/* <Tab.Screen name="Portfolio" component={ViewPortfolio} /> */}
       <Tab.Screen name="Profile" component={UserDetails} />
       <Tab.Screen name="Setting" component={Settings} />
     </Tab.Navigator>

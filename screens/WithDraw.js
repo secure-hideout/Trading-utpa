@@ -19,7 +19,7 @@ const WithDraw = () => {
   return (
     <View>
       <TouchableOpacity onPress={handleWithdrawClick} style={styles.ellipse}>
-      
+
         <Text style={[styles.text, styles.withdrawText]}>Withdraw</Text>
         <View style={styles.circle}>
           <Ionicons name="arrow-up-outline" size={30} color="black" />
