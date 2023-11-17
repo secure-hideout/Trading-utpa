@@ -1,290 +1,96 @@
-// dashboard
-import React, { useState, useEffect, useRef, useContext } from 'react';
-import { View, Text, Image, TouchableOpacity, TextInput, Modal, Button, ScrollView } from 'react-native';
-import { StyleSheet, SafeAreaView } from 'react-native';
-import AssetDataContext from './AssetDataContext';
-import Header from './Header';
-import MyPortfolio from './MyPortfolio';
-import Deposit from './Deposite';
-import MyWatchList from './MyWatchList';
-import CardItems from './CardItems';
-import CriptoAssets from './CriptoAssets';
-import ViewPortfolio from './ViewPortfolio';
 
 
-import { useSelector } from 'react-redux';
+// //withaddtowatchlistapiassetdatacontext
+// import React, { useState, useEffect, createContext, useContext } from 'react';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+
+// const AssetDataContext = React.createContext();
+
+// export const AssetDataProvider = ({ children }) => {
+//   const [assetData, setAssetData] = useState([]);
+//   const [watchlist, setWatchlist] = useState([]);
 
 
+//   useEffect(() => {
+//     const loadWatchlist = async () => {
+//       try {
+//         const storedWatchlist = await AsyncStorage.getItem('watchlist');
+//         if (storedWatchlist) {
+//           setWatchlist(JSON.parse(storedWatchlist));
+//         }
+//       } catch (error) {
+//         console.error('Error loading watchlist from AsyncStorage:', error);
+//       }
+//     };
 
-const Dashboard = () => {
+//     loadWatchlist();
+//   }, []);
 
-  const { token } = useSelector(state => state.auth)
-  console.log("Dashboard", token)
-  const [cardData, setCardData] = useState([
+//   useEffect(() => {
+//     const storeWatchlist = async () => {
+//       try {
+//         await AsyncStorage.setItem('watchlist', JSON.stringify(watchlist));
+//       } catch (error) {
+//         console.error('Error storing watchlist in AsyncStorage:', error);
+//       }
+//     };
 
-    { name: 'Crypto', value: '', changePercentage: '', color: '', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: "#C1C2EB" },
-    { name: 'NSE', value: '', changePercentage: '', color: '', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: '#B7DDD2' },
-    { name: 'BSE', value: '', changePercentage: '', color: '', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: "#C1C2EB" },
-    { name: 'Commodity', value: '', changePercentage: '', color: '', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: '#B7DDD2' }
-  ]);
+//     storeWatchlist();
+//   }, [watchlist]);
 
-  const { assetData, setAssetData } = useContext(AssetDataContext);
-  const [watchlist, setWatchlist] = useState([]);
-  // const [selectedCard, setSelectedCard] = useState('crypto');
-  // const [selectedAsset, setSelectedAsset] = useState(null);
-  const [selectedCard, setSelectedCard] = useState('Crypto');
+//   const addToWatchlist = async (item) => {
+//     try {
+//       const response = await fetch('http://localhost:9000/api/user/addToWatchlist', {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify({
+//           instrumentId: item.instrumentId, // Adjust this based on your item structure
+//           instrumentType: item.instrumentType, // Adjust this based on your item structure
+//         }),
+//       });
 
-  const [totalValues, setTotalValues] = useState({});
-
-  const updateTotalValue = (category, totalValue) => {
-    setTotalValues((prevTotalValues) => ({
-      ...prevTotalValues,
-      [category]: totalValue,
-    }));
-  };
-
-  const updateChangePercentage = (category, changePercentage) => {
-    setCardData((prevCardData) => {
-      return prevCardData.map((item) => {
-        if (item.name === category) {
-
-          return { ...item, changePercentage };
-        }
-        return item;
-      });
-    });
-  };
-
-
-
-  // useEffect(() => {
-  //   var myHeaders = new Headers();
-  //   myHeaders.append("Authorization", `Bearer ${token}`);
-
-  //   var requestOptions = {
-  //     method: 'POST', //get
-  //     headers: myHeaders,
-  //     redirect: 'follow'
-  //   };
-
-  //   fetch("http://10.0.2.2:80/api/user/watchlist", requestOptions)
-  //     .then(response => response.text())
-  //     .then(result => console.log((JSON.parse(result))))    //after modification remove console place setassetdata
-  //     .catch(error => console.log('this error', error));
+//       if (response.ok) {
+//         const newItem = { ...item, isAddedToWatchlist: true }; // You can add a flag to indicate it's in the watchlist
+//         setWatchlist((prevWatchlist) => [...prevWatchlist, newItem]);
+//         await AsyncStorage.setItem('watchlist', JSON.stringify([...watchlist, newItem]));
+//       } else {
+//         console.error('Failed to add to watchlist:', response.status, response.statusText);
+//       }
+//     } catch (error) {
+//       console.error('Error adding to watchlist:', error);
+//     }
+//   };
 
 
-  //   setAssetData([
-  //     { name2: 'Crpto', name3: "BTC", value: "$30,618", decimalValue: ".60", changePercentage: "-7.90%", logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg' },
-  //     { name2: 'nse', name3: "BTC", value: "$30,618", decimalValue: ".60", changePercentage: "+7.90%", logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg' },
-  //     { name2: 'bse', name3: "BTC", value: "$30,618", decimalValue: ".60", changePercentage: "-7.90%", logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg' },
-  //     { name2: 'comodity', name3: "BTC", value: "$30,618", decimalValue: ".60", changePercentage: "+7.90%", logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg' },
-  //     { name2: 'tata', name3: "BTC", value: "$30,618", decimalValue: ".60", changePercentage: "+7.90%", logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg' },
-  //     { name2: 'apple', name3: "BTC", value: "$30,618", decimalValue: ".60", changePercentage: "+7.90%", logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg' },
-  //     { name2: 'tesla', name3: "BTC", value: "$30,618", decimalValue: ".60", changePercentage: "-7.90%", logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg' },
-  //     { name2: 'twitter', name3: "BTC", value: "$30,618", decimalValue: ".60", changePercentage: "+7.90%", logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg' },
-  //     { name2: 'facebook', name3: "BTC", value: "$30,618", decimalValue: ".60", changePercentage: "+7.90%", logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg' },
-  //     { name2: 'google', name3: "BTC", value: "$30,618", decimalValue: ".60", changePercentage: "+7.90%", logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg' },
-
-  //   ]);
-  // }, []);
+//   const removeFromWatchlist = (item) => {
+//     const newWatchlist = watchlist.filter(
+//       (watchlistItem) => watchlistItem.name2 !== item.name2
+//     );
+//     setWatchlist(newWatchlist);
+//   };
 
 
-  useEffect(() => {
-    const myHeaders = new Headers();
-    myHeaders.append("Authorization", `Bearer ${token}`);
+//   return (
+//     <AssetDataContext.Provider value={{
+//       assetData,
+//       setAssetData,
+//       watchlist,
+//       addToWatchlist,
+//       removeFromWatchlist
+//     }}>
+//       {children}
+//     </AssetDataContext.Provider>
+//   );
+// };
 
-    const requestOptions = {
-      method: 'POST',
-      headers: myHeaders,
-      redirect: 'follow',
-    };
-
-    // fetch("http://10.0.2.2:9000/api/user/watchlist", requestOptions)
-    fetch("http://localhost:9000/api/user/getZtokens", requestOptions)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`Server response was not ok. Status: ${response.status}`);
-        }
-        return response.json(); // Parse the response as JSON
-      })
-      .then(data => {
-        console.log('Watchlist data:', data);
-        const validItems = data.filter(item => item.InstrumentId !== 0);
-        return Promise.all(
-          validItems.map(item =>
-            fetch(`http://10.0.2.2:9000/api/instrument/details/${item.InstrumentId}`, requestOptions)
-              .then(res => res.json())
-          )
-        );
-      })
-      // .then(detailsArray => {
-      //   const transformedData = detailsArray.map((item, index) => ({
-      //     name2: item.InstrumentType,
-      //     name3: `ID: ${item.InstrumentId}`,
-      //     value: item.value,
-      //     decimalValue: item.decimalValue,
-      //     changePercentage: item.changePercentage,
-      //     logo: item.logo,
-      //   }));
-      //   setWatchlist(transformedData);
-      //   setAssetData(transformedData);
-      // })
-
-
-      .catch(error => console.log('Error fetching watchlist:', error));
-  }, []);
+// export default AssetDataContext;
 
 
 
-
-  // useEffect(() => {
-  //   const myHeaders = new Headers();
-  //   myHeaders.append("Authorization", `Bearer ${token}`);
-
-  //   const requestOptions = {
-  //     method: 'POST',
-  //     headers: myHeaders,
-  //     redirect: 'follow'
-  //   };
-
-  //   fetch("http://10.0.2.2:80/api/user/watchlist", requestOptions)
-  //     // .then(response => response.json())
-  //     .then(response => {
-  //       if (!response.ok) {
-  //         throw new Error(`Server response was not ok. Status: ${response.status}`);
-  //       }
-  //       return response.text();  // Get the raw response as text
-  //     })
-  //     .then(text => {
-  //       console.log('Raw watchlist response:', text); // Print the raw response
-  //       return JSON.parse(text); // Try to parse it as JSON
-  //     })
-  //     // .then(async data => {
-  //     //   // Assume you have an endpoint like http://10.0.2.2:80/api/instrument/details/:id
-  //     //   // which gives details for a specific instrument by its ID.
-  //     //   const fetchDetailsPromises = data.map(item =>
-  //     //     fetch(`http://10.0.2.2:80/api/instrument/details/${item.InstrumentId}`, requestOptions)
-  //     //       .then(res => res.json())
-  //     //   );
-
-  //     //   const detailsArray = await Promise.all(fetchDetailsPromises);
-  //     //   return data.map((item_1, index) => ({
-  //     //     name2: item_1.InstrumentType,
-  //     //     name3: `ID: ${item_1.InstrumentId}`,
-  //     //     value: detailsArray[index].value,
-  //     //     decimalValue: detailsArray[index].decimalValue,
-  //     //     changePercentage: detailsArray[index].changePercentage,
-  //     //     logo: detailsArray[index].logo
-  //     //   }));
-  //     // })
-
-  //     .then(async data => {
-  //       const validItems = data.filter(item => item.InstrumentId !== 0);
-
-  //       const fetchDetailsPromises = validItems.map(item =>
-  //         // fetch(`http://10.0.2.2:80/api/instrument/details/${item.InstrumentId}`, requestOptions)
-  //         //   .then(res => res.text())
-  //         //   .then(detailText => {
-  //         //     console.log(`Raw detail for InstrumentId ${item.InstrumentId}:`, detailText);
-  //         //     return JSON.parse(detailText);
-  //         //   })
-  //         fetch(`http://10.0.2.2:80/api/instrument/details/${item.InstrumentId}`, requestOptions)
-  //           .then(res => res.text())
-  //           .then(detailText => {
-  //             console.log(`Raw detail for InstrumentId ${item.InstrumentId}:`, detailText);
-  //             return JSON.parse(detailText);
-  //           })
-  //       );
-
-  //       const detailsArray = await Promise.all(fetchDetailsPromises);
-  //       return validItems.map((item_2, index) => ({
-  //         name2: item_2.InstrumentType,
-  //         name3: `ID: ${item_2.InstrumentId}`,
-  //         value: detailsArray[index].value,
-  //         decimalValue: detailsArray[index].decimalValue,
-  //         changePercentage: detailsArray[index].changePercentage,
-  //         logo: detailsArray[index].logo
-  //       }));
-  //     })
-
-  //     .then(transformedData => {
-  //       setWatchlist(transformedData);
-  //       setAssetData(transformedData); // Also set the fetched data to the assetData context
-  //     })
-  //     .catch(error => console.log('Error fetching watchlist:', error));
-  // }, []);
-
-
-
-
-
-  //for scroll bottom minus icon 
-
-  const scrollViewRef = useRef(null);
-
-  const scrollToBottom = () => {
-    scrollViewRef.current.scrollToEnd({ animated: true });
-  };
-
-
-  return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView ref={scrollViewRef} style={styles.root}>
-        <Header assetData={assetData} />
-        <MyPortfolio />
-        <Deposit />
-        <MyWatchList />
-        <View style={styles.container5}>
-          {/* {cardData.map((item, index) => {
-            const totalValue = totalValues[item.name] || ''; // Get the total value from the state
-            return (
-              <CardItems
-                key={index}
-                name={item.name}
-                symbl={item.symbl}
-                value={totalValue}
-                // value={item.name === selectedCard ? totalValues[selectedCard] || '' : ''}
-                changePercentage={item.changePercentage}
-                color={item.backgroundColor}
-                onClick={() => setSelectedCard(item.name)}
-              />
-            );
-          })} */}
-          {cardData.map((item, index) => {
-            const totalValue = totalValues[item.name] || '';
-            return (
-              <CardItems
-                key={index}
-                name={item.name}
-                symbl={item.symbl}
-                value={totalValue}
-                changePercentage={item.changePercentage}
-                color={item.backgroundColor}
-                onClick={() => setSelectedCard(item.name)}
-              />
-            );
-          })}
-        </View>
-        <CriptoAssets
-          onScrollToBottom={scrollToBottom}
-          data={watchlist}
-          assetData={assetData}
-        >
-          <ViewPortfolio
-            assetData={assetData}
-            selectedCard={selectedCard}
-            updateTotalValue={updateTotalValue}
-            updateChangePercentage={updateChangePercentage}
-          />
-        </CriptoAssets>
-      </ScrollView>
-    </SafeAreaView>
-  );
-};
-
-
-//searchbarlist 
-
+//withoutaddtowatchlist function
+// //withaddtowatchlistapi
 // import React, { useContext, useState, useEffect } from 'react';
 // import { View, TextInput, Text, TouchableOpacity, StyleSheet, Image, ScrollView } from 'react-native';
 // import { useNavigation } from '@react-navigation/native';
@@ -292,6 +98,7 @@ const Dashboard = () => {
 // import AssetItem from './AssetItem';
 // import AssetDataContext from './AssetDataContext';
 // import Modal from 'react-native-modal';
+
 
 // const SearchBarList = ({ route }) => {
 //   const { assetData = [] } = route?.params || {};
@@ -323,18 +130,35 @@ const Dashboard = () => {
 //     setFilteredAssetData(filteredAssets);
 //   };
 
-//   const handleAddIconClick = (item) => {
-//     addToWatchlist(item);
-//     setSuccessMessage('Added to watchlist successfully');
+//   const handleAddIconClick = async (item) => {
+//     try {
+//       const response = await fetch('http://localhost:9000/api/user/addToWatchlist', {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify({
+//           instrumentId: item.instrumentId, // Adjust this based on your item structure
+//           instrumentType: item.instrumentType, // Adjust this based on your item structure
+//         }),
+//       });
 
-//     // Open the modal
-//     setModalVisible(true);
+//       if (response.ok) {
+//         addToWatchlist(item); // Add the item to the watchlist
+//         setSuccessMessage('Added to watchlist successfully');
+//         setModalVisible(true);
 
-//     // Automatically close the modal after 3 seconds
-//     setTimeout(() => {
-//       setModalVisible(false);
-//       setSuccessMessage('');
-//     }, 3000);
+//         // Automatically close the modal after 3 seconds
+//         setTimeout(() => {
+//           setModalVisible(false);
+//           setSuccessMessage('');
+//         }, 3000);
+//       } else {
+//         console.error('Failed to add to watchlist:', response.status, response.statusText);
+//       }
+//     } catch (error) {
+//       console.error('Error adding to watchlist:', error);
+//     }
 //   };
 
 //   useEffect(() => {
@@ -348,7 +172,8 @@ const Dashboard = () => {
 //           <TouchableOpacity onPress={handleBack} style={styles.leftContainer}>
 //             <Ionicons name="arrow-back-outline" size={24} color="black" marginLeft={-10} />
 //           </TouchableOpacity>
-//           <Text style={styles.backText}>Crypto Asset List</Text>
+//           {/* <Text style={styles.backText}>Crypto Asset List</Text> */}
+//           <Text style={styles.backText}>Asset List</Text>
 //           <TouchableOpacity onPress={handleFilter} style={styles.rightContainer}>
 //             <Image source={require('../assets/filter.png')} style={styles.filterImage} />
 //           </TouchableOpacity>
@@ -405,279 +230,926 @@ const Dashboard = () => {
 // };
 
 
-import React, { useContext, useState, useEffect } from 'react';
-import { View, TextInput, Text, TouchableOpacity, StyleSheet, Image, ScrollView } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons';
-import AssetItem from './AssetItem';
-import AssetDataContext from './AssetDataContext';
-import Modal from 'react-native-modal';
-import SeeAllItems from './SeeAllItems';
-
-const SearchBarList = () => {
-  const navigation = useNavigation();
-  const { addToWatchlist } = useContext(AssetDataContext);
-
-  const [modalVisible, setModalVisible] = useState(false);
-  const [successMessage, setSuccessMessage] = useState('');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [watchlist, setWatchlist] = useState([]); // Store watchlist data
-  const [filteredWatchlist, setFilteredWatchlist] = useState([]); // Filtered watchlist data
-
-  const handleBack = () => {
-    navigation.goBack();
-  };
-
-  const handleFilter = () => {
-    // Handle filter functionality here
-  };
-
-  const handleSearchBarClick = () => {
-    // Open keyboard or perform additional actions
-  };
-
-  const filterWatchlist = () => {
-    const trimmedQuery = searchQuery.replace(/\s+/g, '').toLowerCase();
-    const filteredAssets = watchlist.filter((item) =>
-      item.name2.replace(/\s+/g, '').toLowerCase().includes(trimmedQuery)
-    );
-    setFilteredWatchlist(filteredAssets);
-  };
-
-  const handleAddIconClick = (item) => {
-    addToWatchlist(item);
-    setSuccessMessage('Added to watchlist successfully');
-
-    // Open the modal
-    setModalVisible(true);
-
-    // Automatically close the modal after 3 seconds
-    setTimeout(() => {
-      setModalVisible(false);
-      setSuccessMessage('');
-    }, 3000);
-  };
-
-  // useEffect(() => {
-  //   // Fetch watchlist data from your API here
-  //   // Replace the URL with your actual API endpoint
-  //   fetch("YOUR_API_ENDPOINT_HERE")
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       console.log('Fetched Watchlist Data:', data);
-  //       setWatchlist(data); // Set the fetched watchlist data
-  //       filterWatchlist(); // Apply initial filtering
-  //     })
-  //     .catch((error) => {
-  //       console.error('Error fetching watchlist data:', error);
-  //     });
-  // }, []);
-
-  // useEffect(() => {
-  //   filterWatchlist();
-  // }, [searchQuery]);
-
-
-  useEffect(() => {
-    const requestOptions = {
-      method: 'POST', // Adjust the method as needed (e.g., 'POST', 'PUT', etc.)
-      headers: {
-        // 'Authorization': 'Bearer YOUR_ACCESS_TOKEN',
-        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySUQiOiJJVS1CUVRZNSIsImV4cCI6MTY5OTI3NTQxNCwiaXNzIjoiVGVzdE5hbWUifQ.nxgIOKnasa6THpg1Lj4EZGPxDEmvRALiQIEUxjB1ELk',
-        'Content-Type': 'application/json', // Include other headers if required
-      },
-    };
-
-    // Fetch the watchlist data using the requestOptions
-    // fetch("http://192.168.0.102:9000/api/user/watchlist", requestOptions)
-    fetch("http://localhost:9000/api/user/getZtokens", requestOptions)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log('Fetched Watchlist Data:', data);
-        setWatchlist(data); // Set the fetched watchlist data
-        filterWatchlist(); // Apply initial filtering
-      })
-      .catch((error) => {
-        console.error('Error fetching watchlist data:', error);
-      });
-  }, []);
-
-  return (
-    <ScrollView>
-      <Text>{watchlist.ID}</Text>
-      <View style={styles.container}>
-        <View style={styles.headerContainer}>
-          <TouchableOpacity onPress={handleBack} style={styles.leftContainer}>
-            <Ionicons name="arrow-back-outline" size={24} color="black" marginLeft={-10} />
-          </TouchableOpacity>
-          <Text style={styles.backText}>Crypto Asset List</Text>
-          <TouchableOpacity onPress={handleFilter} style={styles.rightContainer}>
-            <Image source={require('../assets/filter.png')} style={styles.filterImage} />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.containerSearchBar}>
-          <TouchableOpacity onPress={handleSearchBarClick} style={styles.searchBar}>
-            <Ionicons name="search" size={24} color="black" style={styles.searchIcon} />
-            <TextInput
-              style={styles.input}
-              placeholder="Search..."
-              placeholderTextColor="gray"
-              selectionColor="black"
-              autoFocus={true}
-              onTouchStart={handleSearchBarClick}
-              onChangeText={(text) => setSearchQuery(text)}
-            />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.containerItem}>
-          {filteredWatchlist.length === 0 && searchQuery !== '' ? (
-            <Text style={styles.noDataMessage}>Data not found</Text>
-          ) : (
-            filteredWatchlist.map((item, index) => {
-              return (
-                // <AssetItem
-                //   key={index}
-                //   name2={item.InstrumentType}
-                //   name3={item.name3}
-                //   value={item.value}
-                //   decimalValue={item.decimalValue}
-                //   changePercentage={item.changePercentage}
-                //   onPress={() => navigation.navigate('AssetListDetails')}
-                //   onAdd={() => handleAddIconClick(item)}
-                //   showRemoveIcon={false}
-                //   showAddIcon={true}
-                // />
-                <AssetItem
-                  key={index}
-                  name2={item.InstrumentType}
-                  name3={item.UserID}
-                  onAdd={() => handleAddIconClick(item)}
-                  showRemoveIcon={false}
-                  showAddIcon={true}
-                />
-              );
-            })
-          )}
-        </View>
-      </View>
-
-      {/* Success Message Modal */}
-      <Modal isVisible={modalVisible}>
-        <View style={styles.modalContent}>
-          <Text style={styles.successMessage}>{successMessage}</Text>
-          <TouchableOpacity onPress={() => setModalVisible(false)}>
-            <Text style={styles.closeButton}>Close</Text>
-          </TouchableOpacity>
-        </View>
-      </Modal>
-    </ScrollView>
-  );
-};
 
 
 
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'flex-start',
-    paddingVertical: 30,
-    backgroundColor: '#f5f5f5',
-    marginTop: 10,
-  },
-  modalContent: {
-    backgroundColor: 'rgba(227, 233, 240, 1)',
-    padding: 20,
-    borderRadius: 10,
-    alignItems: 'center',
-  },
-  successMessage: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  closeButton: {
-    fontSize: 16,
-    backgroundColor: '#B7DDD2',
-    padding: 10,
-    borderRadius: 5,
-    margin: 10,
-  },
-  filterImage: {
-    width: 30,
-    height: 30,
-    marginLeft: 10,
-  },
-  headerContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 10,
-    width: '100%',
-  },
-  leftContainer: {
-    marginRight: 10,
-  },
-  backText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  rightContainer: {
-    marginLeft: 'auto',
-  },
-  containerSearchBar: {
-    padding: 10,
-    width: '100%',
-  },
-  searchBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#e0e0e0',
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    width: '100%',
-  },
-  searchIcon: {
-    marginRight: 10,
-  },
-  input: {
-    flex: 1,
-    fontSize: 16,
-    height: 40,
-    fontWeight: '500',
-    // borderColor: 'gray',   
-    // borderWidth: 1,          
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    borderRadius: 8,
-    color: 'black',
 
-  },
-  containerItem: {
-    flex: 1,
-    width: '100%',
-  },
-  noDataMessage: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    alignSelf: 'center',
-    marginTop: 20,
-    color: 'red',
-  },
-});
 
-export default SearchBarList;
 
-// SeeAllItems
+
+
+
+
+
+
+
+
+
+
+
+// // dashboard
+// import React, { useState, useEffect, useRef, useContext } from 'react';
+// import { View, Text, Image, TouchableOpacity, TextInput, Modal, Button, ScrollView } from 'react-native';
+// import { StyleSheet, SafeAreaView } from 'react-native';
+// import AssetDataContext from './AssetDataContext';
+// import Header from './Header';
+// import MyPortfolio from './MyPortfolio';
+// import Deposit from './Deposite';
+// import MyWatchList from './MyWatchList';
+// import CardItems from './CardItems';
+// import CriptoAssets from './CriptoAssets';
+// import ViewPortfolio from './ViewPortfolio';
+
+
+// import { useSelector } from 'react-redux';
+
+
+
+// const Dashboard = () => {
+
+//   const { token } = useSelector(state => state.auth)
+//   console.log("Dashboard", token)
+//   const [cardData, setCardData] = useState([
+
+//     { name: 'Crypto', value: '', changePercentage: '', color: '', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: "#C1C2EB" },
+//     { name: 'NSE', value: '', changePercentage: '', color: '', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: '#B7DDD2' },
+//     { name: 'BSE', value: '', changePercentage: '', color: '', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: "#C1C2EB" },
+//     { name: 'Commodity', value: '', changePercentage: '', color: '', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: '#B7DDD2' }
+//   ]);
+
+//   const { assetData, setAssetData } = useContext(AssetDataContext);
+//   const [watchlist, setWatchlist] = useState([]);
+//   // const [selectedCard, setSelectedCard] = useState('crypto');
+//   // const [selectedAsset, setSelectedAsset] = useState(null);
+//   const [selectedCard, setSelectedCard] = useState('Crypto');
+
+//   const [totalValues, setTotalValues] = useState({});
+
+//   const updateTotalValue = (category, totalValue) => {
+//     setTotalValues((prevTotalValues) => ({
+//       ...prevTotalValues,
+//       [category]: totalValue,
+//     }));
+//   };
+
+//   const updateChangePercentage = (category, changePercentage) => {
+//     setCardData((prevCardData) => {
+//       return prevCardData.map((item) => {
+//         if (item.name === category) {
+
+//           return { ...item, changePercentage };
+//         }
+//         return item;
+//       });
+//     });
+//   };
+
+
+
+//   // useEffect(() => {
+//   //   var myHeaders = new Headers();
+//   //   myHeaders.append("Authorization", `Bearer ${token}`);
+
+//   //   var requestOptions = {
+//   //     method: 'POST', //get
+//   //     headers: myHeaders,
+//   //     redirect: 'follow'
+//   //   };
+
+//   //   fetch("http://10.0.2.2:80/api/user/watchlist", requestOptions)
+//   //     .then(response => response.text())
+//   //     .then(result => console.log((JSON.parse(result))))    //after modification remove console place setassetdata
+//   //     .catch(error => console.log('this error', error));
+
+
+//   //   setAssetData([
+//   //     { name2: 'Crpto', name3: "BTC", value: "$30,618", decimalValue: ".60", changePercentage: "-7.90%", logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg' },
+//   //     { name2: 'nse', name3: "BTC", value: "$30,618", decimalValue: ".60", changePercentage: "+7.90%", logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg' },
+//   //     { name2: 'bse', name3: "BTC", value: "$30,618", decimalValue: ".60", changePercentage: "-7.90%", logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg' },
+//   //     { name2: 'comodity', name3: "BTC", value: "$30,618", decimalValue: ".60", changePercentage: "+7.90%", logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg' },
+//   //     { name2: 'tata', name3: "BTC", value: "$30,618", decimalValue: ".60", changePercentage: "+7.90%", logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg' },
+//   //     { name2: 'apple', name3: "BTC", value: "$30,618", decimalValue: ".60", changePercentage: "+7.90%", logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg' },
+//   //     { name2: 'tesla', name3: "BTC", value: "$30,618", decimalValue: ".60", changePercentage: "-7.90%", logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg' },
+//   //     { name2: 'twitter', name3: "BTC", value: "$30,618", decimalValue: ".60", changePercentage: "+7.90%", logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg' },
+//   //     { name2: 'facebook', name3: "BTC", value: "$30,618", decimalValue: ".60", changePercentage: "+7.90%", logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg' },
+//   //     { name2: 'google', name3: "BTC", value: "$30,618", decimalValue: ".60", changePercentage: "+7.90%", logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg' },
+
+//   //   ]);
+//   // }, []);
+
+
+//   useEffect(() => {
+//     const myHeaders = new Headers();
+//     myHeaders.append("Authorization", `Bearer ${token}`);
+
+//     const requestOptions = {
+//       method: 'POST',
+//       headers: myHeaders,
+//       redirect: 'follow',
+//     };
+
+//     // fetch("http://35.154.235.224:9000/api/user/watchlist", requestOptions)
+//     fetch("http://localhost:9000/api/user/getZtokens", requestOptions)
+//       .then(response => {
+//         if (!response.ok) {
+//           throw new Error(`Server response was not ok. Status: ${response.status}`);
+//         }
+//         return response.json(); // Parse the response as JSON
+//       })
+//       .then(data => {
+//         console.log('Watchlist data:', data);
+//         const validItems = data.filter(item => item.InstrumentId !== 0);
+//         return Promise.all(
+//           validItems.map(item =>
+//             fetch(`http://35.154.235.224:9000/api/instrument/details/${item.InstrumentId}`, requestOptions)
+//               .then(res => res.json())
+//           )
+//         );
+//       })
+//       // .then(detailsArray => {
+//       //   const transformedData = detailsArray.map((item, index) => ({
+//       //     name2: item.InstrumentType,
+//       //     name3: `ID: ${item.InstrumentId}`,
+//       //     value: item.value,
+//       //     decimalValue: item.decimalValue,
+//       //     changePercentage: item.changePercentage,
+//       //     logo: item.logo,
+//       //   }));
+//       //   setWatchlist(transformedData);
+//       //   setAssetData(transformedData);
+//       // })
+
+
+//       .catch(error => console.log('Error fetching watchlist:', error));
+//   }, []);
+
+
+
+
+//   // useEffect(() => {
+//   //   const myHeaders = new Headers();
+//   //   myHeaders.append("Authorization", `Bearer ${token}`);
+
+//   //   const requestOptions = {
+//   //     method: 'POST',
+//   //     headers: myHeaders,
+//   //     redirect: 'follow'
+//   //   };
+
+//   //   fetch("http://10.0.2.2:80/api/user/watchlist", requestOptions)
+//   //     // .then(response => response.json())
+//   //     .then(response => {
+//   //       if (!response.ok) {
+//   //         throw new Error(`Server response was not ok. Status: ${response.status}`);
+//   //       }
+//   //       return response.text();  // Get the raw response as text
+//   //     })
+//   //     .then(text => {
+//   //       console.log('Raw watchlist response:', text); // Print the raw response
+//   //       return JSON.parse(text); // Try to parse it as JSON
+//   //     })
+//   //     // .then(async data => {
+//   //     //   // Assume you have an endpoint like http://10.0.2.2:80/api/instrument/details/:id
+//   //     //   // which gives details for a specific instrument by its ID.
+//   //     //   const fetchDetailsPromises = data.map(item =>
+//   //     //     fetch(`http://10.0.2.2:80/api/instrument/details/${item.InstrumentId}`, requestOptions)
+//   //     //       .then(res => res.json())
+//   //     //   );
+
+//   //     //   const detailsArray = await Promise.all(fetchDetailsPromises);
+//   //     //   return data.map((item_1, index) => ({
+//   //     //     name2: item_1.InstrumentType,
+//   //     //     name3: `ID: ${item_1.InstrumentId}`,
+//   //     //     value: detailsArray[index].value,
+//   //     //     decimalValue: detailsArray[index].decimalValue,
+//   //     //     changePercentage: detailsArray[index].changePercentage,
+//   //     //     logo: detailsArray[index].logo
+//   //     //   }));
+//   //     // })
+
+//   //     .then(async data => {
+//   //       const validItems = data.filter(item => item.InstrumentId !== 0);
+
+//   //       const fetchDetailsPromises = validItems.map(item =>
+//   //         // fetch(`http://10.0.2.2:80/api/instrument/details/${item.InstrumentId}`, requestOptions)
+//   //         //   .then(res => res.text())
+//   //         //   .then(detailText => {
+//   //         //     console.log(`Raw detail for InstrumentId ${item.InstrumentId}:`, detailText);
+//   //         //     return JSON.parse(detailText);
+//   //         //   })
+//   //         fetch(`http://10.0.2.2:80/api/instrument/details/${item.InstrumentId}`, requestOptions)
+//   //           .then(res => res.text())
+//   //           .then(detailText => {
+//   //             console.log(`Raw detail for InstrumentId ${item.InstrumentId}:`, detailText);
+//   //             return JSON.parse(detailText);
+//   //           })
+//   //       );
+
+//   //       const detailsArray = await Promise.all(fetchDetailsPromises);
+//   //       return validItems.map((item_2, index) => ({
+//   //         name2: item_2.InstrumentType,
+//   //         name3: `ID: ${item_2.InstrumentId}`,
+//   //         value: detailsArray[index].value,
+//   //         decimalValue: detailsArray[index].decimalValue,
+//   //         changePercentage: detailsArray[index].changePercentage,
+//   //         logo: detailsArray[index].logo
+//   //       }));
+//   //     })
+
+//   //     .then(transformedData => {
+//   //       setWatchlist(transformedData);
+//   //       setAssetData(transformedData); // Also set the fetched data to the assetData context
+//   //     })
+//   //     .catch(error => console.log('Error fetching watchlist:', error));
+//   // }, []);
+
+
+
+
+
+//   //for scroll bottom minus icon
+
+//   const scrollViewRef = useRef(null);
+
+//   const scrollToBottom = () => {
+//     scrollViewRef.current.scrollToEnd({ animated: true });
+//   };
+
+
+//   return (
+//     <SafeAreaView style={{ flex: 1 }}>
+//       <ScrollView ref={scrollViewRef} style={styles.root}>
+//         <Header assetData={assetData} />
+//         <MyPortfolio />
+//         <Deposit />
+//         <MyWatchList />
+//         <View style={styles.container5}>
+//           {/* {cardData.map((item, index) => {
+//             const totalValue = totalValues[item.name] || ''; // Get the total value from the state
+//             return (
+//               <CardItems
+//                 key={index}
+//                 name={item.name}
+//                 symbl={item.symbl}
+//                 value={totalValue}
+//                 // value={item.name === selectedCard ? totalValues[selectedCard] || '' : ''}
+//                 changePercentage={item.changePercentage}
+//                 color={item.backgroundColor}
+//                 onClick={() => setSelectedCard(item.name)}
+//               />
+//             );
+//           })} */}
+//           {cardData.map((item, index) => {
+//             const totalValue = totalValues[item.name] || '';
+//             return (
+//               <CardItems
+//                 key={index}
+//                 name={item.name}
+//                 symbl={item.symbl}
+//                 value={totalValue}
+//                 changePercentage={item.changePercentage}
+//                 color={item.backgroundColor}
+//                 onClick={() => setSelectedCard(item.name)}
+//               />
+//             );
+//           })}
+//         </View>
+//         <CriptoAssets
+//           onScrollToBottom={scrollToBottom}
+//           data={watchlist}
+//           assetData={assetData}
+//         >
+//           <ViewPortfolio
+//             assetData={assetData}
+//             selectedCard={selectedCard}
+//             updateTotalValue={updateTotalValue}
+//             updateChangePercentage={updateChangePercentage}
+//           />
+//         </CriptoAssets>
+//       </ScrollView>
+//     </SafeAreaView>
+//   );
+// };
+
+
+// //searchbarlist
+
+// // import React, { useContext, useState, useEffect } from 'react';
+// // import { View, TextInput, Text, TouchableOpacity, StyleSheet, Image, ScrollView } from 'react-native';
+// // import { useNavigation } from '@react-navigation/native';
+// // import { Ionicons } from '@expo/vector-icons';
+// // import AssetItem from './AssetItem';
+// // import AssetDataContext from './AssetDataContext';
+// // import Modal from 'react-native-modal';
+
+// // const SearchBarList = ({ route }) => {
+// //   const { assetData = [] } = route?.params || {};
+// //   const navigation = useNavigation();
+// //   const { addToWatchlist } = useContext(AssetDataContext);
+
+// //   const [modalVisible, setModalVisible] = useState(false);
+// //   const [successMessage, setSuccessMessage] = useState('');
+// //   const [searchQuery, setSearchQuery] = useState('');
+// //   const [filteredAssetData, setFilteredAssetData] = useState(assetData);
+
+// //   const handleBack = () => {
+// //     navigation.goBack();
+// //   };
+
+// //   const handleFilter = () => {
+// //     // Handle filter functionality here
+// //   };
+
+// //   const handleSearchBarClick = () => {
+// //     // Open keyboard or perform additional actions
+// //   };
+
+// //   const filterAssets = () => {
+// //     const trimmedQuery = searchQuery.replace(/\s+/g, '').toLowerCase();
+// //     const filteredAssets = assetData.filter((item) =>
+// //       item.name2.replace(/\s+/g, '').toLowerCase().includes(trimmedQuery)
+// //     );
+// //     setFilteredAssetData(filteredAssets);
+// //   };
+
+// //   const handleAddIconClick = (item) => {
+// //     addToWatchlist(item);
+// //     setSuccessMessage('Added to watchlist successfully');
+
+// //     // Open the modal
+// //     setModalVisible(true);
+
+// //     // Automatically close the modal after 3 seconds
+// //     setTimeout(() => {
+// //       setModalVisible(false);
+// //       setSuccessMessage('');
+// //     }, 3000);
+// //   };
+
+// //   useEffect(() => {
+// //     filterAssets();
+// //   }, [searchQuery]);
+
+// //   return (
+// //     <ScrollView>
+// //       <View style={styles.container}>
+// //         <View style={styles.headerContainer}>
+// //           <TouchableOpacity onPress={handleBack} style={styles.leftContainer}>
+// //             <Ionicons name="arrow-back-outline" size={24} color="black" marginLeft={-10} />
+// //           </TouchableOpacity>
+// //           <Text style={styles.backText}>Crypto Asset List</Text>
+// //           <TouchableOpacity onPress={handleFilter} style={styles.rightContainer}>
+// //             <Image source={require('../assets/filter.png')} style={styles.filterImage} />
+// //           </TouchableOpacity>
+// //         </View>
+// //         <View style={styles.containerSearchBar}>
+// //           <TouchableOpacity onPress={handleSearchBarClick} style={styles.searchBar}>
+// //             <Ionicons name="search" size={24} color="black" style={styles.searchIcon} />
+// //             <TextInput
+// //               style={styles.input}
+// //               placeholder="Search..."
+// //               placeholderTextColor="gray"
+// //               selectionColor="black"
+// //               autoFocus={true}
+// //               onTouchStart={handleSearchBarClick}
+// //               onChangeText={(text) => setSearchQuery(text)}
+// //             />
+// //           </TouchableOpacity>
+// //         </View>
+// //         <View style={styles.containerItem}>
+// //           {filteredAssetData.length === 0 && searchQuery !== '' ? (
+// //             <Text style={styles.noDataMessage}>Data not found</Text>
+// //           ) : (
+// //             filteredAssetData.map((item, index) => {
+// //               return (
+// //                 <AssetItem
+// //                   key={index}
+// //                   name2={item.name2}
+// //                   name3={item.name3}
+// //                   value={item.value}
+// //                   decimalValue={item.decimalValue}
+// //                   changePercentage={item.changePercentage}
+// //                   onPress={() => navigation.navigate('AssetListDetails')}
+// //                   onAdd={() => handleAddIconClick(item)}
+// //                   showRemoveIcon={false}
+// //                   showAddIcon={true}
+// //                 />
+// //               );
+// //             })
+// //           )}
+// //         </View>
+// //       </View>
+
+// //       {/* Success Message Modal */}
+// //       <Modal isVisible={modalVisible}>
+// //         <View style={styles.modalContent}>
+// //           <Text style={styles.successMessage}>{successMessage}</Text>
+// //           <TouchableOpacity onPress={() => setModalVisible(false)}>
+// //             <Text style={styles.closeButton}>Close</Text>
+// //           </TouchableOpacity>
+// //         </View>
+// //       </Modal>
+// //     </ScrollView>
+// //   );
+// // };
+
+
 // import React, { useContext, useState, useEffect } from 'react';
-// import {
-//   View,
-//   Text,
-//   TouchableOpacity,
-//   ScrollView,
-//   Image,
-//   ActivityIndicator,
-//   StyleSheet,
-// } from 'react-native';
+// import { View, TextInput, Text, TouchableOpacity, StyleSheet, Image, ScrollView } from 'react-native';
+// import { useNavigation } from '@react-navigation/native';
+// import { Ionicons } from '@expo/vector-icons';
+// import AssetItem from './AssetItem';
+// import AssetDataContext from './AssetDataContext';
+// import Modal from 'react-native-modal';
+// import SeeAllItems from './SeeAllItems';
+
+// const SearchBarList = () => {
+//   const navigation = useNavigation();
+//   const { addToWatchlist } = useContext(AssetDataContext);
+
+//   const [modalVisible, setModalVisible] = useState(false);
+//   const [successMessage, setSuccessMessage] = useState('');
+//   const [searchQuery, setSearchQuery] = useState('');
+//   const [watchlist, setWatchlist] = useState([]); // Store watchlist data
+//   const [filteredWatchlist, setFilteredWatchlist] = useState([]); // Filtered watchlist data
+
+//   const handleBack = () => {
+//     navigation.goBack();
+//   };
+
+//   const handleFilter = () => {
+//     // Handle filter functionality here
+//   };
+
+//   const handleSearchBarClick = () => {
+//     // Open keyboard or perform additional actions
+//   };
+
+//   const filterWatchlist = () => {
+//     const trimmedQuery = searchQuery.replace(/\s+/g, '').toLowerCase();
+//     const filteredAssets = watchlist.filter((item) =>
+//       item.name2.replace(/\s+/g, '').toLowerCase().includes(trimmedQuery)
+//     );
+//     setFilteredWatchlist(filteredAssets);
+//   };
+
+//   const handleAddIconClick = (item) => {
+//     addToWatchlist(item);
+//     setSuccessMessage('Added to watchlist successfully');
+
+//     // Open the modal
+//     setModalVisible(true);
+
+//     // Automatically close the modal after 3 seconds
+//     setTimeout(() => {
+//       setModalVisible(false);
+//       setSuccessMessage('');
+//     }, 3000);
+//   };
+
+//   // useEffect(() => {
+//   //   // Fetch watchlist data from your API here
+//   //   // Replace the URL with your actual API endpoint
+//   //   fetch("YOUR_API_ENDPOINT_HERE")
+//   //     .then((response) => response.json())
+//   //     .then((data) => {
+//   //       console.log('Fetched Watchlist Data:', data);
+//   //       setWatchlist(data); // Set the fetched watchlist data
+//   //       filterWatchlist(); // Apply initial filtering
+//   //     })
+//   //     .catch((error) => {
+//   //       console.error('Error fetching watchlist data:', error);
+//   //     });
+//   // }, []);
+
+//   // useEffect(() => {
+//   //   filterWatchlist();
+//   // }, [searchQuery]);
+
+
+//   useEffect(() => {
+//     const requestOptions = {
+//       method: 'POST', // Adjust the method as needed (e.g., 'POST', 'PUT', etc.)
+//       headers: {
+//         // 'Authorization': 'Bearer YOUR_ACCESS_TOKEN',
+//         'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySUQiOiJJVS1CUVRZNSIsImV4cCI6MTY5OTI3NTQxNCwiaXNzIjoiVGVzdE5hbWUifQ.nxgIOKnasa6THpg1Lj4EZGPxDEmvRALiQIEUxjB1ELk',
+//         'Content-Type': 'application/json', // Include other headers if required
+//       },
+//     };
+
+//     // Fetch the watchlist data using the requestOptions
+//     // fetch("http://192.168.0.102:9000/api/user/watchlist", requestOptions)
+//     fetch("http://localhost:9000/api/user/getZtokens", requestOptions)
+//       .then((response) => response.json())
+//       .then((data) => {
+//         console.log('Fetched Watchlist Data:', data);
+//         setWatchlist(data); // Set the fetched watchlist data
+//         filterWatchlist(); // Apply initial filtering
+//       })
+//       .catch((error) => {
+//         console.error('Error fetching watchlist data:', error);
+//       });
+//   }, []);
+
+//   return (
+//     <ScrollView>
+//       <Text>{watchlist.ID}</Text>
+//       <View style={styles.container}>
+//         <View style={styles.headerContainer}>
+//           <TouchableOpacity onPress={handleBack} style={styles.leftContainer}>
+//             <Ionicons name="arrow-back-outline" size={24} color="black" marginLeft={-10} />
+//           </TouchableOpacity>
+//           <Text style={styles.backText}>Crypto Asset List</Text>
+//           <TouchableOpacity onPress={handleFilter} style={styles.rightContainer}>
+//             <Image source={require('../assets/filter.png')} style={styles.filterImage} />
+//           </TouchableOpacity>
+//         </View>
+//         <View style={styles.containerSearchBar}>
+//           <TouchableOpacity onPress={handleSearchBarClick} style={styles.searchBar}>
+//             <Ionicons name="search" size={24} color="black" style={styles.searchIcon} />
+//             <TextInput
+//               style={styles.input}
+//               placeholder="Search..."
+//               placeholderTextColor="gray"
+//               selectionColor="black"
+//               autoFocus={true}
+//               onTouchStart={handleSearchBarClick}
+//               onChangeText={(text) => setSearchQuery(text)}
+//             />
+//           </TouchableOpacity>
+//         </View>
+//         <View style={styles.containerItem}>
+//           {filteredWatchlist.length === 0 && searchQuery !== '' ? (
+//             <Text style={styles.noDataMessage}>Data not found</Text>
+//           ) : (
+//             filteredWatchlist.map((item, index) => {
+//               return (
+//                 // <AssetItem
+//                 //   key={index}
+//                 //   name2={item.InstrumentType}
+//                 //   name3={item.name3}
+//                 //   value={item.value}
+//                 //   decimalValue={item.decimalValue}
+//                 //   changePercentage={item.changePercentage}
+//                 //   onPress={() => navigation.navigate('AssetListDetails')}
+//                 //   onAdd={() => handleAddIconClick(item)}
+//                 //   showRemoveIcon={false}
+//                 //   showAddIcon={true}
+//                 // />
+//                 <AssetItem
+//                   key={index}
+//                   name2={item.InstrumentType}
+//                   name3={item.UserID}
+//                   onAdd={() => handleAddIconClick(item)}
+//                   showRemoveIcon={false}
+//                   showAddIcon={true}
+//                 />
+//               );
+//             })
+//           )}
+//         </View>
+//       </View>
+
+//       {/* Success Message Modal */}
+//       <Modal isVisible={modalVisible}>
+//         <View style={styles.modalContent}>
+//           <Text style={styles.successMessage}>{successMessage}</Text>
+//           <TouchableOpacity onPress={() => setModalVisible(false)}>
+//             <Text style={styles.closeButton}>Close</Text>
+//           </TouchableOpacity>
+//         </View>
+//       </Modal>
+//     </ScrollView>
+//   );
+// };
+
+
+
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     alignItems: 'flex-start',
+//     paddingVertical: 30,
+//     backgroundColor: '#f5f5f5',
+//     marginTop: 10,
+//   },
+//   modalContent: {
+//     backgroundColor: 'rgba(227, 233, 240, 1)',
+//     padding: 20,
+//     borderRadius: 10,
+//     alignItems: 'center',
+//   },
+//   successMessage: {
+//     fontSize: 16,
+//     fontWeight: 'bold',
+//     marginBottom: 10,
+//   },
+//   closeButton: {
+//     fontSize: 16,
+//     backgroundColor: '#B7DDD2',
+//     padding: 10,
+//     borderRadius: 5,
+//     margin: 10,
+//   },
+//   filterImage: {
+//     width: 30,
+//     height: 30,
+//     marginLeft: 10,
+//   },
+//   headerContainer: {
+//     flexDirection: 'row',
+//     alignItems: 'center',
+//     paddingHorizontal: 10,
+//     width: '100%',
+//   },
+//   leftContainer: {
+//     marginRight: 10,
+//   },
+//   backText: {
+//     fontSize: 20,
+//     fontWeight: 'bold',
+//   },
+//   rightContainer: {
+//     marginLeft: 'auto',
+//   },
+//   containerSearchBar: {
+//     padding: 10,
+//     width: '100%',
+//   },
+//   searchBar: {
+//     flexDirection: 'row',
+//     alignItems: 'center',
+//     backgroundColor: '#e0e0e0',
+//     borderRadius: 8,
+//     paddingHorizontal: 10,
+//     width: '100%',
+//   },
+//   searchIcon: {
+//     marginRight: 10,
+//   },
+//   input: {
+//     flex: 1,
+//     fontSize: 16,
+//     height: 40,
+//     fontWeight: '500',
+//     // borderColor: 'gray',
+//     // borderWidth: 1,
+//     paddingVertical: 10,
+//     paddingHorizontal: 15,
+//     borderRadius: 8,
+//     color: 'black',
+
+//   },
+//   containerItem: {
+//     flex: 1,
+//     width: '100%',
+//   },
+//   noDataMessage: {
+//     fontSize: 16,
+//     fontWeight: 'bold',
+//     alignSelf: 'center',
+//     marginTop: 20,
+//     color: 'red',
+//   },
+// });
+
+// export default SearchBarList;
+
+// // SeeAllItems
+// // import React, { useContext, useState, useEffect } from 'react';
+// // import {
+// //   View,
+// //   Text,
+// //   TouchableOpacity,
+// //   ScrollView,
+// //   Image,
+// //   ActivityIndicator,
+// //   StyleSheet,
+// // } from 'react-native';
+// // import { Ionicons } from '@expo/vector-icons';
+// // import AssetItem from './AssetItem';
+// // import SuccessModal from './SuccessModal';
+// // import DeleteConfirmationModal from './DeleteConfirmationModal';
+// // import AssetDataContext from '../screens/AssetDataContext';
+
+// // const SeeAllItems = ({ navigation }) => {
+// //   const {assetData, watchlist, removeFromWatchlist } = useContext(AssetDataContext);
+
+// //   // State for fetched data
+// //   const [fetchedData, setFetchedData] = useState([]);
+// //   const [isLoading, setIsLoading] = useState(true);
+// //   const [error, setError] = useState(null);
+
+// //   const [successMessage, setSuccessMessage] = useState('');
+// //   const [isSuccessModalVisible, setSuccessModalVisible] = useState(false);
+// //   const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
+// //   const [itemToDelete, setItemToDelete] = useState(null);
+
+// //   const filteredAssetData = assetData.filter((item) =>
+// //     watchlist.some((watchlistItem) => watchlistItem.name2 === item.name2)
+// //   );
+
+
+// //   useEffect(() => {
+// //     const fetchData = async () => {
+// //       try {
+// //         setIsLoading(true);
+// //         const detailsArray = await fetchDetails(); // You'll need to implement this or import from elsewhere
+// //         const data = watchlist.map((item, index) => ({
+// //           name2: item.name2,
+// //           name3: `ID: ${item.InstrumentId}`,
+// //           value: detailsArray[index].value,
+// //           decimalValue: detailsArray[index].decimalValue,
+// //           changePercentage: detailsArray[index].changePercentage,
+// //           logo: detailsArray[index].logo,
+// //         }));
+// //         setFetchedData(data);
+// //       } catch (e) {
+// //         setError(e.message);
+// //       } finally {
+// //         setIsLoading(false);
+// //       }
+// //     };
+
+// //     fetchData();
+// //   }, []);
+
+// //   const handleBack = () => {
+// //     navigation.navigate('Portfolio');
+// //   };
+
+// //   const handleFilter = () => {
+// //     // Handle filter functionality here
+// //   };
+
+// //   const handleSearchIconClick = () => {
+// //     navigation.navigate('SearchBarList', { assetData: assetData });
+// //   };
+
+// //   const showDeleteConfirmation = (item) => {
+// //     setItemToDelete(item);
+// //     setDeleteConfirmationVisible(true);
+// //   };
+
+// //   const confirmDelete = () => {
+// //     if (itemToDelete) {
+// //       removeFromWatchlist(itemToDelete);
+// //       showSuccessModal('Deleted Successfully');
+// //       setDeleteConfirmationVisible(false);
+// //     }
+// //   };
+
+// //   const cancelDelete = () => {
+// //     setItemToDelete(null);
+// //     setDeleteConfirmationVisible(false);
+// //   };
+
+// //   const showSuccessModal = (message) => {
+// //     setSuccessMessage(message);
+// //     setSuccessModalVisible(true);
+
+// //     setTimeout(() => {
+// //       setSuccessModalVisible(false);
+// //       setSuccessMessage('');
+// //     }, 3000);
+// //   };
+// //   if (isLoading) {
+// //     return <ActivityIndicator size="large" color="#0000ff" />;
+// //   }
+
+// //   if (error) {
+// //     return (
+// //       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+// //         <Text>Error fetching data!</Text>
+// //       </View>
+// //     );
+// //   }
+
+// //   return (
+// //     <ScrollView>
+// //       <View style={styles.container}>
+// //         <View style={styles.headerContainer}>
+// //           <TouchableOpacity onPress={handleBack} style={styles.leftContainer}>
+// //             <Ionicons name="arrow-back-outline" size={24} color="black" marginLeft={-10} />
+// //           </TouchableOpacity>
+// //           <Text style={styles.title}>My Watch List</Text>
+// //           <View style={styles.searchFilterContainer}>
+// //             <TouchableOpacity onPress={handleSearchIconClick} style={styles.iconContainer}>
+// //               <Image
+// //                 style={styles.icon}
+// //                 source={require('../assets/mask-group2.svg')}
+// //               />
+// //             </TouchableOpacity>
+// //             <TouchableOpacity onPress={handleFilter} style={styles.iconContainer}>
+// //               <Image
+// //                 style={styles.icon}
+// //                 source={require('../assets/filter.png')}
+// //               />
+// //             </TouchableOpacity>
+// //           </View>
+// //         </View>
+
+// //         <View style={styles.containerItem}>
+// //           {filteredAssetData.map((item, index) => (
+// //             <AssetItem
+// //               key={index}
+// //               name2={item.name2}
+// //               name3={item.name3}
+// //               value={item.value}
+// //               decimalValue={item.decimalValue}
+// //               changePercentage={item.changePercentage}
+// //               onPress={() => navigation.navigate('ListItemDetails')}
+// //               onRemove={() => showDeleteConfirmation(item)}
+// //               showRemoveIcon={true}
+// //               showAddIcon={false}
+// //             />
+// //           ))}
+// //         </View>
+
+// //         <DeleteConfirmationModal
+// //           visible={deleteConfirmationVisible}
+// //           onConfirm={confirmDelete}
+// //           onCancel={cancelDelete}
+// //         />
+
+// //         <SuccessModal
+// //           message={successMessage}
+// //           visible={isSuccessModalVisible}
+// //           onClose={() => setSuccessModalVisible(false)}
+// //         />
+// //       </View>
+// //     </ScrollView>
+// //   );
+// // };
+
+// // const styles = StyleSheet.create({
+// //   container: {
+// //     flex: 1,
+// //     paddingVertical: 30,
+// //     backgroundColor: '#f5f5f5',
+// //     marginTop: 10,
+// //   },
+// //   searchFilterContainer: {
+// //     flexDirection: 'row',
+// //     alignItems: 'center',
+// //     marginLeft: 'auto',
+// //   },
+// //   iconContainer: {
+// //     marginLeft: 10,
+// //   },
+// //   icon: {
+// //     width: 30,
+// //     height: 30,
+// //   },
+// //   headerContainer: {
+// //     flexDirection: 'row',
+// //     alignItems: 'center',
+// //     paddingHorizontal: 10,
+// //     width: '100%',
+// //   },
+// //   leftContainer: {
+// //     marginRight: 10,
+// //   },
+// //   title: {
+// //     fontSize: 20,
+// //     fontWeight: 'bold',
+// //   },
+// //   containerItem: {
+// //     flex: 1,
+// //     width: '100%',
+// //   },
+// // });
+
+// // export default SeeAllItems;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// //before api
+// import React, { useContext, useState, useEffect } from 'react';
+// import { View, Text, TouchableOpacity, ScrollView, Image, StyleSheet } from 'react-native';
 // import { Ionicons } from '@expo/vector-icons';
 // import AssetItem from './AssetItem';
 // import SuccessModal from './SuccessModal';
@@ -685,13 +1157,7 @@ export default SearchBarList;
 // import AssetDataContext from '../screens/AssetDataContext';
 
 // const SeeAllItems = ({ navigation }) => {
-//   const {assetData, watchlist, removeFromWatchlist } = useContext(AssetDataContext);
-
-//   // State for fetched data
-//   const [fetchedData, setFetchedData] = useState([]);
-//   const [isLoading, setIsLoading] = useState(true);
-//   const [error, setError] = useState(null);
-
+//   const { assetData, watchlist, removeFromWatchlist } = useContext(AssetDataContext);
 //   const [successMessage, setSuccessMessage] = useState('');
 //   const [isSuccessModalVisible, setSuccessModalVisible] = useState(false);
 //   const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
@@ -700,31 +1166,6 @@ export default SearchBarList;
 //   const filteredAssetData = assetData.filter((item) =>
 //     watchlist.some((watchlistItem) => watchlistItem.name2 === item.name2)
 //   );
-
-
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       try {
-//         setIsLoading(true);
-//         const detailsArray = await fetchDetails(); // You'll need to implement this or import from elsewhere
-//         const data = watchlist.map((item, index) => ({
-//           name2: item.name2,
-//           name3: `ID: ${item.InstrumentId}`,
-//           value: detailsArray[index].value,
-//           decimalValue: detailsArray[index].decimalValue,
-//           changePercentage: detailsArray[index].changePercentage,
-//           logo: detailsArray[index].logo,
-//         }));
-//         setFetchedData(data);
-//       } catch (e) {
-//         setError(e.message);
-//       } finally {
-//         setIsLoading(false);
-//       }
-//     };
-
-//     fetchData();
-//   }, []);
 
 //   const handleBack = () => {
 //     navigation.navigate('Portfolio');
@@ -765,17 +1206,6 @@ export default SearchBarList;
 //       setSuccessMessage('');
 //     }, 3000);
 //   };
-//   if (isLoading) {
-//     return <ActivityIndicator size="large" color="#0000ff" />;
-//   }
-
-//   if (error) {
-//     return (
-//       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-//         <Text>Error fetching data!</Text>
-//       </View>
-//     );
-//   }
 
 //   return (
 //     <ScrollView>
@@ -803,17 +1233,26 @@ export default SearchBarList;
 
 //         <View style={styles.containerItem}>
 //           {filteredAssetData.map((item, index) => (
+//             // <AssetItem
+//             //   key={index}
+//             //   name2={item.name2}
+//             //   name3={item.name3}
+//             //   value={item.value}
+//             //   decimalValue={item.decimalValue}
+//             //   changePercentage={item.changePercentage}
+//             //   onPress={() => navigation.navigate('ListItemDetails')}
+//             //   onRemove={() => showDeleteConfirmation(item)}
+//             //   showRemoveIcon={true}
+//             //   showAddIcon={false}
+//             // />
 //             <AssetItem
 //               key={index}
-//               name2={item.name2}
-//               name3={item.name3}
-//               value={item.value}
-//               decimalValue={item.decimalValue}
-//               changePercentage={item.changePercentage}
+//               name2={item.InstrumentType}
+//               name3={item.UserID}
 //               onPress={() => navigation.navigate('ListItemDetails')}
 //               onRemove={() => showDeleteConfirmation(item)}
-//               showRemoveIcon={true}
-//               showAddIcon={false}
+//               showRemoveIcon={false}
+//               showAddIcon={true}
 //             />
 //           ))}
 //         </View>
@@ -888,488 +1327,205 @@ export default SearchBarList;
 
 
 
-
-
-
-
-
-
-
-
-
-//before api
-import React, { useContext, useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, Image, StyleSheet } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import AssetItem from './AssetItem';
-import SuccessModal from './SuccessModal';
-import DeleteConfirmationModal from './DeleteConfirmationModal';
-import AssetDataContext from '../screens/AssetDataContext';
-
-const SeeAllItems = ({ navigation }) => {
-  const { assetData, watchlist, removeFromWatchlist } = useContext(AssetDataContext);
-  const [successMessage, setSuccessMessage] = useState('');
-  const [isSuccessModalVisible, setSuccessModalVisible] = useState(false);
-  const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
-  const [itemToDelete, setItemToDelete] = useState(null);
-
-  const filteredAssetData = assetData.filter((item) =>
-    watchlist.some((watchlistItem) => watchlistItem.name2 === item.name2)
-  );
-
-  const handleBack = () => {
-    navigation.navigate('Portfolio');
-  };
-
-  const handleFilter = () => {
-    // Handle filter functionality here
-  };
-
-  const handleSearchIconClick = () => {
-    navigation.navigate('SearchBarList', { assetData: assetData });
-  };
-
-  const showDeleteConfirmation = (item) => {
-    setItemToDelete(item);
-    setDeleteConfirmationVisible(true);
-  };
-
-  const confirmDelete = () => {
-    if (itemToDelete) {
-      removeFromWatchlist(itemToDelete);
-      showSuccessModal('Deleted Successfully');
-      setDeleteConfirmationVisible(false);
-    }
-  };
-
-  const cancelDelete = () => {
-    setItemToDelete(null);
-    setDeleteConfirmationVisible(false);
-  };
-
-  const showSuccessModal = (message) => {
-    setSuccessMessage(message);
-    setSuccessModalVisible(true);
-
-    setTimeout(() => {
-      setSuccessModalVisible(false);
-      setSuccessMessage('');
-    }, 3000);
-  };
-
-  return (
-    <ScrollView>
-      <View style={styles.container}>
-        <View style={styles.headerContainer}>
-          <TouchableOpacity onPress={handleBack} style={styles.leftContainer}>
-            <Ionicons name="arrow-back-outline" size={24} color="black" marginLeft={-10} />
-          </TouchableOpacity>
-          <Text style={styles.title}>My Watch List</Text>
-          <View style={styles.searchFilterContainer}>
-            <TouchableOpacity onPress={handleSearchIconClick} style={styles.iconContainer}>
-              <Image
-                style={styles.icon}
-                source={require('../assets/mask-group2.svg')}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={handleFilter} style={styles.iconContainer}>
-              <Image
-                style={styles.icon}
-                source={require('../assets/filter.png')}
-              />
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        <View style={styles.containerItem}>
-          {filteredAssetData.map((item, index) => (
-            // <AssetItem
-            //   key={index}
-            //   name2={item.name2}
-            //   name3={item.name3}
-            //   value={item.value}
-            //   decimalValue={item.decimalValue}
-            //   changePercentage={item.changePercentage}
-            //   onPress={() => navigation.navigate('ListItemDetails')}
-            //   onRemove={() => showDeleteConfirmation(item)}
-            //   showRemoveIcon={true}
-            //   showAddIcon={false}
-            // />
-            <AssetItem
-              key={index}
-              name2={item.InstrumentType}
-              name3={item.UserID}
-              onPress={() => navigation.navigate('ListItemDetails')}
-              onRemove={() => showDeleteConfirmation(item)}
-              showRemoveIcon={false}
-              showAddIcon={true}
-            />
-          ))}
-        </View>
-
-        <DeleteConfirmationModal
-          visible={deleteConfirmationVisible}
-          onConfirm={confirmDelete}
-          onCancel={cancelDelete}
-        />
-
-        <SuccessModal
-          message={successMessage}
-          visible={isSuccessModalVisible}
-          onClose={() => setSuccessModalVisible(false)}
-        />
-      </View>
-    </ScrollView>
-  );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingVertical: 30,
-    backgroundColor: '#f5f5f5',
-    marginTop: 10,
-  },
-  searchFilterContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginLeft: 'auto',
-  },
-  iconContainer: {
-    marginLeft: 10,
-  },
-  icon: {
-    width: 30,
-    height: 30,
-  },
-  headerContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 10,
-    width: '100%',
-  },
-  leftContainer: {
-    marginRight: 10,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  containerItem: {
-    flex: 1,
-    width: '100%',
-  },
-});
-
-export default SeeAllItems;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import React, { useContext, useState, useEffect } from 'react';
-// import AssetDataContext from '../screens/AssetDataContext';
-// import { View, Text, TouchableOpacity, ScrollView, Image, StyleSheet } from 'react-native';
-// import { Ionicons } from '@expo/vector-icons';
-// import AssetItem from './AssetItem';
-// import SuccessModal from './SuccessModal'; // Import the SuccessModal component
-// // import SuccessMessage from './SuccessMessage';
-// import DeleteConfirmationModal from './DeleteConfirmationModal';
-
-// const SeeAllItems = ({ navigation, props }) => {
-//   const { assetData, watchlist } = useContext(AssetDataContext);
-//   const { removeFromWatchlist } = useContext(AssetDataContext);
-//   const [successMessage, setSuccessMessage] = useState('');
-//   const [isSuccessModalVisible, setSuccessModalVisible] = useState(false); // State to control the visibility of the success modal
-
-//   const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false); // State for showing delete confirmation modal
-//   const [itemToDelete, setItemToDelete] = useState(null);
-
-//   const filteredAssetData = assetData.filter((item) =>
-//     watchlist.some((watchlistItem) => watchlistItem.name2 === item.name2)
-//   );
-
-//   const handleBack = () => {
-//     navigation.navigate('Portfolio');
-//   };
-
-//   const handleFilter = () => {
-//     // Handle filter functionality here
-//   };
-
-//   const handleSearchIconClick = () => {
-//     navigation.navigate('SearchBarList', { assetData: assetData });
-//   };
-
-//   const showDeleteConfirmation = (item) => {
-//     setItemToDelete(item);
-//     setDeleteConfirmationVisible(true);
-//   };
-
-//   const confirmDelete = () => {
-//     if (itemToDelete) {
-//       removeFromWatchlist(itemToDelete);
-//       showSuccessModal('Deleted Successfully');
-//       setDeleteConfirmationVisible(false); // Close the delete confirmation modal
-//     }
-//   };
-
-//   const cancelDelete = () => {
-//     setItemToDelete(null);
-//     setDeleteConfirmationVisible(false);
-//   };
-
-//   // Function to display success messages as a modal
-//   const showSuccessModal = (message) => {
-//     setSuccessMessage(message);
-//     setSuccessModalVisible(true);
-
-//     // Automatically close the modal after 3 seconds
-//     setTimeout(() => {
-//       setSuccessModalVisible(false);
-//       setSuccessMessage('');
-//     }, 3000);
-//   };
-
-//   return (
-//     <ScrollView>
-//       <View style={styles.container}>
-//         <View style={styles.headerContainer}>
-//           <TouchableOpacity onPress={handleBack} style={styles.leftContainer}>
-//             <Ionicons name="arrow-back-outline" size={24} color="black" marginLeft={-10} />
-//           </TouchableOpacity>
-//           <Text style={styles.title}>My Watch List</Text>
-//           <View style={styles.searchFilterContainer}>
-//             <TouchableOpacity onPress={handleSearchIconClick} style={styles.searchIcon}>
-//               <Image
-//                 style={styles.rightImage}
-//                 source={require("../assets/mask-group2.svg")} // Change to your search icon image source
-//               />
-//             </TouchableOpacity>
-//             <TouchableOpacity onPress={handleFilter} style={styles.filterIcon}>
-//               <Image
-//                 source={require('../assets/filter.png')}
-//                 style={styles.filterImage}
-//               />
-//             </TouchableOpacity>
-//           </View>
-//         </View>
-
-//         <View style={styles.containerItem}>
-//           {filteredAssetData.map((item, index) => (
-//             <AssetItem
-//               key={index}
-//               name2={item.name2}
-//               name3={item.name3}
-//               value={item.value}
-//               decimalValue={item.decimalValue}
-//               changePercentage={item.changePercentage}
-//               onPress={() => navigation.navigate('ListItemDeatails')}
-//               onRemove={() => showDeleteConfirmation(item)}
-//               showRemoveIcon={true}
-//               showAddIcon={false}
-//             />
-//           ))}
-//         </View>
-
-//         <DeleteConfirmationModal
-//           visible={deleteConfirmationVisible}
-//           onConfirm={confirmDelete}
-//           onCancel={cancelDelete}
-//         />
-
-//         <SuccessModal // Add the SuccessModal component
-//           message={successMessage}
-//           visible={isSuccessModalVisible}
-//           onClose={() => setSuccessModalVisible(false)}
-//         />
-//       </View>
-//     </ScrollView>
-//   );
-// };
-
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     alignItems: 'row',
-//     marginTop:10,
-//     paddingVertical: 30,
-//     backgroundColor: '#f5f5f5',
-//     //backgroundColor: 'rgba(227, 233, 240, 1)',
-//   },
-//   searchFilterContainer: {
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     marginLeft: 'auto',
-//   },
-
-
-//   filterImage:{
-//     width: 30,
-//     height: 30,
-//     marginLeft: 10,
-//   },
-
-
-//   rightImage:{
-//     width: 30,
-//     height: 30,
-//     marginLeft: 10,
-//   },
-//   headerContainer: {
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     paddingHorizontal: 10,
-//     width: '100%',
-//   },
-//   leftContainer: {
-//     marginRight: 10,
-//   },
-//   title: {
-//     fontSize: 20,
-//     fontWeight: 'bold',
-
-//   },
-//   rightContainer: {
-//     marginLeft: 'auto',
-//   },
-//   containerSearchBar: {
-//     padding: 10,
-//     width: '100%',
-//   },
-//   searchBar: {
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     backgroundColor: '#e0e0e0',
-//     borderRadius: 8,
-//     paddingHorizontal: 10,
-//     width: '100%',
-//   },
-//   searchIcon: {
-//     marginRight: 10,
-//   },
-//   input: {
-//     flex: 1,
-//     fontSize: 16,
-//     height: 40, // Adjust the height as needed
-//   },
-
-//   containerItem: {
-//     flex: 1,
-//     width: '100%',
-//     // backgroundColor: 'rgba(227, 233, 240, 1)',
-//   },
-
-// });
-
-// export default SeeAllItems;
-
-// assetdata context
-import React, { useState, useEffect, createContext, useContext } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
-const AssetDataContext = React.createContext();
-
-export const AssetDataProvider = ({ children }) => {
-  const [assetData, setAssetData] = useState([]);
-  const [watchlist, setWatchlist] = useState([]);
-
-  // Fetch watchlist data from the API and set it to state
-  useEffect(() => {
-    const requestOptions = {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2vySUQiOiJJVS1CUVRZNSIsImV4cCI6MTY5OTI3NTQxNCwiaXNzIjoiVGVzdE5hbWUifQ.nxgIOKnasa6THpg1Lj4EZGPxDEmvRALiQIEUxjB1ELk`,
-        'Content-Type': 'application/json',
-      },
-    };
-
-    // fetch("http://10.0.2.2:9000/api/user/watchlist", requestOptions)
-    fetch("http://localhost:9000/api/user/getZtokens", requestOptions)
-      .then((response) => response.json())
-      .then((data) => {
-        setWatchlist(data);
-      })
-      .catch((error) => {
-        console.error('Error fetching watchlist data:', error);
-      });
-  }, []);
-
-  // Storage logic for watchlist
-  useEffect(() => {
-    const storeWatchlist = async () => {
-      try {
-        await AsyncStorage.setItem('watchlist', JSON.stringify(watchlist));
-      } catch (error) {
-        console.error('Error storing watchlist in AsyncStorage:', error);
-      }
-    };
-
-    storeWatchlist();
-  }, [watchlist]);
-
-  const addToWatchlist = (item) => {
-    if (!watchlist.some((watchlistItem) => watchlistItem.name2 === item.name2)) {
-      setWatchlist((prevWatchlist) => [...prevWatchlist, item]);
-    }
-  };
-
-  const removeFromWatchlist = (item) => {
-    const newWatchlist = watchlist.filter(
-      (watchlistItem) => watchlistItem.name2 !== item.name2
-    );
-    setWatchlist(newWatchlist);
-  };
-
-  return (
-    <AssetDataContext.Provider value={{
-      assetData,
-      setAssetData,
-      watchlist,
-      addToWatchlist,
-      removeFromWatchlist
-    }}>
-      {children}
-    </AssetDataContext.Provider>
-  );
-};
-
-export default AssetDataContext;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//old
+// // import React, { useContext, useState, useEffect } from 'react';
+// // import AssetDataContext from '../screens/AssetDataContext';
+// // import { View, Text, TouchableOpacity, ScrollView, Image, StyleSheet } from 'react-native';
+// // import { Ionicons } from '@expo/vector-icons';
+// // import AssetItem from './AssetItem';
+// // import SuccessModal from './SuccessModal'; // Import the SuccessModal component
+// // // import SuccessMessage from './SuccessMessage';
+// // import DeleteConfirmationModal from './DeleteConfirmationModal';
+
+// // const SeeAllItems = ({ navigation, props }) => {
+// //   const { assetData, watchlist } = useContext(AssetDataContext);
+// //   const { removeFromWatchlist } = useContext(AssetDataContext);
+// //   const [successMessage, setSuccessMessage] = useState('');
+// //   const [isSuccessModalVisible, setSuccessModalVisible] = useState(false); // State to control the visibility of the success modal
+
+// //   const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false); // State for showing delete confirmation modal
+// //   const [itemToDelete, setItemToDelete] = useState(null);
+
+// //   const filteredAssetData = assetData.filter((item) =>
+// //     watchlist.some((watchlistItem) => watchlistItem.name2 === item.name2)
+// //   );
+
+// //   const handleBack = () => {
+// //     navigation.navigate('Portfolio');
+// //   };
+
+// //   const handleFilter = () => {
+// //     // Handle filter functionality here
+// //   };
+
+// //   const handleSearchIconClick = () => {
+// //     navigation.navigate('SearchBarList', { assetData: assetData });
+// //   };
+
+// //   const showDeleteConfirmation = (item) => {
+// //     setItemToDelete(item);
+// //     setDeleteConfirmationVisible(true);
+// //   };
+
+// //   const confirmDelete = () => {
+// //     if (itemToDelete) {
+// //       removeFromWatchlist(itemToDelete);
+// //       showSuccessModal('Deleted Successfully');
+// //       setDeleteConfirmationVisible(false); // Close the delete confirmation modal
+// //     }
+// //   };
+
+// //   const cancelDelete = () => {
+// //     setItemToDelete(null);
+// //     setDeleteConfirmationVisible(false);
+// //   };
+
+// //   // Function to display success messages as a modal
+// //   const showSuccessModal = (message) => {
+// //     setSuccessMessage(message);
+// //     setSuccessModalVisible(true);
+
+// //     // Automatically close the modal after 3 seconds
+// //     setTimeout(() => {
+// //       setSuccessModalVisible(false);
+// //       setSuccessMessage('');
+// //     }, 3000);
+// //   };
+
+// //   return (
+// //     <ScrollView>
+// //       <View style={styles.container}>
+// //         <View style={styles.headerContainer}>
+// //           <TouchableOpacity onPress={handleBack} style={styles.leftContainer}>
+// //             <Ionicons name="arrow-back-outline" size={24} color="black" marginLeft={-10} />
+// //           </TouchableOpacity>
+// //           <Text style={styles.title}>My Watch List</Text>
+// //           <View style={styles.searchFilterContainer}>
+// //             <TouchableOpacity onPress={handleSearchIconClick} style={styles.searchIcon}>
+// //               <Image
+// //                 style={styles.rightImage}
+// //                 source={require("../assets/mask-group2.svg")} // Change to your search icon image source
+// //               />
+// //             </TouchableOpacity>
+// //             <TouchableOpacity onPress={handleFilter} style={styles.filterIcon}>
+// //               <Image
+// //                 source={require('../assets/filter.png')}
+// //                 style={styles.filterImage}
+// //               />
+// //             </TouchableOpacity>
+// //           </View>
+// //         </View>
+
+// //         <View style={styles.containerItem}>
+// //           {filteredAssetData.map((item, index) => (
+// //             <AssetItem
+// //               key={index}
+// //               name2={item.name2}
+// //               name3={item.name3}
+// //               value={item.value}
+// //               decimalValue={item.decimalValue}
+// //               changePercentage={item.changePercentage}
+// //               onPress={() => navigation.navigate('ListItemDeatails')}
+// //               onRemove={() => showDeleteConfirmation(item)}
+// //               showRemoveIcon={true}
+// //               showAddIcon={false}
+// //             />
+// //           ))}
+// //         </View>
+
+// //         <DeleteConfirmationModal
+// //           visible={deleteConfirmationVisible}
+// //           onConfirm={confirmDelete}
+// //           onCancel={cancelDelete}
+// //         />
+
+// //         <SuccessModal // Add the SuccessModal component
+// //           message={successMessage}
+// //           visible={isSuccessModalVisible}
+// //           onClose={() => setSuccessModalVisible(false)}
+// //         />
+// //       </View>
+// //     </ScrollView>
+// //   );
+// // };
+
+
+// // const styles = StyleSheet.create({
+// //   container: {
+// //     flex: 1,
+// //     alignItems: 'row',
+// //     marginTop:10,
+// //     paddingVertical: 30,
+// //     backgroundColor: '#f5f5f5',
+// //     //backgroundColor: 'rgba(227, 233, 240, 1)',
+// //   },
+// //   searchFilterContainer: {
+// //     flexDirection: 'row',
+// //     alignItems: 'center',
+// //     marginLeft: 'auto',
+// //   },
+
+
+// //   filterImage:{
+// //     width: 30,
+// //     height: 30,
+// //     marginLeft: 10,
+// //   },
+
+
+// //   rightImage:{
+// //     width: 30,
+// //     height: 30,
+// //     marginLeft: 10,
+// //   },
+// //   headerContainer: {
+// //     flexDirection: 'row',
+// //     alignItems: 'center',
+// //     paddingHorizontal: 10,
+// //     width: '100%',
+// //   },
+// //   leftContainer: {
+// //     marginRight: 10,
+// //   },
+// //   title: {
+// //     fontSize: 20,
+// //     fontWeight: 'bold',
+
+// //   },
+// //   rightContainer: {
+// //     marginLeft: 'auto',
+// //   },
+// //   containerSearchBar: {
+// //     padding: 10,
+// //     width: '100%',
+// //   },
+// //   searchBar: {
+// //     flexDirection: 'row',
+// //     alignItems: 'center',
+// //     backgroundColor: '#e0e0e0',
+// //     borderRadius: 8,
+// //     paddingHorizontal: 10,
+// //     width: '100%',
+// //   },
+// //   searchIcon: {
+// //     marginRight: 10,
+// //   },
+// //   input: {
+// //     flex: 1,
+// //     fontSize: 16,
+// //     height: 40, // Adjust the height as needed
+// //   },
+
+// //   containerItem: {
+// //     flex: 1,
+// //     width: '100%',
+// //     // backgroundColor: 'rgba(227, 233, 240, 1)',
+// //   },
+
+// // });
+
+// // export default SeeAllItems;
+
+// // assetdata context
 // import React, { useState, useEffect, createContext, useContext } from 'react';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -1379,22 +1535,28 @@ export default AssetDataContext;
 //   const [assetData, setAssetData] = useState([]);
 //   const [watchlist, setWatchlist] = useState([]);
 
-
+//   // Fetch watchlist data from the API and set it to state
 //   useEffect(() => {
-//     const loadWatchlist = async () => {
-//       try {
-//         const storedWatchlist = await AsyncStorage.getItem('watchlist');
-//         if (storedWatchlist) {
-//           setWatchlist(JSON.parse(storedWatchlist));
-//         }
-//       } catch (error) {
-//         console.error('Error loading watchlist from AsyncStorage:', error);
-//       }
+//     const requestOptions = {
+//       method: 'GET',
+//       headers: {
+//         Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2vySUQiOiJJVS1CUVRZNSIsImV4cCI6MTY5OTI3NTQxNCwiaXNzIjoiVGVzdE5hbWUifQ.nxgIOKnasa6THpg1Lj4EZGPxDEmvRALiQIEUxjB1ELk`,
+//         'Content-Type': 'application/json',
+//       },
 //     };
 
-//     loadWatchlist();
+//     // fetch("http://35.154.235.224:9000/api/user/watchlist", requestOptions)
+//     fetch("http://localhost:9000/api/user/getZtokens", requestOptions)
+//       .then((response) => response.json())
+//       .then((data) => {
+//         setWatchlist(data);
+//       })
+//       .catch((error) => {
+//         console.error('Error fetching watchlist data:', error);
+//       });
 //   }, []);
 
+//   // Storage logic for watchlist
 //   useEffect(() => {
 //     const storeWatchlist = async () => {
 //       try {
@@ -1420,7 +1582,6 @@ export default AssetDataContext;
 //     setWatchlist(newWatchlist);
 //   };
 
-
 //   return (
 //     <AssetDataContext.Provider value={{
 //       assetData,
@@ -1435,3 +1596,97 @@ export default AssetDataContext;
 // };
 
 // export default AssetDataContext;
+
+
+
+
+
+
+
+
+
+
+// //id
+// {
+//   "UserID": "IU-4166X",
+//     "exp": 1699532095,
+//       "iss": "TestName"
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+// //old
+// // import React, { useState, useEffect, createContext, useContext } from 'react';
+// // import AsyncStorage from '@react-native-async-storage/async-storage';
+
+// // const AssetDataContext = React.createContext();
+
+// // export const AssetDataProvider = ({ children }) => {
+// //   const [assetData, setAssetData] = useState([]);
+// //   const [watchlist, setWatchlist] = useState([]);
+
+
+// //   useEffect(() => {
+// //     const loadWatchlist = async () => {
+// //       try {
+// //         const storedWatchlist = await AsyncStorage.getItem('watchlist');
+// //         if (storedWatchlist) {
+// //           setWatchlist(JSON.parse(storedWatchlist));
+// //         }
+// //       } catch (error) {
+// //         console.error('Error loading watchlist from AsyncStorage:', error);
+// //       }
+// //     };
+
+// //     loadWatchlist();
+// //   }, []);
+
+// //   useEffect(() => {
+// //     const storeWatchlist = async () => {
+// //       try {
+// //         await AsyncStorage.setItem('watchlist', JSON.stringify(watchlist));
+// //       } catch (error) {
+// //         console.error('Error storing watchlist in AsyncStorage:', error);
+// //       }
+// //     };
+
+// //     storeWatchlist();
+// //   }, [watchlist]);
+
+// //   const addToWatchlist = (item) => {
+// //     if (!watchlist.some((watchlistItem) => watchlistItem.name2 === item.name2)) {
+// //       setWatchlist((prevWatchlist) => [...prevWatchlist, item]);
+// //     }
+// //   };
+
+// //   const removeFromWatchlist = (item) => {
+// //     const newWatchlist = watchlist.filter(
+// //       (watchlistItem) => watchlistItem.name2 !== item.name2
+// //     );
+// //     setWatchlist(newWatchlist);
+// //   };
+
+
+// //   return (
+// //     <AssetDataContext.Provider value={{
+// //       assetData,
+// //       setAssetData,
+// //       watchlist,
+// //       addToWatchlist,
+// //       removeFromWatchlist
+// //     }}>
+// //       {children}
+// //     </AssetDataContext.Provider>
+// //   );
+// // };
+
+// // export default AssetDataContext;

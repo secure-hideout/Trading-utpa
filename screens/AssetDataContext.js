@@ -1,53 +1,133 @@
-import React, { useState, useEffect, createContext, useContext } from 'react';
+import React, { useState, useEffect, createContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const AssetDataContext = React.createContext();
+
+
+const AssetDataContext = createContext();
 
 export const AssetDataProvider = ({ children }) => {
   const [assetData, setAssetData] = useState([]);
   const [watchlist, setWatchlist] = useState([]);
+  const [token, setToken] = useState(null);
 
 
   useEffect(() => {
-    const loadWatchlist = async () => {
+    const fetchWatchlistData = async () => {
+      if (!token) return;
+
+      try {
+        const response = await fetch('http://35.154.235.224:9000/api/user/watchlist', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+        setWatchlist(data);
+      } catch (error) {
+        console.error('Error fetching watchlist data:', error);
+      }
+    };
+
+    fetchWatchlistData();
+  }, [token]);
+
+  useEffect(() => {
+    // Load watchlist from AsyncStorage when the component mounts
+    const loadWatchlistFromStorage = async () => {
       try {
         const storedWatchlist = await AsyncStorage.getItem('watchlist');
         if (storedWatchlist) {
           setWatchlist(JSON.parse(storedWatchlist));
         }
       } catch (error) {
-        console.error('Error loading watchlist from AsyncStorage:', error);
+        console.error('Error loading watchlist from storage:', error);
       }
     };
-
-    loadWatchlist();
+    loadWatchlistFromStorage();
   }, []);
 
-  useEffect(() => {
-    const storeWatchlist = async () => {
-      try {
-        await AsyncStorage.setItem('watchlist', JSON.stringify(watchlist));
-      } catch (error) {
-        console.error('Error storing watchlist in AsyncStorage:', error);
+
+
+  const addToWatchlist = async (item, token) => {
+    console.log('Item:', item); // Log the item object
+    try {
+      if (!item.InstrumentId || !item.InstrumentType) {  // Check for Zid and InstrumentType in the item
+        console.error('InstrumentId (Zid) and InstrumentType are required.');
+        return;
       }
-    };
 
-    storeWatchlist();
-  }, [watchlist]);
 
-  const addToWatchlist = (item) => {
-    if (!watchlist.some((watchlistItem) => watchlistItem.name2 === item.name2)) {
-      setWatchlist((prevWatchlist) => [...prevWatchlist, item]);
+
+      const requestBody = {
+
+        InstrumentId: item.InstrumentId,  // Use Zid for InstrumentId
+        InstrumentType: item.InstrumentType,  // Use Segment or Exchange based on your API requirement
+
+
+      };
+
+
+      console.log('Request payload:', JSON.stringify(requestBody));
+
+      const response = await fetch('http://35.154.235.224:9000/api/user/addToWatchlist', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Network response was not ok: ${errorText}`);
+      }
+
+      const data = await response.json();
+      console.log('Added to watchlist successfully', data);
+
+      setWatchlist((prevWatchlist) => {
+        const newWatchlist = [...prevWatchlist, item];
+        AsyncStorage.setItem('watchlist', JSON.stringify(newWatchlist)).catch((error) => {
+          console.error('Failed to save watchlist to storage:', error);
+        });
+        return newWatchlist;
+      });
+    } catch (error) {
+      console.error('Failed to add to watchlist:', error);
     }
   };
 
-  const removeFromWatchlist = (item) => {
-    const newWatchlist = watchlist.filter(
-      (watchlistItem) => watchlistItem.name2 !== item.name2
-    );
-    setWatchlist(newWatchlist);
+  const removeFromWatchlist = async (item) => {
+    try {
+      const newWatchlist = watchlist.filter(
+        (watchlistItem) =>
+          watchlistItem.InstrumentId !== item.InstrumentId ||
+          watchlistItem.InstrumentType !== item.InstrumentType
+      );
+
+      // Update state
+      setWatchlist(newWatchlist);
+
+      // Update AsyncStorage
+      await AsyncStorage.setItem('watchlist', JSON.stringify(newWatchlist));
+    } catch (error) {
+      console.error('Failed to remove from watchlist:', error);
+    }
   };
 
+
+
+  const updateToken = (newToken) => {
+    setToken(newToken);
+  };
 
   return (
     <AssetDataContext.Provider value={{
@@ -55,7 +135,8 @@ export const AssetDataProvider = ({ children }) => {
       setAssetData,
       watchlist,
       addToWatchlist,
-      removeFromWatchlist
+      removeFromWatchlist,
+      updateToken
     }}>
       {children}
     </AssetDataContext.Provider>
@@ -63,150 +144,6 @@ export const AssetDataProvider = ({ children }) => {
 };
 
 export default AssetDataContext;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//try watchlist from database
-// import React, { useState, useEffect, createContext, useContext } from 'react';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
-// import jwtDecode from 'jwt-decode';
-
-
-// const AssetDataContext = React.createContext();
-
-// export const AssetDataProvider = ({ children }) => {
-//   const [assetData, setAssetData] = useState([]);
-//   const [watchlist, setWatchlist] = useState([]);
-//   const [token, setToken] = useState(null);  // New state for token
-//   const [userID, setUserID] = useState(null);  // New state for userID
-
-//   useEffect(() => {
-//     if (token) {
-//       const decodedToken = jwtDecode(token);
-//       setUserID(decodedToken.UserID);
-//     }
-//   }, [token]);
-
-
-//   useEffect(() => {
-//     const loadWatchlist = async () => {
-//       try {
-//         const storedWatchlist = await AsyncStorage.getItem('watchlist');
-//         if (storedWatchlist) {
-//           setWatchlist(JSON.parse(storedWatchlist));
-//         }
-//       } catch (error) {
-//         console.error('Error loading watchlist from AsyncStorage:', error);
-//       }
-//     };
-
-//     loadWatchlist();
-//   }, []);
-
-//   useEffect(() => {
-
-//     const storeWatchlist = async () => {
-//       try {
-//         await AsyncStorage.setItem('watchlist', JSON.stringify(watchlist));
-//       } catch (error) {
-//         console.error('Error storing watchlist in AsyncStorage:', error);
-//       }
-//     };
-
-//     storeWatchlist();
-//   }, [watchlist]);
-
-
-//   const addToWatchlist = async (item) => {
-//     if (!watchlist.some((watchlistItem) => watchlistItem.name2 === item.name2)) {
-//       try {
-//         const response = await fetch('http://localhost:9000/api/user/watchlist', {
-//           method: 'POST',
-//           headers: {
-//             'Content-Type': 'application/json',
-//             'Authorization': `Bearer ${token}`
-//           },
-//           body: JSON.stringify({
-//             UserID: userID,
-//             InstrumentId: item.id,
-//             InstrumentType: "NSE"  // Make dynamic if necessary
-//           })
-//         });
-
-//         const responseData = await response.json();
-
-//         if (response.ok) {
-//           setWatchlist((prevWatchlist) => [...prevWatchlist, responseData]);
-//         } else {
-//           console.error("Failed to add to watchlist", responseData.message);
-//         }
-//       } catch (error) {
-//         console.error("Error adding to watchlist:", error);
-//       }
-//     }
-//   };
-
-//   const removeFromWatchlist = (item) => {
-//     const newWatchlist = watchlist.filter(
-//       (watchlistItem) => watchlistItem.name2 !== item.name2
-//     );
-//     setWatchlist(newWatchlist);
-//   };
-
-
-//   return (
-//     <AssetDataContext.Provider value={{
-//       assetData,
-//       setAssetData,
-//       watchlist,
-//       addToWatchlist,
-//       removeFromWatchlist,
-//       token,      // Providing token so that child components can set it upon login
-//       setToken   // Providing setToken for same reason
-//     }}>
-//       {children}
-//     </AssetDataContext.Provider>
-//   );
-// };
-
-// export default AssetDataContext;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

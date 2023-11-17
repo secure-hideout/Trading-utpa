@@ -1,3 +1,4 @@
+//wograph
 import React from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -28,7 +29,7 @@ const styles = {
     backgroundColor: '#f5f5f5',
     paddingVertical: 30,
     // paddingHorizontal: 20,
-    marginTop:10,
+    marginTop: 10,
   },
   backButton: {
     marginRight: 10,

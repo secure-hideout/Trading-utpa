@@ -8,7 +8,7 @@ import { AntDesign } from '@expo/vector-icons';
 import ViewPortfolio from './ViewPortfolio';
 
 
-const CryptoAssets = ({ data, onScrollToBottom ,selectedAsset, children}) => {
+const CryptoAssets = ({ data, onScrollToBottom ,selectedAsset,selectedCard, children}) => {
 const [ setSelectedAsset] = useState({name:'Crypto'})
     const handleCardItemClick = (asset) => {
     setSelectedAsset(asset);
@@ -26,7 +26,8 @@ const [ setSelectedAsset] = useState({name:'Crypto'})
         </View>
       </View>
       <View style={styles.headerContainer}>
-        <Text style={styles.assetText}>My Portfolio</Text>
+        {/* <Text style={styles.assetText}>My Portfolio</Text> */}
+        <Text style={styles.assetText}>{selectedCard} Portfolio</Text>
       </View>
 {selectedAsset && (
         <ViewPortfolio assetData={selectedAsset} />
@@ -53,9 +54,6 @@ const [ setSelectedAsset] = useState({name:'Crypto'})
     </View>
   );
 };
-
-
-
 
 const styles = {
   containerAssets: {

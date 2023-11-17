@@ -1,6 +1,3 @@
-
-
-
 import React, { useRef } from 'react';
 import { View, Text, TouchableOpacity, Animated } from 'react-native';
 import { SwipeRow } from 'react-native-swipe-list-view';
@@ -128,7 +125,7 @@ const AssetItem = ({
         <View style={styles.containerAssetItem}>
           <View style={styles.leftContent}>
             <Text style={styles.Text}>{name2}</Text>
-            {/* <Text style={styles.Text}>{name3}</Text> */}
+            <Text style={styles.Text1}>{name3}</Text>
           </View>
           <View style={styles.rightContent}>
             <Text style={styles.value}>{value}</Text>
@@ -146,10 +143,6 @@ const AssetItem = ({
 };
 
 
-
-
-
-
 const styles = {
   containerAssetItem: {
     flexDirection: 'row',
@@ -158,7 +151,9 @@ const styles = {
     padding: 12,
     borderBottomWidth: 1,
     backgroundColor: "rgba(255, 255, 255, 0.8)",
-    //backgroundColor:'black',
+
+    // backgroundColor: 'rgba(227, 233, 240, 1)',
+
     borderBottomColor: '#E5E5E5',
     marginTop: 10,
     borderRadius: 10,
@@ -168,26 +163,28 @@ const styles = {
     flexDirection: 'row',
     alignItems: 'center',
   },
-  logo: {
-    width: 25,
-    height: 25,
-    marginRight: 8,
-    backgroundColor: "rgba(227, 233, 240, 1)",
-    borderRadius: 15,
-  },
+  // logo: {
+  //   width: 25,
+  //   height: 25,
+  //   marginRight: 8,
+  //   backgroundColor: "rgba(227, 233, 240, 1)",
+  //   borderRadius: 15,
+  // },
   Text: {
     fontSize: 16,
     fontWeight: '700',
     lineHeight: 19.09,
     color: 'rgba(28, 30, 50, 1)',
   },
-  span: {
-    fontSize: 16,
-    fontWeight: '700',
-    lineHeight: 19.09,
-    color: 'rgba(28, 30, 50, 0.6)',
-    left: 2,
-  },
+  // span: {
+  //   fontSize: 16,
+  //   fontWeight: '700',
+  //   lineHeight: 19.09,
+  //   color: 'rgba(28, 30, 50, 0.6)',
+  //   left: 2,
+  // },
+
+
   rightContent: {
     flexDirection: 'row',
     alignItems: 'flex-end',
@@ -201,33 +198,38 @@ const styles = {
     color: '#1C1E32',
     lineHeight: 22, // Adjust the lineHeight as needed
   },
-  decimal: {
-    fontSize: 16,
-    marginRight: 3,
-    color: '#A1A1A1',
-    fontWeight: 'bold',
-    lineHeight: 22, // Adjust the lineHeight to match value
-  },
-  button: {
-
-    width: 43,
-    height: 19.2,
-    borderRadius: 100,
-    //backgroundColor:'#EAC9B1',
-  },
-  changePercentage: {
-    // fontSize: 14,
-    // fontWeight: 'bold',
-    // color: 'black',
 
 
-    fontWeight: 500,
-    fontSize: 10,
-    lineHeight: 17.55,
-    alignItems: 'center',
-    left: 4,
+  // decimal: {
+  //   fontSize: 16,
+  //   marginRight: 3,
+  //   color: '#A1A1A1',
+  //   fontWeight: 'bold',
+  //   lineHeight: 22, // Adjust the lineHeight to match value
+  // },
 
-  },
+
+  // button: {
+  //   width: 43,
+  //   height: 19.2,
+  //   borderRadius: 100,
+  //   //backgroundColor:'#EAC9B1',
+  // },
+
+
+  // changePercentage: {
+  //   // fontSize: 14,
+  //   // fontWeight: 'bold',
+  //   // color: 'black',
+
+  //using
+  //   fontWeight: 500,
+  //   fontSize: 10,
+  //   lineHeight: 17.55,
+  //   alignItems: 'center',
+  //   left: 4,
+
+  // },
 
 
   rowBack: {
@@ -259,9 +261,18 @@ const styles = {
     //backgroundColor: 'red',
     right: 0,
   },
+  Text1: {
+    // color: 'green',
+    color: 'rgba(28, 30, 50, 0.6)',
+    fontSize: 16,
+    fontWeight: '700',
+    lineHeight: 19.09,
+    marginLeft: 10,
+
+
+  }
 
 
 };
 
 export default AssetItem;
-

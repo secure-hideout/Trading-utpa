@@ -11,7 +11,7 @@ const AssetCard = ({ data, onPress }) => {
   const getButtonColor = () => {
     if (data.changePercentage && data.changePercentage[0] === '+') return '#B7DDD2';
     if (data.changePercentage && data.changePercentage[0] === '-') return '#EAC9B1';
-    return '#000000'; // Default color
+    return '#FFFFFF'; // Default color
   };
 
   const handlePress = () => {

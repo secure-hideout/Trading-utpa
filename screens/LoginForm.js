@@ -1,85 +1,26 @@
+
 import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
 import { TextInput } from '@react-native-material/core';
-import { connect, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import { loginUser } from '../redux/actions/authActions';
 
 
 import { useDispatch } from 'react-redux';
 
 import { setToken } from '../redux/actions/authActions';
-const LoginForm = ({ loginUser, isAuthenticated, error, navigation, onSuccessfulLogin }) => {
+const LoginForm = ({ navigation, onSuccessfulLogin }) => {
 
-  // const{token} = useSelector((state) => state.auth);
-
-
-  // console.log('isAuthenticated:', isAuthenticated);
-  // console.log('error:', error);
-
-  const dispatch = useDispatch();
-  const [email, setEmail] = useState('karthiabega@gmail.com');
+  const dispatch = useDispatch(); const [email, setEmail] = useState('karthiabega@gmail.com');
   const [password, setPassword] = useState('12345');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [isRegistered, setIsRegistered] = useState(false);
-
-
-  // const handleLogin = async () => {
-  //   setLoading(true);
-
-  //   try {
-  //     if (!email || !password) {
-  //       setError('Please fill in both email and password.');
-  //       return;
-  //     }
-
-  //     const emailPattern = /\S+@gmail\.com$/;
-  //     if (!emailPattern.test(email)) {
-  //       setError('Please enter a valid email address.');
-  //       setLoading(false);
-  //       return;
-  //     }
-
-  //     // Make an API request for authentication
-  //     const response = await fetch("http://10.0.2.2:80/api/auth/login", {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({ email, password }),
-  //     });
-
-  //     // Check the HTTP response status before accessing response data
-  //     if (response.ok) {
-  //       // Successful login, navigate to another screen
-  //       setIsRegistered(true);
-  //       onSuccessfulLogin();
-  //       // dispatch(setToken())
-  //       // dispatchEvent(setToken(JSON.parse(result).token.token))
-
-
-  //       // dispatch(setEmail())
-  //       // dispatch(setFirstName())
-
-
-
-
-  //       navigation.navigate('BottomTabs');
-  //     } else {
-  //       // Handle the case where the response status is not ok
-  //       setError('Please Check Your password or Emailid');
-  //     }
-  //   } catch (err) {
-  //     console.error(err);
-  //     setError('Check Your Network Connection');
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
 
   const handleLogin = async () => {
     setLoading(true);
+    setError(null);
 
     try {
       if (!email || !password) {
@@ -95,7 +36,7 @@ const LoginForm = ({ loginUser, isAuthenticated, error, navigation, onSuccessful
       }
 
       // Make an API request for authentication
-      const response = await fetch("http://10.0.2.2:9000/api/auth/login", {
+      const response = await fetch("http://35.154.235.224:9000/api/auth/login", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -199,135 +140,6 @@ const mapDispatchToProps = {
   loginUser,
 };
 
-
-
-
-
-
-
-
-
-
-//api
-// import React, { useState } from 'react';
-// import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-// import { Button } from 'react-native-paper'; // Import other components from react-native-paper
-// import axios from 'axios';
-// import { useNavigation } from '@react-navigation/native';
-// import { TextInput } from '@react-native-material/core'; // Import TextInput from @react-native-material/core
-
-// const LoginForm = ({ onSuccessfulLogin }) => {
-//   const navigation = useNavigation();
-//   const [email, setEmail] = useState('abega@gmail.com');
-//   const [password, setPassword] = useState('abega');
-//   const [loading, setLoading] = useState(false);
-//   const [error, setError] = useState(null);
-//   const [isRegistered, setIsRegistered] = useState(false);
-
-//   const handleLogin = async () => {
-//     setLoading(true);
-//     setError(null);
-
-
-
-//     try {
-//       if (!email || !password) {
-//         setError('Please fill in both email and password.');
-//         return;
-//       }
-
-//       const emailPattern = /\S+@gmail\.com$/;
-//       if (!emailPattern.test(email)) {
-//         setError('Please enter a valid email address.');
-//         setLoading(false);
-//         return;
-//       }
-//       // Make an API request for authentication
-//       const response = await fetch("http://10.0.2.2:80/api/auth/login", {
-//         method: 'POST',
-//         headers: {
-//           'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify({ email, password }),
-//       });
-//       if (response.ok) {
-//         // Successful login, navigate to another screen
-//         setIsRegistered(true);
-//         onSuccessfulLogin();
-//         navigation.navigate('BottomTabs');
-//       } else {
-//         setError('Please Check Your password or Emailid');
-
-//       }
-//     } catch (err) {
-//       console.error(err);
-//       setError('Check Your Network Connection');
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   const handleSignup = () => {
-//     navigation.navigate('Signup');
-//   };
-
-//   return (
-//     <View style={styles.container}>
-//       {isRegistered && (
-//         <Text style={{ color: '#d68760', textAlign: 'center' }}>
-//           Login successfully!
-//         </Text>
-//       )}
-//       {error && <Text style={styles.error}>{error}</Text>}
-//       <TextInput
-//         // variant="outlined"
-//         label="Email"
-//         // value={email}
-//         onChangeText={setEmail}
-//         value={email}
-//         style={{ margin: 16, width: 319 }}
-//       />
-//       <TextInput
-//         // varient="standard"
-//         label="Password"
-//         // value={password}
-//         onChangeText={setPassword}
-//         value={password}
-//         secureTextEntry
-//         style={{ margin: 16, width: 319 }}
-//       />
-
-//       <View style={styles.buttons}>
-//         <View style={styles.button1}>
-//           <Button
-//             //mode="contained"
-//             onPress={handleLogin}
-//             disabled={loading}
-//             contentStyle={styles.buttonContent}
-//             labelStyle={styles.buttonText}
-//           >
-//             Login
-//           </Button>
-//         </View>
-//         <View style={styles.button2}>
-//           <Button
-//             //mode="contained"
-//             onPress={handleSignup}
-//             disabled={loading}
-//             contentStyle={styles.buttonContent1}
-//             labelStyle={styles.buttonText1}
-//           >
-//             Register
-//           </Button>
-//         </View>
-//       </View>
-//       {/* <TouchableOpacity onPress={handleSignup}>
-//         <Text style={styles.signupText}>Signup</Text>
-//       </TouchableOpacity> */}
-//     </View>
-//   );
-// };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -390,84 +202,4 @@ const styles = StyleSheet.create({
   },
 });
 
-// export default LoginForm;
 export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);
-
-
-
-
-
-// import React, { useState } from 'react';
-// import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
-
-// const LoginForm = ({ navigation, onSuccessfulLogin }) => {
-//   // Provide default email and password values
-//   const [email, setEmail] = useState('default@example.com');
-//   const [password, setPassword] = useState('defaultPassword');
-//   const [loading, setLoading] = useState(false);
-//   const [error, setError] = useState(null);
-
-//   const handleLogin = async () => {
-//     setLoading(true);
-//     setError(null);
-
-//     try {
-//       if (email === 'default@example.com' && password === 'defaultPassword') {
-//         onSuccessfulLogin();  // This sets isLoggedIn to true in App.js
-//         navigation.navigate('BottomTabs'); // Navigate to the main app
-//       } else {
-//         setError('Login failed. Please check your credentials.');
-//       }
-//     } catch (err) {
-//       setError('An error occurred. Please try again later.');
-//     } finally {
-//       setLoading(false);
-//     }
-
-//   };
-
-//   return (
-//     <View style={styles.container}>
-//       {error && <Text style={styles.error}>{error}</Text>}
-//       <TextInput
-//         style={styles.input}
-//         placeholder="Email"
-//         onChangeText={setEmail}
-//         value={email}
-//       />
-//       <TextInput
-//         style={styles.input}
-//         placeholder="Password"
-//         onChangeText={setPassword}
-//         value={password}
-//         secureTextEntry
-//       />
-//       <Button title="Login" onPress={handleLogin} disabled={loading} />
-//     </View>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//   },
-//   input: {
-//     width: '80%',
-//     padding: 10,
-//     marginBottom: 10,
-//     borderWidth: 1,
-//     borderColor: '#ccc',
-//     borderRadius: 5,
-//   },
-//   error: {
-//     color: 'red',
-//     marginBottom: 10,
-//   },
-
-
-
-// });
-
-// export default LoginForm;

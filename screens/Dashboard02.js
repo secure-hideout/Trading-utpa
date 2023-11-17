@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
-import { View, Text, Image, TouchableOpacity, TextInput, Modal, Button, ScrollView } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { StyleSheet, SafeAreaView } from 'react-native';
 import AssetDataContext from './AssetDataContext';
 import Header from './Header';
@@ -9,8 +9,6 @@ import MyWatchList from './MyWatchList';
 import CardItems from './CardItems';
 import CriptoAssets from './CriptoAssets';
 import ViewPortfolio from './ViewPortfolio';
-
-
 import { useSelector } from 'react-redux';
 
 
@@ -62,23 +60,58 @@ const Dashboard = () => {
       redirect: 'follow'
     };
 
-    fetch("http://10.0.2.2:9000/api/user/getZtokens", requestOptions)
+    fetch("http://35.154.235.224:9000/api/user/getZtokens", requestOptions)
       .then(response => response.json())
       .then(result => {
         const transformedData = result.map(item => ({
           name2: item.Name,
-          name3: item.Tradingsymbol,
           value: `$${item.LastPrice.toFixed(2)}`,
-          // Include other fields as required and map them similar to above
-          // changePercentage: "",  // Placeholder if you have this data in your API, replace it
-          logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg', // Placeholder for the logo, adjust as necessary
-          // ... add any other required properties ...
+          name3: item.Exchange,
+
+          //todisplay graph
+
+          press: 'Allgraphs',
+          Name: item.Name,
+
+          Open: "open",
+          openValue: 1,
+          Close: "Close",
+          closeValue: 50,
+          High: "High",
+          symbol: item.Tradingsymbol,
+          Hvalue: 150,
+          Low: "Low",
+          Lvalue: 25,
+          Dval: "Daily Vol",
+          Value: "140.03B",
+          Market: "Market",
+          value1: "200.03B",
+          volBtc: "vol BTC",
+          value2: "10,000",
+          volUsdt: "vol USDT",
+          value3: "10,000",
+
+          priceVal: item.LastPrice,
+
+          sname: item.Name,
+          instrumentId: item.Zid,
+          instrumentType: item.Segment,
+          //quantity: "1",
+          LastPrice: item.LastPrice,
+
+
+
+          //addtowatchlist 
+          InstrumentId: item.Zid,
+          InstrumentType: item.Segment,
+
+          // logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg', 
         }));
         setAssetData(transformedData);
       })
       .catch(error => console.log('this error', error));
 
-    // Remove hardcoded setAssetData([...]) as it's not needed anymore
+
 
   }, []);
 
@@ -93,7 +126,7 @@ const Dashboard = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView ref={scrollViewRef} style={styles.root}>
+      <ScrollView ref={scrollViewRef} style={styles.root} stickyHeaderIndices={[0]}>
         <Header assetData={assetData} />
         <MyPortfolio />
         <Deposit />
@@ -101,6 +134,10 @@ const Dashboard = () => {
         <View style={styles.container5}>
           {cardData.map((item, index) => {
             const totalValue = totalValues[item.name] || '';
+
+
+            console.log(`Item Name: ${item.name}, Total Value: ${totalValue}`);
+
             return (
               <CardItems
                 key={index}
@@ -110,6 +147,8 @@ const Dashboard = () => {
                 changePercentage={item.changePercentage}
                 color={item.backgroundColor}
                 onClick={() => setSelectedCard(item.name)}
+
+                selectedCard={selectedCard}//tostyle selected card 
               />
             );
           })}
@@ -117,7 +156,8 @@ const Dashboard = () => {
         <CriptoAssets
           onScrollToBottom={scrollToBottom}
           data={watchlist}
-          assetData={assetData}
+          //assetData={assetData}
+          selectedCard={selectedCard}//tofetchcardname 
         >
           <ViewPortfolio
             assetData={assetData}
@@ -131,298 +171,6 @@ const Dashboard = () => {
   );
 };
 
-
-
-
-
-
-
-//withoutchange
-// import React, { useState, useEffect, useRef, useContext } from 'react';
-// import { View, Text, Image, TouchableOpacity, TextInput, Modal, Button, ScrollView } from 'react-native';
-// import { StyleSheet, SafeAreaView } from 'react-native';
-// import AssetDataContext from './AssetDataContext';
-// import Header from './Header';
-// import MyPortfolio from './MyPortfolio';
-// import Deposit from './Deposite';
-// import MyWatchList from './MyWatchList';
-// import CardItems from './CardItems';
-// import CriptoAssets from './CriptoAssets';
-// import ViewPortfolio from './ViewPortfolio';
-
-
-// import { useSelector } from 'react-redux';
-
-
-
-// const Dashboard = () => {
-
-//   const { token } = useSelector(state => state.auth)
-//   console.log("Dashboard", token)
-//   const [cardData, setCardData] = useState([
-
-//     { name: 'Crypto', value: '', changePercentage: '', color: '', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: "#C1C2EB" },
-//     { name: 'NSE', value: '', changePercentage: '', color: '', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: '#B7DDD2' },
-//     { name: 'BSE', value: '', changePercentage: '', color: '', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: "#C1C2EB" },
-//     { name: 'Commodity', value: '', changePercentage: '', color: '', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: '#B7DDD2' }
-//   ]);
-
-//   const { assetData, setAssetData } = useContext(AssetDataContext);
-//   const [watchlist, setWatchlist] = useState([]);
-//   // const [selectedCard, setSelectedCard] = useState('crypto');
-//   // const [selectedAsset, setSelectedAsset] = useState(null);
-//   const [selectedCard, setSelectedCard] = useState('Crypto');
-
-//   const [totalValues, setTotalValues] = useState({});
-
-//   const updateTotalValue = (category, totalValue) => {
-//     setTotalValues((prevTotalValues) => ({
-//       ...prevTotalValues,
-//       [category]: totalValue,
-//     }));
-//   };
-
-//   const updateChangePercentage = (category, changePercentage) => {
-//     setCardData((prevCardData) => {
-//       return prevCardData.map((item) => {
-//         if (item.name === category) {
-
-//           return { ...item, changePercentage };
-//         }
-//         return item;
-//       });
-//     });
-//   };
-
-
-
-//   // useEffect(() => {
-//   //   var myHeaders = new Headers();
-//   //   myHeaders.append("Authorization", `Bearer ${token}`);
-
-//   //   var requestOptions = {
-//   //     method: 'POST', //get
-//   //     headers: myHeaders,
-//   //     redirect: 'follow'
-//   //   };
-
-//   //   fetch("http://10.0.2.2:80/api/user/watchlist", requestOptions)
-//   //     .then(response => response.text())
-//   //     .then(result => console.log((JSON.parse(result))))    //after modification remove console place setassetdata
-//   //     .catch(error => console.log('this error', error));
-
-
-//   //   setAssetData([
-//   //     { name2: 'Crpto', name3: "BTC", value: "$30,618", decimalValue: ".60", changePercentage: "-7.90%", logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg' },
-//   //     { name2: 'nse', name3: "BTC", value: "$30,618", decimalValue: ".60", changePercentage: "+7.90%", logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg' },
-//   //     { name2: 'bse', name3: "BTC", value: "$30,618", decimalValue: ".60", changePercentage: "-7.90%", logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg' },
-//   //     { name2: 'comodity', name3: "BTC", value: "$30,618", decimalValue: ".60", changePercentage: "+7.90%", logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg' },
-//   //     { name2: 'tata', name3: "BTC", value: "$30,618", decimalValue: ".60", changePercentage: "+7.90%", logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg' },
-//   //     { name2: 'apple', name3: "BTC", value: "$30,618", decimalValue: ".60", changePercentage: "+7.90%", logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg' },
-//   //     { name2: 'tesla', name3: "BTC", value: "$30,618", decimalValue: ".60", changePercentage: "-7.90%", logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg' },
-//   //     { name2: 'twitter', name3: "BTC", value: "$30,618", decimalValue: ".60", changePercentage: "+7.90%", logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg' },
-//   //     { name2: 'facebook', name3: "BTC", value: "$30,618", decimalValue: ".60", changePercentage: "+7.90%", logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg' },
-//   //     { name2: 'google', name3: "BTC", value: "$30,618", decimalValue: ".60", changePercentage: "+7.90%", logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg' },
-
-//   //   ]);
-//   // }, []);
-
-
-//   useEffect(() => {
-//     const myHeaders = new Headers();
-//     myHeaders.append("Authorization", `Bearer ${token}`);
-
-//     const requestOptions = {
-//       method: 'POST',
-//       headers: myHeaders,
-//       redirect: 'follow',
-//     };
-
-//     fetch("http://10.0.2.2:9000/api/user/watchlist", requestOptions)
-//       // fetch("http://localhost:9000/api/user/getZtokens", requestOptions)
-//       .then(response => {
-//         if (!response.ok) {
-//           throw new Error(`Server response was not ok. Status: ${response.status}`);
-//         }
-//         return response.json(); // Parse the response as JSON
-//       })
-//       .then(data => {
-//         console.log('Watchlist data:', data);
-//         const validItems = data.filter(item => item.InstrumentId !== 0);
-//         return Promise.all(
-//           validItems.map(item =>
-//             fetch(`http://10.0.2.2:9000/api/instrument/details/${item.InstrumentId}`, requestOptions)
-//               .then(res => res.json())
-//           )
-//         );
-//       })
-//       // .then(detailsArray => {
-//       //   const transformedData = detailsArray.map((item, index) => ({
-//       //     name2: item.InstrumentType,
-//       //     name3: `ID: ${item.InstrumentId}`,
-//       //     value: item.value,
-//       //     decimalValue: item.decimalValue,
-//       //     changePercentage: item.changePercentage,
-//       //     logo: item.logo,
-//       //   }));
-//       //   setWatchlist(transformedData);
-//       //   setAssetData(transformedData);
-//       // })
-
-
-//       .catch(error => console.log('Error fetching watchlist:', error));
-//   }, []);
-
-
-
-
-//   // useEffect(() => {
-//   //   const myHeaders = new Headers();
-//   //   myHeaders.append("Authorization", `Bearer ${token}`);
-
-//   //   const requestOptions = {
-//   //     method: 'POST',
-//   //     headers: myHeaders,
-//   //     redirect: 'follow'
-//   //   };
-
-//   //   fetch("http://10.0.2.2:80/api/user/watchlist", requestOptions)
-//   //     // .then(response => response.json())
-//   //     .then(response => {
-//   //       if (!response.ok) {
-//   //         throw new Error(`Server response was not ok. Status: ${response.status}`);
-//   //       }
-//   //       return response.text();  // Get the raw response as text
-//   //     })
-//   //     .then(text => {
-//   //       console.log('Raw watchlist response:', text); // Print the raw response
-//   //       return JSON.parse(text); // Try to parse it as JSON
-//   //     })
-//   //     // .then(async data => {
-//   //     //   // Assume you have an endpoint like http://10.0.2.2:80/api/instrument/details/:id
-//   //     //   // which gives details for a specific instrument by its ID.
-//   //     //   const fetchDetailsPromises = data.map(item =>
-//   //     //     fetch(`http://10.0.2.2:80/api/instrument/details/${item.InstrumentId}`, requestOptions)
-//   //     //       .then(res => res.json())
-//   //     //   );
-
-//   //     //   const detailsArray = await Promise.all(fetchDetailsPromises);
-//   //     //   return data.map((item_1, index) => ({
-//   //     //     name2: item_1.InstrumentType,
-//   //     //     name3: `ID: ${item_1.InstrumentId}`,
-//   //     //     value: detailsArray[index].value,
-//   //     //     decimalValue: detailsArray[index].decimalValue,
-//   //     //     changePercentage: detailsArray[index].changePercentage,
-//   //     //     logo: detailsArray[index].logo
-//   //     //   }));
-//   //     // })
-
-//   //     .then(async data => {
-//   //       const validItems = data.filter(item => item.InstrumentId !== 0);
-
-//   //       const fetchDetailsPromises = validItems.map(item =>
-//   //         // fetch(`http://10.0.2.2:80/api/instrument/details/${item.InstrumentId}`, requestOptions)
-//   //         //   .then(res => res.text())
-//   //         //   .then(detailText => {
-//   //         //     console.log(`Raw detail for InstrumentId ${item.InstrumentId}:`, detailText);
-//   //         //     return JSON.parse(detailText);
-//   //         //   })
-//   //         fetch(`http://10.0.2.2:80/api/instrument/details/${item.InstrumentId}`, requestOptions)
-//   //           .then(res => res.text())
-//   //           .then(detailText => {
-//   //             console.log(`Raw detail for InstrumentId ${item.InstrumentId}:`, detailText);
-//   //             return JSON.parse(detailText);
-//   //           })
-//   //       );
-
-//   //       const detailsArray = await Promise.all(fetchDetailsPromises);
-//   //       return validItems.map((item_2, index) => ({
-//   //         name2: item_2.InstrumentType,
-//   //         name3: `ID: ${item_2.InstrumentId}`,
-//   //         value: detailsArray[index].value,
-//   //         decimalValue: detailsArray[index].decimalValue,
-//   //         changePercentage: detailsArray[index].changePercentage,
-//   //         logo: detailsArray[index].logo
-//   //       }));
-//   //     })
-
-//   //     .then(transformedData => {
-//   //       setWatchlist(transformedData);
-//   //       setAssetData(transformedData); // Also set the fetched data to the assetData context
-//   //     })
-//   //     .catch(error => console.log('Error fetching watchlist:', error));
-//   // }, []);
-
-
-
-
-
-//   //for scroll bottom minus icon 
-
-//   const scrollViewRef = useRef(null);
-
-//   const scrollToBottom = () => {
-//     scrollViewRef.current.scrollToEnd({ animated: true });
-//   };
-
-
-//   return (
-//     <SafeAreaView style={{ flex: 1 }}>
-//       <ScrollView ref={scrollViewRef} style={styles.root}>
-//         <Header assetData={assetData} />
-//         <MyPortfolio />
-//         <Deposit />
-//         <MyWatchList />
-//         <View style={styles.container5}>
-//           {/* {cardData.map((item, index) => {
-//             const totalValue = totalValues[item.name] || ''; // Get the total value from the state
-//             return (
-//               <CardItems
-//                 key={index}
-//                 name={item.name}
-//                 symbl={item.symbl}
-//                 value={totalValue}
-//                 // value={item.name === selectedCard ? totalValues[selectedCard] || '' : ''}
-//                 changePercentage={item.changePercentage}
-//                 color={item.backgroundColor}
-//                 onClick={() => setSelectedCard(item.name)}
-//               />
-//             );
-//           })} */}
-//           {cardData.map((item, index) => {
-//             const totalValue = totalValues[item.name] || '';
-//             return (
-//               <CardItems
-//                 key={index}
-//                 name={item.name}
-//                 symbl={item.symbl}
-//                 value={totalValue}
-//                 changePercentage={item.changePercentage}
-//                 color={item.backgroundColor}
-//                 onClick={() => setSelectedCard(item.name)}
-//               />
-//             );
-//           })}
-//         </View>
-//         <CriptoAssets
-//           onScrollToBottom={scrollToBottom}
-//           data={watchlist}
-//           assetData={assetData}
-//         >
-//           <ViewPortfolio
-//             assetData={assetData}
-//             selectedCard={selectedCard}
-//             updateTotalValue={updateTotalValue}
-//             updateChangePercentage={updateChangePercentage}
-//           />
-//         </CriptoAssets>
-//       </ScrollView>
-//     </SafeAreaView>
-//   );
-// };
-
-
-// const styles = {
 const styles = StyleSheet.create({
 
 
