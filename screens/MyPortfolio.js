@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     fontSize: width * 0.04,
     lineHeight: width * 0.047,
     color: '#A1A1A1',
-    fontFamily: 'SFProDisplay',
+    // fontFamily: 'SFProDisplay',
   },
   portfolioContainer: {
     flexDirection: 'column',
@@ -54,14 +54,14 @@ const styles = StyleSheet.create({
     fontSize: width * 0.1,
     lineHeight: width * 0.12,
     color: '#1C1E32',
-    fontFamily: 'SFProDisplay',
+    // fontFamily: 'SFProDisplay',
   },
   decimalText: {
     fontWeight: '700',
     fontSize: width * 0.1,
     lineHeight: width * 0.12,
     color: '#A1A1A1',
-    fontFamily: 'SFProDisplay',
+    // fontFamily: 'SFProDisplay',
   },
   greenBox: {
     marginLeft: width * 0.02,
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     fontSize: width * 0.025,
     lineHeight: width * 0.03,
     color: '#1C1E32',
-    fontFamily: 'SFProDisplay',
+    // fontFamily: 'SFProDisplay',
   },
 });
 

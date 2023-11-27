@@ -1,3 +1,5 @@
+
+//oldcode
 import React, { useContext, useState, useEffect } from 'react';
 import { View, TextInput, Text, TouchableOpacity, StyleSheet, Image, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -7,7 +9,7 @@ import AssetDataContext from './AssetDataContext';
 import Modal from 'react-native-modal';
 import { useSelector, useDispatch } from 'react-redux';
 import { setToken } from '../redux/actions/authActions';
-
+import Toast from 'react-native-toast-message';
 const SearchBarList = ({ route }) => {
   const { assetData = [] } = route?.params || {};
   const navigation = useNavigation();
@@ -37,11 +39,11 @@ const SearchBarList = ({ route }) => {
     }
   }, [token, dispatch]);
 
-  useEffect(() => {
-    if (token) {
-      dispatch(setToken(token));
-    }
-  }, [token, dispatch]);
+  // useEffect(() => {
+  //   if (token) {
+  //     dispatch(setToken(token));
+  //   }
+  // }, [token, dispatch]);
 
   const handleBack = () => {
     navigation.goBack();
@@ -95,23 +97,156 @@ const SearchBarList = ({ route }) => {
     if (watchlist.some((watchlistItem) => watchlistItem.InstrumentId === InstrumentId)) {
       // Item already exists in the watchlist
       console.log('Item is already in the watchlist');
-      setSuccessMessage('Item is already in the watchlist');
+      //   setSuccessMessage('Item is already in the watchlist');
+      // } else {
+      Toast.show({
+        type: 'error', // Error toast
+        text1: 'Error',
+        text2: 'Item is already in the watchlist',
+        visibilityTime: 3000,
+      });
     } else {
 
 
       // Step 3: Call addToWatchlist with token
+      // try {
+      //   await addToWatchlist(item, token); // Pass token here
+      //   setSuccessMessage('Added to watchlist successfully');
+      // } catch (error) {
       try {
-        await addToWatchlist(item, token); // Pass token here
-        setSuccessMessage('Added to watchlist successfully');
+        await addToWatchlist(item, token);
+        Toast.show({
+          type: 'success', // Success toast
+          text1: 'Success',
+          text2: 'Added to watchlist successfully',
+          visibilityTime: 3000,
+        });
       } catch (error) {
         console.error('Failed to add to watchlist:', error);
         setSuccessMessage('Failed to add to watchlist');
       }
     }
 
-    setModalVisible(true);
-    setTimeout(() => setModalVisible(false), 3000);
+    // setModalVisible(true);
+    // setTimeout(() => setModalVisible(false), 3000);
   };
+
+
+  // //oldcode LOCAL DATABASE WF
+  // import React, { useContext, useState, useEffect } from 'react';
+  // import { View, TextInput, Text, TouchableOpacity, StyleSheet, Image, ScrollView } from 'react-native';
+  // import { useNavigation } from '@react-navigation/native';
+  // import { Ionicons } from '@expo/vector-icons';
+  // import AssetItem from './AssetItem';
+  // import AssetDataContext from './AssetDataContext';
+  // import Modal from 'react-native-modal';
+  // import { useSelector, useDispatch } from 'react-redux';
+  // import { setToken } from '../redux/actions/authActions';
+
+  // const SearchBarList = ({ route }) => {
+  //   const { assetData = [] } = route?.params || {};
+  //   const navigation = useNavigation();
+  //   const { addToWatchlist, watchlist } = useContext(AssetDataContext);
+  //   const [modalVisible, setModalVisible] = useState(false);
+  //   const [successMessage, setSuccessMessage] = useState('');
+  //   const [searchQuery, setSearchQuery] = useState('');
+  //   const [filteredAssetData, setFilteredAssetData] = useState(assetData);
+  //   const { token } = useSelector(state => state.auth);
+  //   const dispatch = useDispatch();
+
+  //   useEffect(() => {
+  //     const unsubscribe = navigation.addListener('focus', () => {
+  //       setFilteredAssetData(assetData);
+  //     });
+
+  //     return unsubscribe;
+  //   }, [navigation, assetData]);
+
+  //   useEffect(() => {
+  //     filterAssets();
+  //   }, [searchQuery]);
+
+  //   useEffect(() => {
+  //     if (token) {
+  //       dispatch(setToken(token));
+  //     }
+  //   }, [token, dispatch]);
+
+  //   // useEffect(() => {
+  //   //   if (token) {
+  //   //     dispatch(setToken(token));
+  //   //   }
+  //   // }, [token, dispatch]);
+
+  //   const handleBack = () => {
+  //     navigation.goBack();
+  //   };
+
+  //   const handleFilter = () => {
+  //     // Handle filter functionality here
+  //   };
+
+  //   const handleSearchBarClick = () => {
+  //     // Open keyboard or perform additional actions
+  //   };
+
+  //   const filterAssets = () => {
+  //     const trimmedQuery = searchQuery.trim().toLowerCase();
+  //     const filteredAssets = assetData.filter((item) =>
+  //       item.name2.toLowerCase().includes(trimmedQuery)
+  //     );
+  //     setFilteredAssetData(filteredAssets);
+  //   };
+
+
+  //   const handleAddIconClick = async (item) => {
+  //     console.log('Add icon clicked', item);
+
+  //     if (!item.InstrumentId) {
+  //       console.error('InstrumentId is missing');
+
+  //       return;
+  //     }
+
+
+  //     const { InstrumentId, InstrumentType } = item;
+  //     console.log('InstrumentId:', InstrumentId);
+  //     console.log('InstrumentType:', InstrumentType);
+
+
+  //     // Step 1: Check if the necessary details are present
+  //     if (!InstrumentId || !InstrumentType) {
+  //       console.error('InstrumentId and InstrumentType are required.');
+  //       setSuccessMessage('Failed to add to watchlist');
+  //       return;
+  //     }
+
+  //     // Step 2: Ensure token is available
+  //     if (!token) {
+  //       console.error('Authentication token is missing');
+  //       setSuccessMessage('Authentication failed');
+  //       return;
+  //     }
+  //     if (watchlist.some((watchlistItem) => watchlistItem.InstrumentId === InstrumentId)) {
+  //       // Item already exists in the watchlist
+  //       console.log('Item is already in the watchlist');
+  //       setSuccessMessage('Item is already in the watchlist');
+  //     } else {
+
+
+  //       // Step 3: Call addToWatchlist with token
+  //       try {
+  //         await addToWatchlist(item, token); // Pass token here
+  //         setSuccessMessage('Added to watchlist successfully');
+  //       } catch (error) {
+  //         console.error('Failed to add to watchlist:', error);
+  //         setSuccessMessage('Failed to add to watchlist');
+  //       }
+  //     }
+
+  //     setModalVisible(true);
+  //     setTimeout(() => setModalVisible(false), 3000);
+  //   };
 
 
   return (
@@ -332,3 +467,300 @@ const styles = StyleSheet.create({
 });
 
 export default SearchBarList;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// // //oldcodewoapifile
+// import React, { useContext, useState, useEffect } from 'react';
+// import { View, TextInput, Text, TouchableOpacity, StyleSheet, Image, ScrollView } from 'react-native';
+// import { useNavigation } from '@react-navigation/native';
+// import { Ionicons } from '@expo/vector-icons';
+// import AssetItem from './AssetItem';
+// import AssetDataContext from './AssetDataContext';
+// import Modal from 'react-native-modal';
+// import { useSelector, useDispatch } from 'react-redux';
+// import { setToken } from '../redux/actions/authActions';
+
+// const SearchBarList = ({ route }) => {
+//   const { assetData = [] } = route?.params || {};
+//   const navigation = useNavigation();
+//   const { addToWatchlist } = useContext(AssetDataContext);
+
+//   const [watchlist, setWatchlist] = useState([]);
+
+
+//   const [modalVisible, setModalVisible] = useState(false);
+//   const [successMessage, setSuccessMessage] = useState('');
+//   const [searchQuery, setSearchQuery] = useState('');
+//   const [filteredAssetData, setFilteredAssetData] = useState(assetData);
+//   const { token } = useSelector(state => state.auth);
+//   const dispatch = useDispatch();
+
+//   useEffect(() => {
+//     const unsubscribe = navigation.addListener('focus', () => {
+//       setFilteredAssetData(assetData);
+//     });
+
+//     return unsubscribe;
+//   }, [navigation, assetData]);
+
+//   useEffect(() => {
+//     filterAssets();
+//   }, [searchQuery]);
+
+//   useEffect(() => {
+//     if (token) {
+//       dispatch(setToken(token));
+//     }
+//   }, [token, dispatch]);
+
+//   // useEffect(() => {
+//   //   if (token) {
+//   //     dispatch(setToken(token));
+//   //   }
+//   // }, [token, dispatch]);
+
+//   const handleBack = () => {
+//     navigation.goBack();
+//   };
+
+//   const handleFilter = () => {
+//     // Handle filter functionality here
+//   };
+
+//   const handleSearchBarClick = () => {
+//     // Open keyboard or perform additional actions
+//   };
+
+//   const filterAssets = () => {
+//     const trimmedQuery = searchQuery.trim().toLowerCase();
+//     const filteredAssets = assetData.filter((item) =>
+//       item.name2.toLowerCase().includes(trimmedQuery)
+//     );
+//     setFilteredAssetData(filteredAssets);
+//   };
+
+
+//   // const handleAddIconClick = async (item) => {
+//   //   console.log('Add icon clicked', item);
+
+//   //   if (!item.InstrumentId) {
+//   //     console.error('InstrumentId is missing');
+
+//   //     return;
+//   //   }
+
+
+//   //   const { InstrumentId, InstrumentType } = item;
+//   //   console.log('InstrumentId:', InstrumentId);
+//   //   console.log('InstrumentType:', InstrumentType);
+
+
+//   //   // Step 1: Check if the necessary details are present
+//   //   if (!InstrumentId || !InstrumentType) {
+//   //     console.error('InstrumentId and InstrumentType are required.');
+//   //     setSuccessMessage('Failed to add to watchlist');
+//   //     return;
+//   //   }
+
+//   //   // Step 2: Ensure token is available
+//   //   if (!token) {
+//   //     console.error('Authentication token is missing');
+//   //     setSuccessMessage('Authentication failed');
+//   //     return;
+//   //   }
+//   //   if (watchlist.some((watchlistItem) => watchlistItem.InstrumentId === InstrumentId)) {
+//   //     // Item already exists in the watchlist
+//   //     console.log('Item is already in the watchlist');
+//   //     setSuccessMessage('Item is already in the watchlist');
+//   //   } else {
+
+
+//   //     // Step 3: Call addToWatchlist with token
+//   //     try {
+//   //       await addToWatchlist(item, token); // Pass token here
+//   //       setSuccessMessage('Added to watchlist successfully');
+//   //     } catch (error) {
+//   //       console.error('Failed to add to watchlist:', error);
+//   //       setSuccessMessage('Failed to add to watchlist');
+//   //     }
+//   //   }
+
+//   //   setModalVisible(true);
+//   //   setTimeout(() => setModalVisible(false), 3000);
+//   // };
+
+
+//   const handleAddIconClick = async (item) => {
+//     console.log('Add icon clicked', item);
+
+//     if (!item.InstrumentId) {
+//       console.error('InstrumentId is missing');
+//       return;
+//     }
+
+//     const { InstrumentId, InstrumentType } = item;
+//     console.log('InstrumentId:', InstrumentId);
+//     console.log('InstrumentType:', InstrumentType);
+
+//     // Check if the item is already in the watchlist
+//     const isItemInWatchlist = watchlist.some(
+//       (watchlistItem) =>
+//         watchlistItem.InstrumentId === InstrumentId &&
+//         watchlistItem.InstrumentType === InstrumentType
+//     );
+
+//     if (isItemInWatchlist) {
+//       console.log('Item is already in the watchlist');
+//       setSuccessMessage('Item is already in the watchlist');
+//     } else {
+//       try {
+//         // Your code to add the item to the watchlist
+
+//         // After successfully adding the item, you can update the watchlist state
+//         setWatchlist([...watchlist, item]);
+
+//         setSuccessMessage('Added to watchlist successfully');
+//       } catch (error) {
+//         console.error('Failed to add to watchlist:', error);
+//         setSuccessMessage('Failed to add to watchlist');
+//       }
+//     }
+
+//     setModalVisible(true);
+//     setTimeout(() => setModalVisible(false), 3000);
+//   };
+
+
+//   return (
+//     <>
+//       <View style={styles.fixedHeader}>
+//         <View style={styles.headerContainer}>
+//           <TouchableOpacity onPress={handleBack} style={styles.leftContainer}>
+//             <Ionicons name="arrow-back-outline" size={24} color="black" style={{ marginLeft: -10 }} />
+//           </TouchableOpacity>
+//           <Text style={styles.backText}>Asset List</Text>
+//           <TouchableOpacity onPress={handleFilter} style={styles.rightContainer}>
+//             <Image source={require('../assets/filter.png')} style={styles.filterImage} />
+//           </TouchableOpacity>
+//         </View>
+//       </View>
+
+
+//       <View style={styles.containerSearchBar}>
+//         <View style={styles.searchBar}>
+//           <Ionicons name="search" size={24} color="black" style={styles.searchIcon} />
+//           <TextInput
+//             style={styles.input}
+//             placeholder="Search..."
+//             placeholderTextColor="gray"
+//             selectionColor="black"
+//             autoFocus={true}
+//             onFocus={handleSearchBarClick}
+//             onChangeText={setSearchQuery}
+//           />
+//         </View>
+//       </View>
+
+//       <ScrollView style={styles.scrollContainer}>
+//         <View style={styles.containerItem}>
+//           {searchQuery === '' ? (
+//             // Render nothing when searchQuery is empty
+//             null
+//           ) : filteredAssetData.length === 0 ? (
+//             <Text style={styles.noDataMessage}>Data not found</Text>
+//           ) : (
+//             filteredAssetData.map((item) => (
+//               <AssetItem
+//                 key={item.InstrumentId}
+//                 name2={item.name2}
+//                 name3={item.name3}
+//                 value={item.value}
+//                 decimalValue={item.decimalValue}
+//                 changePercentage={item.changePercentage}
+//                 // onPress={() => navigation.navigate('AssetListDetails')}
+//                 onPress={() => navigation.navigate(item.press, {
+//                   symbol: item.symbol,
+
+//                   Open: item.Open,
+//                   Name: item.Name,
+//                   openValue: item.openValue,
+//                   Close: item.Close,
+//                   closeValue: item.closeValue,
+//                   High: item.High,
+//                   Hvalue: item.Hvalue,
+//                   Low: item.Low,
+//                   Lvalue: item.Lvalue,
+//                   Name: item.Name,
+//                   Dval: item.Dval,
+//                   Value: item.Value,
+//                   Market: item.Market,
+//                   value1: item.value1,
+//                   volBtc: item.volBtc,
+//                   value2: item.value2,
+//                   volUsdt: item.volUsdt,
+//                   value3: item.value3,
+
+//                   //navname
+//                   Price: item.Name,
+//                   priceVal: item.priceVal,
+
+
+//                   sname: item.Name,
+//                   instrumentId: item.instrumentId,
+//                   instrumentType: item.instrumentType,
+//                   //quantity: "1",
+//                   LastPrice: item.LastPrice,
+
+
+
+
+//                 })}
+
+
+//                 onAdd={() => handleAddIconClick(item)}
+//                 showRemoveIcon={false}
+//                 showAddIcon={true}
+
+//               />
+//             ))
+//           )}
+//         </View>
+
+//       </ScrollView>
+
+//       {/* Success Message Modal */}
+//       <Modal isVisible={modalVisible}>
+//         <View style={styles.modalContent}>
+//           <Text style={styles.successMessage}>{successMessage}</Text>
+//           <TouchableOpacity onPress={() => setModalVisible(false)}>
+//             <Text style={styles.closeButton}>Close</Text>
+//           </TouchableOpacity>
+//         </View>
+//       </Modal>
+//     </>
+
+//   );
+// };
+
+
+
+
+
+
+
+

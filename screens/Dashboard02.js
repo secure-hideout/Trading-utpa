@@ -60,7 +60,7 @@ const Dashboard = () => {
       redirect: 'follow'
     };
 
-    fetch("http://35.154.235.224:9000/api/user/getZtokens", requestOptions)
+    fetch("http://10.0.2.2:9000/api/user/getZtokens", requestOptions)
       .then(response => response.json())
       .then(result => {
         const transformedData = result.map(item => ({
@@ -136,7 +136,7 @@ const Dashboard = () => {
             const totalValue = totalValues[item.name] || '';
 
 
-            console.log(`Item Name: ${item.name}, Total Value: ${totalValue}`);
+            // console.log(`Item Name: ${item.name}, Total Value: ${totalValue}`);
 
             return (
               <CardItems
@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 700,
     lineHeight: 21,
-    fontFamily: 'SFProDisplay',
+    // fontFamily: 'SFProDisplay',
     color: '#1C1E32',
   },
   userName: {
@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
 
     fontWeight: 600,
     lineHeight: 21,
-    fontFamily: 'SFProDisplay',
+    // fontFamily: 'SFProDisplay',
     color: '#1C1E32',
 
   },
@@ -255,7 +255,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 19.09,
     color: '#A1A1A1',
-    fontFamily: 'SFProDisplay',
+    // fontFamily: 'SFProDisplay',
   },
   portfolioContainer: {
     flexDirection: 'column',
@@ -269,14 +269,14 @@ const styles = StyleSheet.create({
     fontSize: 32,
     lineHeight: 38.19,
     color: '#1C1E32',
-    fontFamily: 'SFProDisplay',
+    // fontFamily: 'SFProDisplay',
   },
   decimalText: {
     fontWeight: 700,
     fontSize: 32,
     lineHeight: 38.19,
     color: '#A1A1A1',
-    fontFamily: 'SFProDisplay',
+    // fontFamily: 'SFProDisplay',
   },
   greenBox: {
     marginLeft: 10,
@@ -292,7 +292,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
     lineHeight: 11.93,
     color: '#1C1E32',
-    fontFamily: 'SFProDisplay',
+    // fontFamily: 'SFProDisplay',
 
   },
 
@@ -480,7 +480,7 @@ const styles = StyleSheet.create({
 
   },
   buttonValue: {
-    fontFamily: 'SFProDisplay',
+    // fontFamily: 'SFProDisplay',
     fontWeight: 800,
     fontSize: 12,
     lineHeight: 13.55,
@@ -543,7 +543,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 700,
     lineHeight: 19.93,
-    fontFamily: 'SFProDisplay',
+    // fontFamily: 'SFProDisplay',
     color: 'rgba(28, 30, 50, 1)',
   },
 

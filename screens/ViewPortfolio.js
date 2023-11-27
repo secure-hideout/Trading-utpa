@@ -22,48 +22,35 @@ const ViewPortfolio = ({
   const navigation = useNavigation();
   const [nseData, setNseData] = useState([]);
 
-
-
-  // useEffect(() => {
-  //   const fetchData1 = async () => {
-  //     try {
-  //       const response1 = await fetchData("http://35.154.235.224:9000/api/user/getPortfolio", {
-  //         method: "GET",
-  //         headers: new Headers({ "Authorization": "Bearer " + token }),
-  //         redirect: "follow",
-  //       });
-
-  //       const response2 = await fetchData("http://35.154.235.224:9000/api/user/getZtokens", {
-  //         method: "POST",
-  //         headers: new Headers({ "Authorization": "Bearer " + token }),
-  //         body: "",
-  //         redirect: "follow",
-  //       });
   useEffect(() => {
     const fetchData1 = async () => {
       try {
-        const response1 = await fetchData("http://35.154.235.224:9000/api/user/getPortfolio", {
+        const response1 = await fetchData("http://10.0.2.2:9000/api/user/getPortfolio", {
           method: "GET",
           headers: new Headers({ "Authorization": "Bearer " + token }),
           redirect: "follow",
         });
 
-        console.log("Response1:", response1);
+        // console.log("Response1:", response1);
 
-        const response2 = await fetchData("http://35.154.235.224:9000/api/user/getZtokens", {
+        const response2 = await fetchData("http://10.0.2.2:9000/api/user/getZtokens", {
           method: "POST",
           headers: new Headers({ "Authorization": "Bearer " + token }),
           body: "",
           redirect: "follow",
         });
 
-        console.log("Response2:", response2);
+        // console.log("Response2:", response2);
 
         const mergedArray = response1.map((item1) => {
           const matchingItem = response2.find((item2) => item2.Zid === item1.FinancialInstrumentID);
 
           return {
             name2: matchingItem ? matchingItem.Name : null,
+            name3: matchingItem ? matchingItem.Segment : null,
+
+            decimalValue: item1.Quantity,
+
             Name: matchingItem ? matchingItem.Name : null,
             symbol: matchingItem ? matchingItem.Tradingsymbol : null,
             value: item1.AveragePrice,
@@ -99,27 +86,13 @@ const ViewPortfolio = ({
         });
         setNseData(mergedArray);
       } catch (error) {
-        console.log("Error in API calls:", error);
+        // console.log("Error in API calls:", error);
       }
     };
 
     fetchData1();
   }, [token]);
 
-  // const calculateTotalValue = (cardType) => {
-  //   if (cardType === "NSE" && nseData) {
-  //     let totalValue = 0;
-
-  //     nseData.forEach((item) => {
-  //       if (item.LastPrice && typeof item.LastPrice === 'number') {
-  //         totalValue += item.LastPrice;
-  //       }
-  //     });
-
-  //     return `$${totalValue.toFixed(2)}`;
-  //   }
-  //   return "$0.00";
-  // };
   const calculateTotalValue = (cardType) => {
     const cardTypeData = cardData[cardType];
     if (cardTypeData) {
@@ -135,48 +108,6 @@ const ViewPortfolio = ({
     }
     return "$0.00";
   };
-
-  // const calculateChangePercentage = (cardType) => {
-  //   const cardTypeData = cardData[cardType];
-  //   if (cardTypeData) {
-  //     let totalChange = 0;
-  //     cardTypeData.forEach((item) => {
-  //       if (item.changePercentage && typeof item.changePercentage === 'string') {
-  //         totalChange += parseFloat(item.changePercentage.replace("+", "").replace("%", ""));
-  //       }
-  //     });
-  //     return totalChange > 0
-  //       ? `+${totalChange.toFixed(2)}%`
-  //       : `${totalChange.toFixed(2)}%`;
-  //   }
-  //   return "+0.00%";
-  // };
-
-  // useEffect(() => {
-  //   const cardTypes = Object.keys(cardData);
-  //   cardTypes.forEach((cardType) => {
-  //     const totalValue = calculateTotalValue(cardType);
-  //     const totalChangePercentage = calculateChangePercentage(cardType);
-  //     updateTotalValue(cardType, totalValue);
-  //     updateChangePercentage(cardType, totalChangePercentage);
-  //   });
-  // }, [token, nseData]);
-
-
-
-  // const calculateTotalValue = (cardType) => {
-  //   const cardTypeData = cardData[cardType];
-  //   if (cardTypeData) {
-  //     let totalValue = 0;
-  //     cardTypeData.forEach((item) => {
-  //       if (item.value && typeof item.value === 'string') {
-  //         totalValue += parseFloat(item.value.replace('$', '').replace(/,/g, ''));
-  //       }
-  //     });
-  //     return `$${totalValue.toFixed(2)}`;
-  //   }
-  //   return "$0.00";
-  // };
 
   const calculateChangePercentage = (cardType) => {
     const cardTypeData = cardData[cardType];
@@ -206,6 +137,46 @@ const ViewPortfolio = ({
 
   const cardData = {
     Crypto: [
+      {
+        name2: "BNB",
+        name3: "BTC",
+        value: "$212.4",
+        decimalValue: ".60",
+        changePercentage: "+7.90%",
+        logo: "https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg",
+      },
+      {
+        name2: "BNB",
+        name3: "BTC",
+        value: "$212.4",
+        decimalValue: ".60",
+        changePercentage: "+7.90%",
+        logo: "https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg",
+      },
+      {
+        name2: "BNB",
+        name3: "BTC",
+        value: "$212.4",
+        decimalValue: ".60",
+        changePercentage: "+7.90%",
+        logo: "https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg",
+      },
+      {
+        name2: "BNB",
+        name3: "BTC",
+        value: "$212.4",
+        decimalValue: ".60",
+        changePercentage: "+7.90%",
+        logo: "https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg",
+      },
+      {
+        name2: "BNB",
+        name3: "BTC",
+        value: "$212.4",
+        decimalValue: ".60",
+        changePercentage: "+7.90%",
+        logo: "https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg",
+      },
       {
         name2: "BNB",
         name3: "BTC",
@@ -258,9 +229,57 @@ const ViewPortfolio = ({
         changePercentage: '-7.90%',
         logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg',
       },
+      {
+        name2: "BNB",
+        name3: "BTC",
+        value: "$212.4",
+        decimalValue: ".60",
+        changePercentage: "+7.90%",
+        logo: "https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg",
+      },
+      {
+        name2: "BNB",
+        name3: "BTC",
+        value: "$212.4",
+        decimalValue: ".60",
+        changePercentage: "+7.90%",
+        logo: "https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg",
+      },
+      {
+        name2: "BNB",
+        name3: "BTC",
+        value: "$212.4",
+        decimalValue: ".60",
+        changePercentage: "+7.90%",
+        logo: "https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg",
+      },
 
     ],
     Commodity: [
+      {
+        name2: "BNB",
+        name3: "BTC",
+        value: "$212.4",
+        decimalValue: ".60",
+        changePercentage: "+7.90%",
+        logo: "https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg",
+      },
+      {
+        name2: "BNB",
+        name3: "BTC",
+        value: "$212.4",
+        decimalValue: ".60",
+        changePercentage: "+7.90%",
+        logo: "https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg",
+      },
+      {
+        name2: "BNB",
+        name3: "BTC",
+        value: "$212.4",
+        decimalValue: ".60",
+        changePercentage: "+7.90%",
+        logo: "https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg",
+      },
       {
         name2: "BNB",
         name3: "BTC",
@@ -275,9 +294,6 @@ const ViewPortfolio = ({
   return (
     <View style={styles.container}>
       <View style={styles.portfolio}>
-        {/* <Text style={styles.portfolioText}>{selectedCard} Portfolio</Text> */}
-        {/* <Text style={styles.totalValue}>{calculateTotalValue(selectedCard)}</Text> */}
-        {/* {selectedCard === "NSE" ? calculateTotalValue(selectedCard) : ""} */}
       </View>
       {cardData[selectedCard] ? (
         cardData[selectedCard].map((data, index) => (
@@ -325,6 +341,36 @@ const ViewPortfolio = ({
   );
 };
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "FFFFFF",
+  },
+  portfolio: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  portfolioText: {
+    fontSize: 16,
+    fontWeight: "600",
+    lineHeight: 17.71,
+  },
+  totalValue: {
+    fontSize: 14,
+    fontWeight: "600",
+    lineHeight: 19.09,
+    color: "rgba(28, 30, 50, 1)",
+  },
+  cardDataText: {
+    fontSize: 16,
+    fontWeight: "600",
+    lineHeight: 17.71,
+  },
+});
+
+export default ViewPortfolio;
 
 
 
@@ -337,7 +383,440 @@ const ViewPortfolio = ({
 
 
 
-//working 
+
+//withintegrate with consolelog
+// import React, { useState, useEffect } from "react";
+// import { View, Text, StyleSheet } from "react-native";
+// import AssetCard from "./AssetCard";
+// import { useSelector } from "react-redux";
+// import { useNavigation } from '@react-navigation/native';
+
+
+
+// const fetchData = async (url, options) => {
+//   const response = await fetch(url, options);
+//   const data = await response.json();
+//   return data;
+// };
+
+
+// const ViewPortfolio = ({
+//   selectedCard,
+//   updateTotalValue,
+//   updateChangePercentage,
+// }) => {
+//   const { token } = useSelector((state) => state.auth);
+//   const navigation = useNavigation();
+//   const [nseData, setNseData] = useState([]);
+
+
+
+//   // useEffect(() => {
+//   //   const fetchData1 = async () => {
+//   //     try {
+//   //       const response1 = await fetchData("http://10.0.2.2:9000/api/user/getPortfolio", {
+//   //         method: "GET",
+//   //         headers: new Headers({ "Authorization": "Bearer " + token }),
+//   //         redirect: "follow",
+//   //       });
+
+//   //       const response2 = await fetchData("http://10.0.2.2:9000/api/user/getZtokens", {
+//   //         method: "POST",
+//   //         headers: new Headers({ "Authorization": "Bearer " + token }),
+//   //         body: "",
+//   //         redirect: "follow",
+//   //       });
+//   useEffect(() => {
+//     const fetchData1 = async () => {
+//       try {
+//         const response1 = await fetchData("http://10.0.2.2:9000/api/user/getPortfolio", {
+//           method: "GET",
+//           headers: new Headers({ "Authorization": "Bearer " + token }),
+//           redirect: "follow",
+//         });
+
+//         console.log("Response1:", response1);
+
+//         const response2 = await fetchData("http://10.0.2.2:9000/api/user/getZtokens", {
+//           method: "POST",
+//           headers: new Headers({ "Authorization": "Bearer " + token }),
+//           body: "",
+//           redirect: "follow",
+//         });
+
+//         console.log("Response2:", response2);
+
+//         const mergedArray = response1.map((item1) => {
+//           const matchingItem = response2.find((item2) => item2.Zid === item1.FinancialInstrumentID);
+
+//           return {
+//             name2: matchingItem ? matchingItem.Name : null,
+//             name3: matchingItem ? matchingItem.Segment : null,
+
+//             decimalValue: item1.Quantity,
+
+//             Name: matchingItem ? matchingItem.Name : null,
+//             symbol: matchingItem ? matchingItem.Tradingsymbol : null,
+//             value: item1.AveragePrice,
+//             press: 'Allgraphs',
+//             LastPrice: item1.AveragePrice,
+//             sname: matchingItem ? matchingItem.Name : null,
+//             instrumentId: matchingItem ? matchingItem.Zid : null,
+//             instrumentType: matchingItem ? matchingItem.Segment : null,
+//             Price: matchingItem ? matchingItem.Name : null,
+//             priceVal: item1.AveragePrice,
+//             Quantities: item1.Quantity,
+//             logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg',
+//             Open: "open",
+//             openValue: 10000,
+//             Close: "Close",
+//             closeValue: 50,
+//             High: "High",
+//             Hvalue: 1500000,
+//             Low: "Low",
+//             Lvalue: 25,
+//             Dval: "Daily Vol",
+//             Value: "140.03B",
+//             Market: "Market",
+//             value1: "200.3B",
+//             volBtc: "vol BTC",
+//             value2: "10,000",
+//             volUsdt: "vol USDT",
+//             value3: "10,000",
+
+
+
+//           };
+//         });
+//         setNseData(mergedArray);
+//       } catch (error) {
+//         console.log("Error in API calls:", error);
+//       }
+//     };
+
+//     fetchData1();
+//   }, [token]);
+
+//   // const calculateTotalValue = (cardType) => {
+//   //   if (cardType === "NSE" && nseData) {
+//   //     let totalValue = 0;
+
+//   //     nseData.forEach((item) => {
+//   //       if (item.LastPrice && typeof item.LastPrice === 'number') {
+//   //         totalValue += item.LastPrice;
+//   //       }
+//   //     });
+
+//   //     return `$${totalValue.toFixed(2)}`;
+//   //   }
+//   //   return "$0.00";
+//   // };
+//   const calculateTotalValue = (cardType) => {
+//     const cardTypeData = cardData[cardType];
+//     if (cardTypeData) {
+//       let totalValue = 0;
+//       cardTypeData.forEach((item) => {
+//         if (item.value && typeof item.value === 'string') {
+//           totalValue += parseFloat(item.value.replace('$', '').replace(/,/g, ''));
+//         } else if (item.LastPrice && typeof item.LastPrice === 'number') {
+//           totalValue += item.LastPrice;
+//         }
+//       });
+//       return `$${totalValue.toFixed(2)}`;
+//     }
+//     return "$0.00";
+//   };
+
+//   // const calculateChangePercentage = (cardType) => {
+//   //   const cardTypeData = cardData[cardType];
+//   //   if (cardTypeData) {
+//   //     let totalChange = 0;
+//   //     cardTypeData.forEach((item) => {
+//   //       if (item.changePercentage && typeof item.changePercentage === 'string') {
+//   //         totalChange += parseFloat(item.changePercentage.replace("+", "").replace("%", ""));
+//   //       }
+//   //     });
+//   //     return totalChange > 0
+//   //       ? `+${totalChange.toFixed(2)}%`
+//   //       : `${totalChange.toFixed(2)}%`;
+//   //   }
+//   //   return "+0.00%";
+//   // };
+
+//   // useEffect(() => {
+//   //   const cardTypes = Object.keys(cardData);
+//   //   cardTypes.forEach((cardType) => {
+//   //     const totalValue = calculateTotalValue(cardType);
+//   //     const totalChangePercentage = calculateChangePercentage(cardType);
+//   //     updateTotalValue(cardType, totalValue);
+//   //     updateChangePercentage(cardType, totalChangePercentage);
+//   //   });
+//   // }, [token, nseData]);
+
+
+
+//   // const calculateTotalValue = (cardType) => {
+//   //   const cardTypeData = cardData[cardType];
+//   //   if (cardTypeData) {
+//   //     let totalValue = 0;
+//   //     cardTypeData.forEach((item) => {
+//   //       if (item.value && typeof item.value === 'string') {
+//   //         totalValue += parseFloat(item.value.replace('$', '').replace(/,/g, ''));
+//   //       }
+//   //     });
+//   //     return `$${totalValue.toFixed(2)}`;
+//   //   }
+//   //   return "$0.00";
+//   // };
+
+//   const calculateChangePercentage = (cardType) => {
+//     const cardTypeData = cardData[cardType];
+//     if (cardTypeData) {
+//       let totalChange = 0;
+//       cardTypeData.forEach((item) => {
+//         if (item.changePercentage && typeof item.changePercentage === 'string') {
+//           totalChange += parseFloat(item.changePercentage.replace('+', '').replace('%', ''));
+//         }
+//       });
+//       return totalChange > 0
+//         ? `+${totalChange.toFixed(2)}%`
+//         : `${totalChange.toFixed(2)}%`;
+//     }
+//     return '+0.00%';
+//   };
+
+//   useEffect(() => {
+//     const cardTypes = Object.keys(cardData);
+//     cardTypes.forEach((cardType) => {
+//       const totalValue = calculateTotalValue(cardType);
+//       const totalChangePercentage = calculateChangePercentage(cardType);
+//       updateTotalValue(cardType, totalValue);
+//       updateChangePercentage(cardType, totalChangePercentage);
+//     });
+//   }, [token, nseData]);
+
+//   const cardData = {
+//     Crypto: [
+//       {
+//         name2: "BNB",
+//         name3: "BTC",
+//         value: "$212.4",
+//         decimalValue: ".60",
+//         changePercentage: "+7.90%",
+//         logo: "https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg",
+//       },
+//       {
+//         name2: "BNB",
+//         name3: "BTC",
+//         value: "$212.4",
+//         decimalValue: ".60",
+//         changePercentage: "+7.90%",
+//         logo: "https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg",
+//       },
+//       {
+//         name2: "BNB",
+//         name3: "BTC",
+//         value: "$212.4",
+//         decimalValue: ".60",
+//         changePercentage: "+7.90%",
+//         logo: "https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg",
+//       },
+//       {
+//         name2: "BNB",
+//         name3: "BTC",
+//         value: "$212.4",
+//         decimalValue: ".60",
+//         changePercentage: "+7.90%",
+//         logo: "https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg",
+//       },
+//       {
+//         name2: "BNB",
+//         name3: "BTC",
+//         value: "$212.4",
+//         decimalValue: ".60",
+//         changePercentage: "+7.90%",
+//         logo: "https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg",
+//       },
+//       {
+//         name2: "BNB",
+//         name3: "BTC",
+//         value: "$212.4",
+//         decimalValue: ".60",
+//         changePercentage: "+7.90%",
+//         logo: "https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg",
+//       },
+//       {
+//         name2: 'ETC',
+//         name3: 'BTC',
+//         value: '$27,618',
+//         decimalValue: '.60',
+//         changePercentage: '-7.90%',
+//         logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg',
+//         symbol: 'ETC',
+//         press: 'Allgraphs',
+//         Name: "Etc",
+//         Price: "ETC Price",
+//         priceVal: "30,000000",
+//         pricePer: "-10.35",
+//         Open: "open",
+//         openValue: 1000000,
+//         Close: "Close",
+//         closeValue: 50,
+//         High: "High",
+//         Hvalue: 1500000,
+//         Low: "Low",
+//         Lvalue: 25,
+//         Dval: "Daily Vol",
+//         Value: "140.03B",
+//         Market: "Market",
+//         value1: "200.3B",
+//         volBtc: "vol BTC",
+//         value2: "10,000000000",
+//         volUsdt: "vol USDT",
+//         value3: "10,000",
+//       },
+
+//     ],
+
+//     NSE: nseData,
+
+//     BSE: [
+//       {
+//         name2: 'ACC',
+//         name3: 'BTC',
+//         value: '$30,618',
+//         decimalValue: '.60',
+//         changePercentage: '-7.90%',
+//         logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg',
+//       },
+//       {
+//         name2: "BNB",
+//         name3: "BTC",
+//         value: "$212.4",
+//         decimalValue: ".60",
+//         changePercentage: "+7.90%",
+//         logo: "https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg",
+//       },
+//       {
+//         name2: "BNB",
+//         name3: "BTC",
+//         value: "$212.4",
+//         decimalValue: ".60",
+//         changePercentage: "+7.90%",
+//         logo: "https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg",
+//       },
+//       {
+//         name2: "BNB",
+//         name3: "BTC",
+//         value: "$212.4",
+//         decimalValue: ".60",
+//         changePercentage: "+7.90%",
+//         logo: "https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg",
+//       },
+
+//     ],
+//     Commodity: [
+//       {
+//         name2: "BNB",
+//         name3: "BTC",
+//         value: "$212.4",
+//         decimalValue: ".60",
+//         changePercentage: "+7.90%",
+//         logo: "https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg",
+//       },
+//       {
+//         name2: "BNB",
+//         name3: "BTC",
+//         value: "$212.4",
+//         decimalValue: ".60",
+//         changePercentage: "+7.90%",
+//         logo: "https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg",
+//       },
+//       {
+//         name2: "BNB",
+//         name3: "BTC",
+//         value: "$212.4",
+//         decimalValue: ".60",
+//         changePercentage: "+7.90%",
+//         logo: "https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg",
+//       },
+//       {
+//         name2: "BNB",
+//         name3: "BTC",
+//         value: "$212.4",
+//         decimalValue: ".60",
+//         changePercentage: "+7.90%",
+//         logo: "https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg",
+//       },
+//     ],
+//   };
+
+//   return (
+//     <View style={styles.container}>
+//       <View style={styles.portfolio}>
+//         {/* <Text style={styles.portfolioText}>{selectedCard} Portfolio</Text> */}
+//         {/* <Text style={styles.totalValue}>{calculateTotalValue(selectedCard)}</Text> */}
+//         {/* {selectedCard === "NSE" ? calculateTotalValue(selectedCard) : ""} */}
+//       </View>
+//       {cardData[selectedCard] ? (
+//         cardData[selectedCard].map((data, index) => (
+//           <AssetCard data={data} key={index}
+//             onPress={() => navigation.navigate('Allgraphs', {
+//               symbol: data.symbol,
+//               Open: data.Open,
+//               Name: data.Name,
+//               Price: data.Price,
+//               priceVal: data.priceVal,
+//               pricePer: data.pricePer,
+//               openValue: data.openValue,
+//               Close: data.Close,
+//               closeValue: data.closeValue,
+//               High: data.High,
+//               Hvalue: data.Hvalue,
+//               Low: data.Low,
+//               Lvalue: data.Lvalue,
+//               Name: data.Name,
+//               Dval: data.Dval,
+//               Value: data.Value,
+//               Market: data.Market,
+//               value1: data.value1,
+//               volBtc: data.volBtc,
+//               value2: data.value2,
+//               volUsdt: data.volUsdt,
+//               value3: data.value3,
+//               Price: data.Price,
+//               priceVal: data.priceVal,
+//               LastPrice: data.LastPrice,
+//               sname: data.sname,
+//               Quantities: data.Quantities,
+//               instrumentType: data.instrumentType,
+//               instrumentId: data.instrumentId,
+//               quantity: data.quantity,
+
+//             })} />
+//         ))
+//       ) : (
+//         <Text style={styles.cardDataText}>
+//           No data available for {selectedCard}
+//         </Text>
+//       )}
+//     </View>
+//   );
+// };
+
+
+
+
+
+
+
+
+
+
+
+
+
+//working
 // import React, { useState, useEffect } from "react";
 // import { View, Text, StyleSheet } from "react-native";
 // import AssetCard from "./AssetCard";
@@ -367,13 +846,13 @@ const ViewPortfolio = ({
 //   useEffect(() => {
 //     const fetchData1 = async () => {
 //       try {
-//         const response1 = await fetchData("http://35.154.235.224:9000/api/user/getPortfolio", {
+//         const response1 = await fetchData("http://10.0.2.2:9000/api/user/getPortfolio", {
 //           method: "GET",
 //           headers: new Headers({ "Authorization": "Bearer " + token }),
 //           redirect: "follow",
 //         });
 
-//         const response2 = await fetchData("http://35.154.235.224:9000/api/user/getZtokens", {
+//         const response2 = await fetchData("http://10.0.2.2:9000/api/user/getZtokens", {
 //           method: "POST",
 //           headers: new Headers({ "Authorization": "Bearer " + token }),
 //           body: "",
@@ -633,7 +1112,7 @@ const ViewPortfolio = ({
 
 
 
-//with integration 
+//with integration
 // import React, { useState, useEffect } from "react";
 // import { View, Text, StyleSheet } from "react-native";
 // import AssetCard from "./AssetCard";
@@ -683,11 +1162,11 @@ const ViewPortfolio = ({
 //       redirect: "follow",
 //     };
 
-//     fetch("http://35.154.235.224:9000/api/user/getPortfolio", requestOptions1)
+//     fetch("http://10.0.2.2:9000/api/user/getPortfolio", requestOptions1)
 //       .then((response) => response.json())
 //       .then((data1) => {
 
-//         fetch("http://35.154.235.224:9000/api/user/getZtokens", requestOptions2)
+//         fetch("http://10.0.2.2:9000/api/user/getZtokens", requestOptions2)
 //           .then((response) => response.json())
 //           .then((data2) => {
 
@@ -909,36 +1388,7 @@ const ViewPortfolio = ({
 //   );
 // };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "FFFFFF",
-  },
-  portfolio: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  portfolioText: {
-    fontSize: 16,
-    fontWeight: "600",
-    lineHeight: 17.71,
-  },
-  totalValue: {
-    fontSize: 14,
-    fontWeight: "600",
-    lineHeight: 19.09,
-    color: "rgba(28, 30, 50, 1)",
-  },
-  cardDataText: {
-    fontSize: 16,
-    fontWeight: "600",
-    lineHeight: 17.71,
-  },
-});
 
-export default ViewPortfolio;
 
 
 

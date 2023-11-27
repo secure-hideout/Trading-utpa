@@ -1,6 +1,6 @@
 /* fonts */
 export const FontFamily = {
-  sFProDisplay: "SF Pro Display",
+  // sFProDisplay: "SF Pro Display",
   sFProText: "SF Pro Text",
 };
 /* font sizes */

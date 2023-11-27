@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFFFFF',
     paddingTop: height * 0.04,
-    marginTop: height * 0.01,
+    // marginTop: height * 0.01,
   },
   nav: {
     flexDirection: 'row',
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     fontSize: width * 0.045,
     fontWeight: 'bold',
     lineHeight: width * 0.052,
-    fontFamily: 'SFProDisplay',
+    // fontFamily: 'SFProDisplay',
     color: '#1C1E32',
   },
   userName: {
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     lineHeight: width * 0.052,
     color: '#1C1E32',
-    fontFamily: 'SFProDisplay',
+    // fontFamily: 'SFProDisplay',
   },
   rightImageContainer: {
     flexDirection: 'row',

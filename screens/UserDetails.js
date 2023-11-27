@@ -61,7 +61,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Image, Text, StyleSheet, TouchableOpacity, ScrollView, TextInput } from 'react-native';
 import { Button } from 'react-native-paper';
 import { Image as expoImage } from "expo-image";
-import { useNavigation } from '@react-navigation/native';
+import { useRoute, useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 // import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 //import { FontAwesomeIcon } from 'react-native-fontawesome';
@@ -73,9 +73,18 @@ import { Ionicons } from '@expo/vector-icons';
 
 const Profile = () => {
   const navigation = useNavigation();
+  const route = useRoute();
+
+  // const goBack = () => {
+  //   navigation.navigate('WatchList');
+  // };
 
   const goBack = () => {
-    navigation.navigate('WatchList');
+    if (route.params?.fromBottomTab) {
+      navigation.navigate('WatchList'); // If navigated from bottom tab
+    } else {
+      navigation.goBack(); // Otherwise, go back to the previous screen
+    }
   };
 
   return (
@@ -96,7 +105,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     top: 1,
-    backgroundColor: 'white',
+    // backgroundColor: 'white',
     // justifyContent: 'center',
     alignItems: 'center',
   },
