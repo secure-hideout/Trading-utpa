@@ -85,7 +85,7 @@ const Sell = ({ route }) => {
           redirect: 'follow',
         };
 
-        const response = await fetch('http://10.0.2.2:9000/api/user/sellSymbol', requestOptions);
+        const response = await fetch('http://35.154.235.224:9000/api/user/sellSymbol', requestOptions);
 
         console.log(`${transactionType} API response:`, response.status, response.statusText);
 
@@ -103,7 +103,7 @@ const Sell = ({ route }) => {
           redirect: 'follow',
         };
 
-        const response = await fetch('http://10.0.2.2:9000/api/user/purshaseSymbol', requestOptions);
+        const response = await fetch('http://35.154.235.224:9000/api/user/purshaseSymbol', requestOptions);
 
         console.log(`${transactionType} API response:`, response.status, response.statusText);
 
@@ -351,7 +351,7 @@ const styles = StyleSheet.create({
 //         redirect: 'follow',
 //       };
 
-//       const response = await fetch('http://10.0.2.2:9000/api/user/sellSymbol', requestOptions);
+//       const response = await fetch('http://35.154.235.224:9000/api/user/sellSymbol', requestOptions);
 
 //       console.log('Sell API response:', response.status, response.statusText);
 
@@ -640,7 +640,7 @@ const styles = StyleSheet.create({
 //         redirect: 'follow',
 //       };
 
-//       const response = await fetch('http://10.0.2.2:9000/api/user/purshaseSymbol', requestOptions);
+//       const response = await fetch('http://35.154.235.224:9000/api/user/purshaseSymbol', requestOptions);
 
 //       console.log('Sell API response:', response.status, response.statusText);
 
@@ -795,7 +795,7 @@ const styles = StyleSheet.create({
 //         redirect: 'follow',
 //       };
 
-//       const response = await fetch('http://10.0.2.2:9000/api/user/purshaseSymbol', requestOptions);
+//       const response = await fetch('http://35.154.235.224:9000/api/user/purshaseSymbol', requestOptions);
 
 //       console.log('Sell API response:', response.status, response.statusText);
 
@@ -954,7 +954,7 @@ const styles = StyleSheet.create({
 //         redirect: 'follow'
 //       };
   
-//       const response = await fetch('http://10.0.2.2:9000/api/user/purshaseSymbol', requestOptions);
+//       const response = await fetch('http://35.154.235.224:9000/api/user/purshaseSymbol', requestOptions);
   
 //       console.log('Sell API response:', response.status, response.statusText);
   
@@ -1099,7 +1099,7 @@ const styles = StyleSheet.create({
     
     
 
-//     const response = await fetch('http://10.0.2.2:9000/api/user/sellSymbol', {
+//     const response = await fetch('http://35.154.235.224:9000/api/user/sellSymbol', {
 //       method: 'POST',
 //       headers: {
 //         'Content-Type': 'application/json',
@@ -1173,7 +1173,7 @@ const styles = StyleSheet.create({
 //       redirect: 'follow',
 //     };
   
-//     fetch('http://10.0.2.2:9000/api/user/sellSymbol', requestOptions)
+//     fetch('http://35.154.235.224:9000/api/user/sellSymbol', requestOptions)
 //       .then((response) => {
 //         if (!response.ok) {
 //           throw new Error(`HTTP status ${response.status}`);
@@ -1304,8 +1304,8 @@ const styles = StyleSheet.create({
 
 //       const response = await fetch(
 //         transactionType === 'sell'
-//           ? 'http://10.0.2.2:9000/api/user/sellSymbol'
-//           : 'http://10.0.2.2:9000/api/user/purshaseSymbol',
+//           ? 'http://35.154.235.224:9000/api/user/sellSymbol'
+//           : 'http://35.154.235.224:9000/api/user/purshaseSymbol',
 //         requestOptions
 //       );
 

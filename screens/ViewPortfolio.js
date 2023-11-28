@@ -17,6 +17,7 @@ const ViewPortfolio = ({
   selectedCard,
   updateTotalValue,
   updateChangePercentage,
+  selectedCardColor,
 }) => {
   const { token } = useSelector((state) => state.auth);
   const navigation = useNavigation();
@@ -25,7 +26,7 @@ const ViewPortfolio = ({
   useEffect(() => {
     const fetchData1 = async () => {
       try {
-        const response1 = await fetchData("http://10.0.2.2:9000/api/user/getPortfolio", {
+        const response1 = await fetchData("http://35.154.235.224:9000/api/user/getPortfolio", {
           method: "GET",
           headers: new Headers({ "Authorization": "Bearer " + token }),
           redirect: "follow",
@@ -33,7 +34,7 @@ const ViewPortfolio = ({
 
         // console.log("Response1:", response1);
 
-        const response2 = await fetchData("http://10.0.2.2:9000/api/user/getZtokens", {
+        const response2 = await fetchData("http://35.154.235.224:9000/api/user/getZtokens", {
           method: "POST",
           headers: new Headers({ "Authorization": "Bearer " + token }),
           body: "",
@@ -293,8 +294,29 @@ const ViewPortfolio = ({
 
   return (
     <View style={styles.container}>
-      <View style={styles.portfolio}>
+
+
+      {/* <View style={styles.headerContainer}> */}
+      <View style={[styles.headerContainer, { backgroundColor: selectedCardColor }]}>
+        <View style={styles.nameContainer}>
+          <Text style={styles.headerText}>Name</Text>
+        </View>
+        <View style={styles.name3Wrapper}>
+          {/* <Text style={styles.headerText}>Segment</Text> */}
+        </View>
+        <Text style={[styles.headerText, styles.selectedCardText]}>{selectedCard}</Text>
+        <View style={styles.quantityContainer}>
+          <Text style={styles.headerText}>Quantity</Text>
+        </View>
+        <View style={styles.valueContainer}>
+          <Text style={styles.headerText}>Value</Text>
+        </View>
       </View>
+
+      {/* //todisplay total value and name  */}
+      {/* <Text style={styles.portfolioText}>{selectedCard} Portfolio</Text> */}
+      {/* <Text style={styles.totalValue}>{calculateTotalValue(selectedCard)}</Text> */}
+
       {cardData[selectedCard] ? (
         cardData[selectedCard].map((data, index) => (
           <AssetCard data={data} key={index}
@@ -368,6 +390,42 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     lineHeight: 17.71,
   },
+  nameContainer: {
+    flexDirection: 'row',
+    flex: 1.3,
+    alignItems: 'center',
+    // Other styling properties...
+  },
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 12,
+    borderBottomWidth: 1,
+    // backgroundColor: '#C1C2EB',
+    borderBottomColor: '#E5E5E5',
+    marginTop: 10,
+    borderRadius: 5,
+
+  },
+  headerText: {
+    fontSize: 17,
+    fontWeight: '700',
+    // color: 'rgba(28, 30, 50, 1)',
+    color: 'rgba(28, 30, 50, 0.6)',
+
+  },
+  selectedCardText: {
+    flex: 3,
+    textAlign: 'center',
+  },
+  quantityContainer: {
+    flex: 2,
+  },
+  valueContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
 
 export default ViewPortfolio;
@@ -414,13 +472,13 @@ export default ViewPortfolio;
 //   // useEffect(() => {
 //   //   const fetchData1 = async () => {
 //   //     try {
-//   //       const response1 = await fetchData("http://10.0.2.2:9000/api/user/getPortfolio", {
+//   //       const response1 = await fetchData("http://35.154.235.224:9000/api/user/getPortfolio", {
 //   //         method: "GET",
 //   //         headers: new Headers({ "Authorization": "Bearer " + token }),
 //   //         redirect: "follow",
 //   //       });
 
-//   //       const response2 = await fetchData("http://10.0.2.2:9000/api/user/getZtokens", {
+//   //       const response2 = await fetchData("http://35.154.235.224:9000/api/user/getZtokens", {
 //   //         method: "POST",
 //   //         headers: new Headers({ "Authorization": "Bearer " + token }),
 //   //         body: "",
@@ -429,7 +487,7 @@ export default ViewPortfolio;
 //   useEffect(() => {
 //     const fetchData1 = async () => {
 //       try {
-//         const response1 = await fetchData("http://10.0.2.2:9000/api/user/getPortfolio", {
+//         const response1 = await fetchData("http://35.154.235.224:9000/api/user/getPortfolio", {
 //           method: "GET",
 //           headers: new Headers({ "Authorization": "Bearer " + token }),
 //           redirect: "follow",
@@ -437,7 +495,7 @@ export default ViewPortfolio;
 
 //         console.log("Response1:", response1);
 
-//         const response2 = await fetchData("http://10.0.2.2:9000/api/user/getZtokens", {
+//         const response2 = await fetchData("http://35.154.235.224:9000/api/user/getZtokens", {
 //           method: "POST",
 //           headers: new Headers({ "Authorization": "Bearer " + token }),
 //           body: "",
@@ -846,13 +904,13 @@ export default ViewPortfolio;
 //   useEffect(() => {
 //     const fetchData1 = async () => {
 //       try {
-//         const response1 = await fetchData("http://10.0.2.2:9000/api/user/getPortfolio", {
+//         const response1 = await fetchData("http://35.154.235.224:9000/api/user/getPortfolio", {
 //           method: "GET",
 //           headers: new Headers({ "Authorization": "Bearer " + token }),
 //           redirect: "follow",
 //         });
 
-//         const response2 = await fetchData("http://10.0.2.2:9000/api/user/getZtokens", {
+//         const response2 = await fetchData("http://35.154.235.224:9000/api/user/getZtokens", {
 //           method: "POST",
 //           headers: new Headers({ "Authorization": "Bearer " + token }),
 //           body: "",
@@ -1162,11 +1220,11 @@ export default ViewPortfolio;
 //       redirect: "follow",
 //     };
 
-//     fetch("http://10.0.2.2:9000/api/user/getPortfolio", requestOptions1)
+//     fetch("http://35.154.235.224:9000/api/user/getPortfolio", requestOptions1)
 //       .then((response) => response.json())
 //       .then((data1) => {
 
-//         fetch("http://10.0.2.2:9000/api/user/getZtokens", requestOptions2)
+//         fetch("http://35.154.235.224:9000/api/user/getZtokens", requestOptions2)
 //           .then((response) => response.json())
 //           .then((data2) => {
 
