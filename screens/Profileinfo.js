@@ -49,7 +49,7 @@ const ProfileInfo = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://10.0.2.2:9000/api/user/profile', {
+        const response = await fetch('http://35.154.235.224:9000/api/user/profile', {
           method: 'POST',
           headers: {
             Authorization: `Bearer ${token}`,
@@ -303,7 +303,7 @@ export default ProfileInfo;
 //   useEffect(() => {
 //     const fetchData = async () => {
 //       try {
-//         const response = await fetch('http://10.0.2.2:9000/api/user/profile', {
+//         const response = await fetch('http://35.154.235.224:9000/api/user/profile', {
 //           method: 'POST',
 //           headers: {
 //             Authorization: `Bearer ${token}`,
@@ -612,7 +612,7 @@ export default ProfileInfo;
 //       redirect: 'follow',
 //     };
 
-//     fetch('http://10.0.2.2:9000/api/user/profile', requestOptions)
+//     fetch('http://35.154.235.224:9000/api/user/profile', requestOptions)
 //       .then((response) => response.json()) // Parse the response as JSON
 //       .then((result) => {
 //         setApiData({
@@ -1002,7 +1002,7 @@ export default ProfileInfo;
 //       redirect: 'follow',
 //     };
 
-//     fetch('http://10.0.2.2:9000/api/user/profile', requestOptions)
+//     fetch('http://35.154.235.224:9000/api/user/profile', requestOptions)
 //       .then((response) => response.json()) // Parse the response as JSON
 //       .then((result) => {
 //         setApiData({

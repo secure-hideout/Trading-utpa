@@ -33,7 +33,7 @@ const [ setSelectedAsset] = useState({name:'Crypto'})
         <ViewPortfolio assetData={selectedAsset} />
       )}
 
-      {/* Render the CardItems components */}
+     
       {data.map((item, index) => {
         return (
           <TouchableOpacity
