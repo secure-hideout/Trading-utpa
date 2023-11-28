@@ -21,24 +21,7 @@ const ViewPortfolio = ({
   const { token } = useSelector((state) => state.auth);
   const navigation = useNavigation();
   const [nseData, setNseData] = useState([]);
-
-
-
-  // useEffect(() => {
-  //   const fetchData1 = async () => {
-  //     try {
-  //       const response1 = await fetchData("http://35.154.235.224:9000/api/user/getPortfolio", {
-  //         method: "GET",
-  //         headers: new Headers({ "Authorization": "Bearer " + token }),
-  //         redirect: "follow",
-  //       });
-
-  //       const response2 = await fetchData("http://35.154.235.224:9000/api/user/getZtokens", {
-  //         method: "POST",
-  //         headers: new Headers({ "Authorization": "Bearer " + token }),
-  //         body: "",
-  //         redirect: "follow",
-  //       });
+  
   useEffect(() => {
     const fetchData1 = async () => {
       try {
@@ -75,7 +58,7 @@ const ViewPortfolio = ({
             Price: matchingItem ? matchingItem.Name : null,
             priceVal: item1.AveragePrice,
             Quantities: item1.Quantity,
-            logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg',
+          //  logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg',
             Open: "open",
             openValue: 10000,
             Close: "Close",
@@ -92,7 +75,7 @@ const ViewPortfolio = ({
             value2: "10,000",
             volUsdt: "vol USDT",
             value3: "10,000",
-
+            
 
 
           };
@@ -106,20 +89,6 @@ const ViewPortfolio = ({
     fetchData1();
   }, [token]);
 
-  // const calculateTotalValue = (cardType) => {
-  //   if (cardType === "NSE" && nseData) {
-  //     let totalValue = 0;
-
-  //     nseData.forEach((item) => {
-  //       if (item.LastPrice && typeof item.LastPrice === 'number') {
-  //         totalValue += item.LastPrice;
-  //       }
-  //     });
-
-  //     return `$${totalValue.toFixed(2)}`;
-  //   }
-  //   return "$0.00";
-  // };
   const calculateTotalValue = (cardType) => {
     const cardTypeData = cardData[cardType];
     if (cardTypeData) {

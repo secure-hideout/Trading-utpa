@@ -9,7 +9,7 @@ const Graph = ({ symbol, selectedInterval, isCandleChart, isCompressed, }) => {
 
   const style = isCandleChart ? '1' : '10';
 
-  const width = isCompressed ? 395 : 500;
+  const width = isCompressed ? 400 : 500;
 
 
 
@@ -22,7 +22,7 @@ const Graph = ({ symbol, selectedInterval, isCandleChart, isCompressed, }) => {
     <script type="text/javascript">
       new TradingView.widget({
         "width": ${width},
-        "height": 310,
+        "height": 420,
         "symbol": "${symbol}", 
         "interval": "${selectedInterval}",
         "timezone": "Etc/UTC",
@@ -63,18 +63,23 @@ const Graph = ({ symbol, selectedInterval, isCandleChart, isCompressed, }) => {
 const styles = StyleSheet.create({
 
   graph: {
-    height: 310,
-    top: 1,
-    left: -7,
+    paddingTop: 5,
+   display: 'flex',
+    height: 498,
+    right: 6,
+    //marginbottom: 1,
+   // marginRight: 10,
+   // paddingRight: 10,
+   // marginLeft: 20,
     // zIndex: 4
   },
   graphView: {
     backgroundColor: 'transparent',
   },
-  buttonText: {
-    left: 30,
+  // buttonText: {
+  //   left: 30,
 
-  }
+  // }
 })
 
 export default Graph;

@@ -317,7 +317,7 @@
 //   //     redirect: 'follow'
 //   //   };
 
-//   //   fetch("http://10.0.2.2:80/api/user/watchlist", requestOptions)
+//   //   fetch("http://35.154.235.224:80/api/user/watchlist", requestOptions)
 //   //     .then(response => response.text())
 //   //     .then(result => console.log((JSON.parse(result))))    //after modification remove console place setassetdata
 //   //     .catch(error => console.log('this error', error));
@@ -397,7 +397,7 @@
 //   //     redirect: 'follow'
 //   //   };
 
-//   //   fetch("http://10.0.2.2:80/api/user/watchlist", requestOptions)
+//   //   fetch("http://35.154.235.224:80/api/user/watchlist", requestOptions)
 //   //     // .then(response => response.json())
 //   //     .then(response => {
 //   //       if (!response.ok) {
@@ -410,10 +410,10 @@
 //   //       return JSON.parse(text); // Try to parse it as JSON
 //   //     })
 //   //     // .then(async data => {
-//   //     //   // Assume you have an endpoint like http://10.0.2.2:80/api/instrument/details/:id
+//   //     //   // Assume you have an endpoint like http://35.154.235.224:80/api/instrument/details/:id
 //   //     //   // which gives details for a specific instrument by its ID.
 //   //     //   const fetchDetailsPromises = data.map(item =>
-//   //     //     fetch(`http://10.0.2.2:80/api/instrument/details/${item.InstrumentId}`, requestOptions)
+//   //     //     fetch(`http://35.154.235.224:80/api/instrument/details/${item.InstrumentId}`, requestOptions)
 //   //     //       .then(res => res.json())
 //   //     //   );
 
@@ -432,13 +432,13 @@
 //   //       const validItems = data.filter(item => item.InstrumentId !== 0);
 
 //   //       const fetchDetailsPromises = validItems.map(item =>
-//   //         // fetch(`http://10.0.2.2:80/api/instrument/details/${item.InstrumentId}`, requestOptions)
+//   //         // fetch(`http://35.154.235.224:80/api/instrument/details/${item.InstrumentId}`, requestOptions)
 //   //         //   .then(res => res.text())
 //   //         //   .then(detailText => {
 //   //         //     console.log(`Raw detail for InstrumentId ${item.InstrumentId}:`, detailText);
 //   //         //     return JSON.parse(detailText);
 //   //         //   })
-//   //         fetch(`http://10.0.2.2:80/api/instrument/details/${item.InstrumentId}`, requestOptions)
+//   //         fetch(`http://35.154.235.224:80/api/instrument/details/${item.InstrumentId}`, requestOptions)
 //   //           .then(res => res.text())
 //   //           .then(detailText => {
 //   //             console.log(`Raw detail for InstrumentId ${item.InstrumentId}:`, detailText);

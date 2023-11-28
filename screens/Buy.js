@@ -1,66 +1,63 @@
-// import React,  { useState , useEffect } from 'react';
-// import { View, Text, StyleSheet,  Button,TouchableOpacity, TextInput } from 'react-native';
-// import { useNavigation } from '@react-navigation/native';
-// import { useSelector } from 'react-redux';
-// import Icon from 'react-native-vector-icons/FontAwesome';
-// import { Ionicons } from '@expo/vector-icons';
-
-// const Sell = ({ route }) => {
-//   const { token } = useSelector((state) => state.auth);
-//   console.log('Sell', token);
-
-//   const { sname, LastPrice, instrumentId ,Quantities, instrumentType, quantity, Instrument,sellType, Pay } = route.params;
-
-//   const [loading, setLoading] = useState(false);
-//   const [error, setError] = useState('');
-//   const [isRegistered, setIsRegistered] = useState(false);
-//   const [quantiti, setQuantity] = useState(0);
-
-  
-//   const increaseQuantity = () => {
-//     setQuantity(quantiti + 1);
-//   };
-
-//   const decreaseQuantity = () => {
-//     if (quantiti > 0) {
-//       setQuantity(quantiti - 1);
-//     }
-//   };
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity,TextInput } from 'react-native';
+import React,  { useState , useEffect } from 'react';
+import { View, Text, StyleSheet,TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { Ionicons } from '@expo/vector-icons';
+import {  Card, Title, Paragraph, Button, Provider  } from 'react-native-paper';
+import { TextInput } from '@react-native-material/core';
+import { Input } from 'react-native-elements';
+import Modal from 'react-native-modal';
 
-const Sell = ({ route }) => {
-  const navigation = useNavigation(); // Access navigation prop
+
+const sell = ({ route , navigation }) => {
   const { token } = useSelector((state) => state.auth);
-  console.log('Sell', token);
+  console.log('Buy', token);
 
-  const { sname, LastPrice, instrumentId, Quantities, instrumentType, quantity, Instrument, sellType, Pay } = route.params;
 
+  const { sname, LastPrice, instrumentId ,Quantities, instrumentType, quantity, Instrument,sellType, quantity1, goback, buttonColor} = route.params;
+  const [isConfirmationVisible, setConfirmationVisible] = useState(false);
+  const [quantiti, setQuantity] = useState(0); 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [isRegistered, setIsRegistered] = useState(false);
-  const [quantiti, setQuantity] = useState(0);
+  const [isFocused, setIsFocused] = useState(false);
+  //const [confirmationVisible, setConfirmationVisible] = useState(false);
+  const [sellTypes, setSellType] = useState(''); // Set your initial sellType
+  //const [Quantities, setQuantities] = useState(/* Initial value */);
+  //const [latestQuantities, setLatestQuantities] = useState(Quantities);
+  const [latestQuantities, setLatestQuantities] = useState(Quantities);
 
-  const increaseQuantity = () => {
-    setQuantity(quantiti + 1);
+  // const fetchData = async (url, options) => {
+  //   const response = await fetch(url, options);
+  //   const data = await response.json();
+  //   return data;
+  // };
+
+
+
+  const performTransaction = (sellType) => {
+    performTransactionAPI(sellType);
+    // Your transaction logic goes here
+    console.log('Transaction performed');
+    hideConfirmation();
+};
+
+
+  const showConfirmation = () => {
+    setConfirmationVisible(true);
   };
 
-  const decreaseQuantity = () => {
-    if (quantiti > 0) {
-      setQuantity(quantiti - 1);
-    }
+  const hideConfirmation = () => {
+    setConfirmationVisible(false);
   };
-  const navigateBack = () => {
-    navigation.goBack(); // Use navigation prop to go back
-  };
-  const performTransaction = async (transactionType) => {
+
+
+  const performTransactionAPI = async (transactionType) => {
     setLoading(true);
     setError('');
 
-  
+    const availableQuantity = Quantities;
 
     try {
       const data = {
@@ -78,22 +75,41 @@ const Sell = ({ route }) => {
       let requestOptions;
 
       if (transactionType === 'sell') {
+        if (parseInt(quantiti) > availableQuantity) {
+          setError(`Cannot sell more than available quantity (${availableQuantity}).`);
+
+          
+          setLoading(false);
+          return;
+        }
+
+
         requestOptions = {
           method: 'POST',
           headers: myHeaders,
           body: raw,
           redirect: 'follow',
         };
+        
+        console.log("Response2:", performTransactionAPI);
 
         const response = await fetch('http://35.154.235.224:9000/api/user/sellSymbol', requestOptions);
 
         console.log(`${transactionType} API response:`, response.status, response.statusText);
 
         if (response.ok) {
+          
           setIsRegistered(true);
+          //const data = await response.json();
+        //  return data.quantities;
+          const data = await response.json();
+          const updatedQuantities = data.quantities;
+          setLatestQuantities(updatedQuantities);
+          
+          
         } else {
           console.error(`${transactionType} API error response:`, await response.text());
-          setError(`please enter Quantity .Please try again.`);
+          setError(`Please enter Quantity`);
         }
       } else if (transactionType === 'buy') {
         requestOptions = {
@@ -109,9 +125,12 @@ const Sell = ({ route }) => {
 
         if (response.ok) {
           setIsRegistered(true);
+          const updatedPortfolio = await portfolioResponse.json();
+          navigation.navigate('ViewPortfolio', { portfolio: updatedPortfolio });
+        
         } else {
           console.error(`${transactionType} API error response:`, await response.text());
-          setError(`please enter Quantity . Please try again.`);
+          setError(`Please enter Quantity`);
         }
       }
     } catch (err) {
@@ -120,192 +139,991 @@ const Sell = ({ route }) => {
     } finally {
       setLoading(false);
     }
+   
   };
 
 
-  return (
-    <View style={styles.container}>
-       <View style={styles.navBar}>
-         {/* <TouchableOpacity onPress={''} >
-          <Ionicons name="arrow-back-outline" size={25} color="black" style={styles.backIcon} />
-         </TouchableOpacity>  */}
-      
-        <TouchableOpacity onPress={navigateBack}>
+  useEffect(() => {
+   // Call performTransactionAPI with the desired transactionType, e.g., 'sell' or 'buy'
+    performTransactionAPI('sell'); // Assuming you want to trigger this on component mount
+
+  }, [token, Quantities]); // Depende
+  useEffect(() => {
+    // Call performTransactionAPI with the desired transactionType, e.g., 'sell' or 'buy'
+     performTransactionAPI('buy'); // Assuming you want to trigger this on component mount
+ 
+     // If you want to trigger this useEffect based on some specific condition or dependency change,
+     // you can include that dependency in the dependency array of useEffect.
+     // For example: [token] if you want to execute it when the token changes.
+ 
+   }, [token]); // Dependen
+
+
+  const goBack = () => {
+   
+    navigation.goBack(); 
+  }
+
+ return (
+  <View style={styles.container}>
+
+      <View style={styles.navBar}>
+        <TouchableOpacity onPress={() => goBack()}>
           <Ionicons name="arrow-back-outline" size={25} color="black" style={styles.backIcon} />
         </TouchableOpacity>
-         <Text style={styles.navTitle}>{Instrument}</Text>
-       </View>
-      {/* <View style={styles.container} /> */}
-      <View style={styles.container1}>
+        <Text style={styles.navTitle}>{Instrument}</Text>
+      </View>
+
+     
+      <Card style={styles.cardContainer}>
         <View style={styles.row}>
-          <Text style={styles.label}>Name:</Text>
-          <Text style={styles.info}>{sname}</Text>
+          <Text style={styles.info1}>{sname}</Text>
         </View>
+      </Card>
+
+      {/* Separate Card for each set of information */}
+      <View style={styles.row1}>
+      <Card style={styles.cardContainer1}>
         
-        <View style={styles.row}>
-          <Text style={styles.label}>LastPrice:</Text>
+          <Text style={styles.label}>LastPrice</Text>
           <Text style={styles.info}>{LastPrice}</Text>
-        </View>
+         
+      </Card>
 
-
-        <View style={styles.row}>
-          <Text style={styles.label}>Instrument Type:</Text>
+      <Card style={styles.cardContainer1}>
+       
+          <Text style={styles.label}>Instrument Type</Text>
           <Text style={styles.info}>{instrumentType}</Text>
-        </View>
-
-        <View style={styles.row}>
-          <Text style={styles.label}>instrumentId:</Text>
-          <Text style={styles.info}>{instrumentId}</Text>
-        </View>
-
-        <View style={styles.row}>
-          <Text style={styles.label}>Quantity:</Text>
-          <Text style={styles.info}>{Quantities}</Text>
-        </View>
-
-
-
-        <View style={styles.row}>
-      <Text style={styles.label1}>SellQuantity:</Text>
-      <TextInput
-          style={[styles.input, quantity &&  styles.boldText]}
-          value={quantity}
-          onChangeText={(text) => setQuantity(text)}
-          keyboardType="numeric"
-          placeholder="Enter quantity"
-          textAlign="right"
-        />
-      {/* <View style={styles.quantityContainer}>
-        <TouchableOpacity  onPress={decreaseQuantity} style={styles.arrowdown}>
-        <Icon
-          name= "chevron-right"
-          size={15}
-          color="black"
-          style={{ position: 'absolute',color: 'white', top: 1,left: 9, transform: [{ rotate: '-90deg' }] }}
-        />
-        </TouchableOpacity>
-        <Text style={styles.info1}>{quantiti}</Text>
-        <TouchableOpacity onPress={increaseQuantity} style={styles.arrowdown}>
-        <Icon
-          name= "chevron-right"
-          size={15}
-          color="black"
-          style={{ position: 'absolute',color: 'white', top: 1,left: 9, transform: [{ rotate: '90deg' }] }}
-        />
-        </TouchableOpacity>
-      </View> */}
+        
+      </Card>
+    
     </View>
+    <View style={styles.row1}>
+     
+      <Card style={styles.cardContainer1}>
+       
+          <Text style={styles.label}>Quantity</Text>
+          <Text style={styles.info}>{Quantities}</Text>
+     
+      </Card>
+
+      <Card style={styles.cardContainer1}>
+      
+          <Text style={styles.label1}>Enter {quantity1} Quantity:</Text>
+           <Input
+           value={quantity}
+           onChangeText={(text) => setQuantity(text)}
+           keyboardType="numeric"
+           containerStyle={{ width: 80, marginLeft:  29, marginHorizontal: 9 }}
+           inputStyle={{ width: 100, textAlign: 'center'  }}
+           inputContainerStyle={{
+           borderBottomColor: isFocused ? 'blue' : 'green',
+           borderBottomWidth: 2,
+          }}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+      />
+      
+       
+        
+      </Card>
+      
       </View>
       {isRegistered ? (
-        <Text style={styles.successText}>{sname} transaction successful!</Text>
+        <Text style={styles.successText}>{sname} {quantity1} SUCCESSFULL!</Text>
       ) : error ? (
         <Text style={styles.errorText}>{error}</Text>
       ) : null}
-      {/* <Button title="Sell Instrument" onPress={() => performTransaction({sell})} disabled={loading} 
-     /> */}
-    
-     <TouchableOpacity style={styles.sellButton} onPress={() => performTransaction(sellType)} disabled={loading}> 
-       <Text style={styles.Sell}>{Instrument}</Text>
-     </TouchableOpacity>
-      {/* <Button title="Buy Instrument" onPress={() => performTransaction('buy')} disabled={loading} 
-       /> */}
-      {/* </View> */}
-    </View>
+       <TouchableOpacity style={[styles.sellButton, { backgroundColor: buttonColor }]} onPress={showConfirmation} disabled={loading}>
+          <Text style={styles.Sell}>{Instrument}</Text>
+        </TouchableOpacity>
+       
+        {/* Confirmation Modal */}
+        <Modal isVisible={isConfirmationVisible}>
+        <Card style={styles.cardContainer4}>
+            <Text style={styles.questio}>Do you want to perform a transaction for {Instrument}?</Text>
+            <View style={styles.buttons}>
+
+        <View style={styles.button1}>
+          <Button onPress={() => performTransaction(sellType)} contentStyle={styles.buttonContent}
+            labelStyle={styles.buttonText}>
+               Yes
+          </Button>
+     </View>
+     <View style={styles.button2}>
+     <Button onPress={hideConfirmation} contentStyle={styles.buttonContent1}
+           labelStyle={styles.buttonText1} >
+            No
+     </Button>
+     </View>
+  </View>
+            
+        
+      
+       
+         
+            </Card>
+        </Modal>
+        
+     </View>
+   
+      
+
   );
 };
-
-
-
-
-const styles = StyleSheet.create({
-    container: {
+const styles = {
+  container: {
+    flex: 1,
+    marginTop: 5,
+    padding: 5,
+    backgroundColor: 'white'
+  },
+  navBar: {
+    marginTop: 30,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    marginBottom: 10,
+  },
+  backIcon: {
+    marginRight: 10,
+  },
+  navTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  cardContainer1:{
+   //flex: 1,
+    width : '49%',
+    alignItems: 'center',
     
-      flex:1,
-      padding: 10,
-    //top: 30,
-      backgroundColor: 'white'
-    },
-    navBar: {
-      marginTop: 17,
-      flexDirection: 'row',
-      //justifyContent: 'space-between',
-      alignItems: 'center',
-      // backgroundColor: '#3498db',
-      padding: 15,
-    },
-    navTitle:{
-      right: 15,
-      // fontSize: 18,
-      // fontWeight: 'bold'
-      fontSize: 20,
-      fontWeight: 'bold',
-    },
-    boldText:{
-      fontWeight: 'bold'
-    },
-    backIcon:{
-      right: 20
-    },
-    container1: {
-     marginTop: 20,
-     },
-    row: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      marginBottom: 10,
-    },
-    info1:{
-      left: 10,
-      fontSize: 16,
-    },
-    // input:{
-    //   fontWeight: 'bold',
-    // },
-    arrowdown:{
-      width:30,
-      height: 20,
-      backgroundColor:'#A9A9A9',
-      borderRadius: 5
-    },
-    arrow:{
-      left: 10,
-      top: -3,
-      color: 'white'
-    },
-    label: {
-      fontSize: 16,
-      fontWeight: 'bold',
-    },
-    label1:{
-      top: 1,
-      fontSize: 16,
-      fontWeight: 'bold',
-    },
+    textAlign: 'center',
+    //flexDirection: 'row',
+    height: 80,
+    marginVertical: 5,
+    paddingVertical: 5,
+    borderRadius: 10,
+    backgroundColor: '#fff', 
+  },
+  row1:{
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  row:{
+    flexDirection: 'row',
+  }, 
+  info: {
+    bottom: 5,
+    textAlign: 'center',
+   // alignItems: 'center',
+  
+  },
+  label1: {
+    flexDirection: 'row',
+   // flex: 1,
+    alignItems: 'center',
+    fontSize: 16,
+    fontWeight: '600',
+    lineHeight: 19.09,
+    color: 'rgba(28, 30, 50, 1)',
+  },
+  input: {
+    top: 5,
+    left: 8,
+    flex: 1,
+    flexDirection:'row',
+    //height: 40, // Adjust this value to make it smaller
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 20,
+  },
+  boldText: {
+    fontWeight: 'bold',
+  },
+  successText:{
+    color: 'green'
+  },
 
-    successText:{
-      marginTop: 110,
-      color: 'green'
-    },
-    info: {
-      fontSize: 16,
-    },
-   
-    sellButton: {
-      backgroundColor: '#A9A9A9',
-      justifyContent: 'center',
+  cardContainer: {  
+    borderTopLeftRadius: 0, // If you want to customize top-left radius
+    borderTopRightRadius: 0, // If you want to customize top-right radius
+    borderBottomLeftRadius: 140, // Customize bottom-left radius
+    borderBottomRightRadius: 140, // Customize bottom-right radius
+   // elevation: 3, // Adjust elevation as needed
+    marginBottom: 10, // Add margin as needed
+    marginVertical: 5,
+    padding: 50,
+    backgroundColor: '#fff',
+  },
+  
+  label: {
+    paddingVertical: 12,
+    // flex: 1,
+   // textAlign: 'center',
+    fontSize: 18,
+    fontWeight: '600',
+    lineHeight: 19.09,
+    color: 'rgba(28, 30, 50, 1)',
+   // top: 5
+  },
+  info1: {
+    flex: 1,
+    textAlign:'center',
+    fontSize: 19,
+    fontWeight: '700',
+    lineHeight: 19.09,
+    color: 'rgba(28, 30, 50, 1)',
+  },
+      sellButton: {
+     // backgroundColor: '#5f4a78',
       alignItems: 'center',
-      marginTop: 80,
+      //marginTop: 80,
       padding: 10,
       borderRadius: 6,
+      marginVertical: 150,
       marginHorizontal: 3
     },
     Sell: {
       color: 'white',
       fontSize: 20,
     },
-  });
+    buttons: {
+      paddingVertical: 15,
+       justifyContent: 'center',
+      // justifyContent: 'space-around',
+      flexDirection: 'row',
+     /// marginLeft: -11
+    },
+    button1:{
+      paddingHorizontal: 3
+    },
+    cardContainer4:{
+      //height: 60,
+      width: '90%',
+      marginHorizontal: 30
+    },
+    buttonContent: {
+      paddingHorizontal: 10,
+      backgroundColor: '#8f8bcc', // Customize the button background color
+      paddingVertical: 4,
+      paddingHorizontal: 50,
+      paddingLeft: 26,
+      //borderRadius: Border.br_81xl,
+    },
+    buttonContent1: {
+      backgroundColor: '#7bb2b5', // Customize the button background color
+      paddingVertical: 6,
+      paddingHorizontal: 40,
+    },
+    buttonText: {
+      color: 'white',
+      fontSize: 16,
+      left: 8
+    },
+    buttonContent1: {
+      backgroundColor: '#7bb2b5', // Customize the button background color
+      paddingVertical: 4,
+      paddingHorizontal: 40,
+    },
+    buttonText: {
+      color: 'white',
+      fontSize: 16,
+      left: 8
+    },
+    buttonText1: {
+      color: 'white',
+      fontSize: 16,
+      Left: 15,
+    },
+    questio:{
+      paddingVertical: 6,
+      marginHorizontal: 15
+    },
+    error: {
+      color: 'red', // Default error color
+    },
+    sellError: {
+      color: 'green', // Color for 'sell' transaction error
+      // Add any additional styles for 'sell' transaction error
+    },
+};
+
+
+
+
+
+export default sell;
+
+
+
+
+// import React,  { useState , useEffect } from 'react';
+// import { View, Text, StyleSheet,TouchableOpacity } from 'react-native';
+// import { useNavigation } from '@react-navigation/native';
+// import { useSelector } from 'react-redux';
+// import Icon from 'react-native-vector-icons/FontAwesome';
+// import { Ionicons } from '@expo/vector-icons';
+// import {  Card, Title, Paragraph, Button, Provider  } from 'react-native-paper';
+// import { TextInput } from '@react-native-material/core';
+// import { Input } from 'react-native-elements';
+
+// const sell = ({ route }) => {
+//   const { token } = useSelector((state) => state.auth);
+//   console.log('Sell', token);
+
+//   const { sname, LastPrice, instrumentId ,Quantities, instrumentType, quantity, Instrument,sellType, quantity1} = route.params;
+ 
+//   const [quantiti, setQuantity] = useState(0); 
+//   const [loading, setLoading] = useState(false);
+//   const [error, setError] = useState('');
+//   const [isRegistered, setIsRegistered] = useState(false);
+//   const [isFocused, setIsFocused] = useState(false);
+//   const [confirmationVisible, setConfirmationVisible] = useState(false);
+//   const [sellTypes, setSellType] = useState(''); // Set your initial sellType
+//   //const [Quantities, setQuantities] = useState(/* Initial value */);
   
-  export default Sell;
+//   const increaseQuantity = () => {
+//     setQuantity(quantiti + 1);
+//   };
+
+//   const decreaseQuantity = () => {
+//     if (quantiti > 0) {
+//       setQuantity(quantiti - 1);
+//     }
+//   };
+
+//   const performTransaction1 = (type) => {
+//     setSellType(type);
+//     setConfirmationVisible(true);
+//   };
+
+//   const handleBuy = () => {
+//     // Logic to handle the buy action
+//     console.log('Buy pressed');
+//     setConfirmationVisible(true);
+//   };
+
+//   const handleCancel = () => {
+//     // Logic to handle the cancel action
+//     console.log('Cancel pressed');
+//     setConfirmationVisible(false);
+//   };
+
+
+
+
+  
+
+
+//   useEffect(() => {
+//     performTransaction(sellType);
+//   }, [isRegistered, sellType]); // Listen for changes in isRegistered
+
+//   const performTransaction = async (transactionType) => {
+//     setLoading(true);
+//     setError('');
+
+//     const availableQuantity = Quantities;
+
+//     try {
+//       const data = {
+//         instrumentId: parseInt(instrumentId),
+//         instrumentType: instrumentType,
+//         quantity: parseInt(quantiti),
+//       };
+
+//       const myHeaders = new Headers();
+//       myHeaders.append('Content-Type', 'application/json');
+//       myHeaders.append('Authorization', `Bearer ${token}`);
+
+//       const raw = JSON.stringify(data);
+
+//       let requestOptions;
+
+//       if (transactionType === 'sell') {
+//         if (parseInt(quantiti) > availableQuantity) {
+//           setError(`Cannot sell more than available quantity (${availableQuantity}).`);
+//           setLoading(false);
+//           return;
+//         }
+
+
+//         requestOptions = {
+//           method: 'POST',
+//           headers: myHeaders,
+//           body: raw,
+//           redirect: 'follow',
+//         };
+
+//         const response = await fetch('http://35.154.235.224:9000/api/user/sellSymbol', requestOptions);
+
+//         console.log(`${transactionType} API response:`, response.status, response.statusText);
+
+//         if (response.ok) {
+//           setIsRegistered(true);
+//           const responseData = await response.json();
+//           const updatedQuantities = responseData.updatedQuantity;
+//           setQuantity(updatedQuantities);
+//         } else {
+//           console.error(`${transactionType} API error response:`, await response.text());
+//           setError(`Please enter Quantity. Please try again.`);
+//         }
+//       } else if (transactionType === 'buy') {
+//         requestOptions = {
+//           method: 'POST',
+//           headers: myHeaders,
+//           body: raw,
+//           redirect: 'follow',
+//         };
+
+//         const response = await fetch('http://35.154.235.224:9000/api/user/purshaseSymbol', requestOptions);
+
+//         console.log(`${transactionType} API response:`, response.status, response.statusText);
+
+//         if (response.ok) {
+//           setIsRegistered(true);
+//         } else {
+//           console.error(`${transactionType} API error response:`, await response.text());
+//           setError(`Please enter Quantity. Please try again.`);
+//         }
+//       }
+//     } catch (err) {
+//       console.error(`${transactionType} API error:`, err);
+//       setError('Network error. Please check your internet connection.');
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+   
+
+//   return (
+// <View style={styles.container}>
+//       <View style={styles.navBar}>
+//         <TouchableOpacity onPress={() => {}}>
+//           <Ionicons name="arrow-back-outline" size={25} color="black" style={styles.backIcon} />
+//         </TouchableOpacity>
+//         <Text style={styles.navTitle}>{Instrument}</Text>
+//       </View>
+
+     
+//       <Card style={styles.cardContainer}>
+//         <View style={styles.row}>
+//           <Text style={styles.info1}>{sname}</Text>
+//         </View>
+//       </Card>
+
+//       {/* Separate Card for each set of information */}
+//       <View style={styles.row1}>
+//       <Card style={styles.cardContainer1}>
+        
+//           <Text style={styles.label}>LastPrice</Text>
+//           <Text style={styles.info}>{LastPrice}</Text>
+         
+//       </Card>
+
+//       <Card style={styles.cardContainer1}>
+       
+//           <Text style={styles.label}>Instrument Type</Text>
+//           <Text style={styles.info}>{instrumentType}</Text>
+        
+//       </Card>
+    
+//     </View>
+//     <View style={styles.row1}>
+     
+//       <Card style={styles.cardContainer1}>
+       
+//           <Text style={styles.label}>Quantity</Text>
+//           <Text style={styles.info}>{Quantities}</Text>
+     
+//       </Card>
+
+//       <Card style={styles.cardContainer1}>
+//       <View style={styles.row1}>
+//           <Text style={styles.label1}>Enter {quantity1} Quantity:</Text>
+//            <Input
+//            value={quantity}
+//            onChangeText={(text) => setQuantity(text)}
+//            keyboardType="numeric"
+//            containerStyle={{ width: 70, left: -2 }}
+//            inputStyle={{ width: 100, textAlign: 'center' }}
+//            inputContainerStyle={{
+//            borderBottomColor: isFocused ? 'blue' : 'green',
+//            borderBottomWidth: 2,
+//           }}
+//         onFocus={() => setIsFocused(true)}
+//         onBlur={() => setIsFocused(false)}
+//       />
+
+//         </View>
+        
+//       </Card>
+//       </View>
+//       {isRegistered ? (
+//         <Text style={styles.successText}>{sname} transaction successful!</Text>
+//       ) : error ? (
+//         <Text style={styles.errorText}>{error}</Text>
+//       ) : null}
+//      <TouchableOpacity
+//         style={styles.sellButton}
+//         onPress={() => performTransaction(sellType)}
+//         disabled={loading}
+//       >
+//         <Text style={styles.Sell}>{Instrument}</Text>
+//       </TouchableOpacity>
+
+//     </View>
+//   );
+// };
+// const styles = {
+//   container: {
+//     flex: 1,
+//     top: 1,
+//     padding: 5,
+//     backgroundColor: 'white'
+//   },
+//   navBar: {
+//     marginTop: 30,
+//     flexDirection: 'row',
+//     alignItems: 'center',
+//     justifyContent: 'flex-start',
+//     marginBottom: 10,
+//   },
+//   backIcon: {
+//     marginRight: 10,
+//   },
+//   navTitle: {
+//     fontSize: 20,
+//     fontWeight: 'bold',
+//   },
+//   cardContainer1:{
+//    //flex: 1,
+//     width : '49%',
+//     alignItems: 'center',
+    
+//     textAlign: 'center',
+//     //flexDirection: 'row',
+//     height: 80,
+//     marginVertical: 5,
+//     padding: 17,
+//     borderRadius: 10,
+//     backgroundColor: '#fff', 
+//   },
+//   row1:{
+//     flexDirection: 'row',
+//     justifyContent: 'space-between',
+//   },
+//   row:{
+//     flexDirection: 'row',
+//   }, 
+//   info: {
+//     textAlign: 'center',
+//    // alignItems: 'center',
+  
+//   },
+//   label1: {
+//     alignItems: 'center',
+//     top: 14,
+//     fontWeight: '700',
+//     lineHeight: 19.09,
+//     color: 'rgba(28, 30, 50, 1)',
+//   },
+//   input: {
+//     top: 5,
+//     left: 8,
+//     flex: 1,
+//     flexDirection:'row',
+//     //height: 40, // Adjust this value to make it smaller
+//     borderColor: 'gray',
+//     borderWidth: 1,
+//     borderRadius: 5,
+//     paddingHorizontal: 20,
+//   },
+//   boldText: {
+//     fontWeight: 'bold',
+//   },
+
+//   cardContainer: {  
+//     borderTopLeftRadius: 0, // If you want to customize top-left radius
+//     borderTopRightRadius: 0, // If you want to customize top-right radius
+//     borderBottomLeftRadius: 140, // Customize bottom-left radius
+//     borderBottomRightRadius: 140, // Customize bottom-right radius
+//    // elevation: 3, // Adjust elevation as needed
+//     marginBottom: 10, // Add margin as needed
+//     marginVertical: 5,
+//     padding: 50,
+//     backgroundColor: '#fff',
+//   },
+  
+//   label: {
+//    flex: 1,
+//    // textAlign: 'center',
+//     fontSize: 18,
+//     fontWeight: '600',
+//     lineHeight: 19.09,
+//     color: 'rgba(28, 30, 50, 1)',
+//    // top: 5
+//   },
+//   info1: {
+//     flex: 1,
+//     textAlign:'center',
+//     fontSize: 19,
+//     fontWeight: '700',
+//     lineHeight: 19.09,
+//     color: 'rgba(28, 30, 50, 1)',
+//   },
+//       sellButton: {
+//       backgroundColor: '#A9A9A9',
+//    //   justifyContent: 'center',
+//       alignItems: 'center',
+//       marginTop: 80,
+//       padding: 10,
+//       borderRadius: 6,
+//       marginHorizontal: 3
+//     },
+//     Sell: {
+//       color: 'white',
+//       fontSize: 20,
+//     },
+// };
+
+
+
+
+
+// export default sell;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// // import React,  { useState , useEffect } from 'react';
+// // import { View, Text, StyleSheet,  Button,TouchableOpacity, TextInput } from 'react-native';
+// // import { useNavigation } from '@react-navigation/native';
+// // import { useSelector } from 'react-redux';
+// // import Icon from 'react-native-vector-icons/FontAwesome';
+// // import { Ionicons } from '@expo/vector-icons';
+
+// // const Sell = ({ route }) => {
+// //   const { token } = useSelector((state) => state.auth);
+// //   console.log('Sell', token);
+
+// //   const { sname, LastPrice, instrumentId ,Quantities, instrumentType, quantity, Instrument,sellType, Pay } = route.params;
+
+// //   const [loading, setLoading] = useState(false);
+// //   const [error, setError] = useState('');
+// //   const [isRegistered, setIsRegistered] = useState(false);
+// //   const [quantiti, setQuantity] = useState(0);
+
+  
+// //   const increaseQuantity = () => {
+// //     setQuantity(quantiti + 1);
+// //   };
+
+// //   const decreaseQuantity = () => {
+// //     if (quantiti > 0) {
+// //       setQuantity(quantiti - 1);
+// //     }
+// //   };
+// import React, { useState, useEffect } from 'react';
+// import { View, Text, StyleSheet, TouchableOpacity,TextInput } from 'react-native';
+// import { useNavigation } from '@react-navigation/native';
+// import { useSelector } from 'react-redux';
+// import { Ionicons } from '@expo/vector-icons';
+
+// const Sell = ({ route }) => {
+//   const navigation = useNavigation(); // Access navigation prop
+//   const { token } = useSelector((state) => state.auth);
+//   console.log('Sell', token);
+
+//   const { sname, LastPrice, instrumentId, Quantities, instrumentType, quantity, Instrument, sellType, Pay } = route.params;
+
+//   const [loading, setLoading] = useState(false);
+//   const [error, setError] = useState('');
+//   const [isRegistered, setIsRegistered] = useState(false);
+//   const [quantiti, setQuantity] = useState(0);
+
+//   const increaseQuantity = () => {
+//     setQuantity(quantiti + 1);
+//   };
+
+//   const decreaseQuantity = () => {
+//     if (quantiti > 0) {
+//       setQuantity(quantiti - 1);
+//     }
+//   };
+//   const navigateBack = () => {
+//     navigation.goBack(); // Use navigation prop to go back
+//   };
+//   const performTransaction = async (transactionType) => {
+//     setLoading(true);
+//     setError('');
+
+  
+
+//     try {
+//       const data = {
+//         instrumentId: parseInt(instrumentId),
+//         instrumentType: instrumentType,
+//         quantity: parseInt(quantiti),
+//       };
+
+//       const myHeaders = new Headers();
+//       myHeaders.append('Content-Type', 'application/json');
+//       myHeaders.append('Authorization', `Bearer ${token}`);
+
+//       const raw = JSON.stringify(data);
+
+//       let requestOptions;
+
+//       if (transactionType === 'sell') {
+//         requestOptions = {
+//           method: 'POST',
+//           headers: myHeaders,
+//           body: raw,
+//           redirect: 'follow',
+//         };
+
+//         const response = await fetch('http://35.154.235.224:9000/api/user/sellSymbol', requestOptions);
+
+//         console.log(`${transactionType} API response:`, response.status, response.statusText);
+
+//         if (response.ok) {
+//           setIsRegistered(true);
+//         } else {
+//           console.error(`${transactionType} API error response:`, await response.text());
+//           setError(`please enter Quantity .Please try again.`);
+//         }
+//       } else if (transactionType === 'buy') {
+//         requestOptions = {
+//           method: 'POST',
+//           headers: myHeaders,
+//           body: raw,
+//           redirect: 'follow',
+//         };
+
+//         const response = await fetch('http://35.154.235.224:9000/api/user/purshaseSymbol', requestOptions);
+
+//         console.log(`${transactionType} API response:`, response.status, response.statusText);
+
+//         if (response.ok) {
+//           setIsRegistered(true);
+//         } else {
+//           console.error(`${transactionType} API error response:`, await response.text());
+//           setError(`please enter Quantity . Please try again.`);
+//         }
+//       }
+//     } catch (err) {
+//       console.error(`${transactionType} API error:`, err);
+//       setError('Network error. Please check your internet connection.');
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+
+//   return (
+//     <View style={styles.container}>
+//        <View style={styles.navBar}>
+//          {/* <TouchableOpacity onPress={''} >
+//           <Ionicons name="arrow-back-outline" size={25} color="black" style={styles.backIcon} />
+//          </TouchableOpacity>  */}
+      
+//         <TouchableOpacity onPress={navigateBack}>
+//           <Ionicons name="arrow-back-outline" size={25} color="black" style={styles.backIcon} />
+//         </TouchableOpacity>
+//          <Text style={styles.navTitle}>{Instrument}</Text>
+//        </View>
+//       {/* <View style={styles.container} /> */}
+//       <View style={styles.container1}>
+//         <View style={styles.row}>
+//           <Text style={styles.label}>Name:</Text>
+//           <Text style={styles.info}>{sname}</Text>
+//         </View>
+        
+//         <View style={styles.row}>
+//           <Text style={styles.label}>LastPrice:</Text>
+//           <Text style={styles.info}>{LastPrice}</Text>
+//         </View>
+
+
+//         <View style={styles.row}>
+//           <Text style={styles.label}>Instrument Type:</Text>
+//           <Text style={styles.info}>{instrumentType}</Text>
+//         </View>
+
+//         <View style={styles.row}>
+//           <Text style={styles.label}>instrumentId:</Text>
+//           <Text style={styles.info}>{instrumentId}</Text>
+//         </View>
+
+//         <View style={styles.row}>
+//           <Text style={styles.label}>Quantity:</Text>
+//           <Text style={styles.info}>{Quantities}</Text>
+//         </View>
+
+
+
+//         <View style={styles.row}>
+//       <Text style={styles.label1}>SellQuantity:</Text>
+//       <TextInput
+//           style={[styles.input, quantity &&  styles.boldText]}
+//           value={quantity}
+//           onChangeText={(text) => setQuantity(text)}
+//           keyboardType="numeric"
+//           placeholder="Enter quantity"
+//           textAlign="right"
+//         />
+//       {/* <View style={styles.quantityContainer}>
+//         <TouchableOpacity  onPress={decreaseQuantity} style={styles.arrowdown}>
+//         <Icon
+//           name= "chevron-right"
+//           size={15}
+//           color="black"
+//           style={{ position: 'absolute',color: 'white', top: 1,left: 9, transform: [{ rotate: '-90deg' }] }}
+//         />
+//         </TouchableOpacity>
+//         <Text style={styles.info1}>{quantiti}</Text>
+//         <TouchableOpacity onPress={increaseQuantity} style={styles.arrowdown}>
+//         <Icon
+//           name= "chevron-right"
+//           size={15}
+//           color="black"
+//           style={{ position: 'absolute',color: 'white', top: 1,left: 9, transform: [{ rotate: '90deg' }] }}
+//         />
+//         </TouchableOpacity>
+//       </View> */}
+//     </View>
+//       </View>
+//       {isRegistered ? (
+//         <Text style={styles.successText}>{sname} transaction successful!</Text>
+//       ) : error ? (
+//         <Text style={styles.errorText}>{error}</Text>
+//       ) : null}
+//       {/* <Button title="Sell Instrument" onPress={() => performTransaction({sell})} disabled={loading} 
+//      /> */}
+    
+//      <TouchableOpacity style={styles.sellButton} onPress={() => performTransaction(sellType)} disabled={loading}> 
+//        <Text style={styles.Sell}>{Instrument}</Text>
+//      </TouchableOpacity>
+//       {/* <Button title="Buy Instrument" onPress={() => performTransaction('buy')} disabled={loading} 
+//        /> */}
+//       {/* </View> */}
+//     </View>
+//   );
+// };
+
+
+
+
+// const styles = StyleSheet.create({
+//     container: {
+    
+//       flex:1,
+//       padding: 10,
+//     //top: 30,
+//       backgroundColor: 'white'
+//     },
+//     navBar: {
+//       marginTop: 17,
+//       flexDirection: 'row',
+//       //justifyContent: 'space-between',
+//       alignItems: 'center',
+//       // backgroundColor: '#3498db',
+//       padding: 15,
+//     },
+//     navTitle:{
+//       right: 15,
+//       // fontSize: 18,
+//       // fontWeight: 'bold'
+//       fontSize: 20,
+//       fontWeight: 'bold',
+//     },
+//     boldText:{
+//       fontWeight: 'bold'
+//     },
+//     backIcon:{
+//       right: 20
+//     },
+//     container1: {
+//      marginTop: 20,
+//      },
+//     row: {
+//       flexDirection: 'row',
+//       justifyContent: 'space-between',
+//       marginBottom: 10,
+//     },
+//     info1:{
+//       left: 10,
+//       fontSize: 16,
+//     },
+//     // input:{
+//     //   fontWeight: 'bold',
+//     // },
+//     arrowdown:{
+//       width:30,
+//       height: 20,
+//       backgroundColor:'#A9A9A9',
+//       borderRadius: 5
+//     },
+//     arrow:{
+//       left: 10,
+//       top: -3,
+//       color: 'white'
+//     },
+//     label: {
+//       fontSize: 16,
+//       fontWeight: 'bold',
+//     },
+//     label1:{
+//       top: 1,
+//       fontSize: 16,
+//       fontWeight: 'bold',
+//     },
+
+//     successText:{
+//       marginTop: 110,
+//       color: 'green'
+//     },
+//     info: {
+//       fontSize: 16,
+//     },
+   
+//     sellButton: {
+//       backgroundColor: '#A9A9A9',
+//       justifyContent: 'center',
+//       alignItems: 'center',
+//       marginTop: 80,
+//       padding: 10,
+//       borderRadius: 6,
+//       marginHorizontal: 3
+//     },
+//     Sell: {
+//       color: 'white',
+//       fontSize: 20,
+//     },
+//   });
+  
+//   export default Sell;
 
 
 // import React,  { useState , useEffect } from 'react';

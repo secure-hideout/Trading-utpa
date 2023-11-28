@@ -122,6 +122,7 @@ const SeeAllItems = ({ navigation }) => {
       setSuccessMessage('');
     }, 3000);
   };
+
   return (
     <>
       <View style={styles.fixedHeader}>
@@ -183,12 +184,12 @@ const SeeAllItems = ({ navigation }) => {
                     priceVal: item.value,
 
 
-                    sname: item.Name,
-                    LastPrice: item.value,
-                    instrumentType: item.name3,
-                    instrumentId: item.InstrumentId,
-                    quantity: item.quantity,
-                    Quantities: item.Quantities,
+                   sname: item.Name,
+                   LastPrice: item.value,
+                   instrumentType: item.name3,
+                   instrumentId: item.InstrumentId,
+                  quantity: item.quantity,
+                  Quantities: item.Quantities,
                   });
                 }}
                 onRemove={() => {

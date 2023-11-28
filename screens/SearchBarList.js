@@ -182,29 +182,18 @@ const SearchBarList = ({ route }) => {
                   value2: item.value2,
                   volUsdt: item.volUsdt,
                   value3: item.value3,
-
-                  //navname
                   Price: item.Name,
                   priceVal: item.priceVal,
-
-
                   sname: item.Name,
                   instrumentId: item.instrumentId,
                   instrumentType: item.instrumentType,
-                  //quantity: "1",
+                  Quantities: item.Quantities,
                   LastPrice: item.LastPrice,
-
-
-
-
                 })}
-
-
                 onAdd={() => handleAddIconClick(item)}
                 showRemoveIcon={false}
                 showAddIcon={true}
-
-              />
+                />
             ))
           )}
         </View>

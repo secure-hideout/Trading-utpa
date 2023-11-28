@@ -8,13 +8,13 @@ useEffect(() => {
     redirect: 'follow'
   };
 
-  fetch("http://10.0.2.2:80/api/user/watchlist", requestOptions)
+  fetch("http://35.154.235.224:80/api/user/watchlist", requestOptions)
     .then(response => response.json())
     .then(data => {
-      // Assume you have an endpoint like http://10.0.2.2:80/api/instrument/details/:id
+      // Assume you have an endpoint like http://35.154.235.224:80/api/instrument/details/:id
       // which gives details for a specific instrument by its ID.
       const fetchDetailsPromises = data.map(item =>
-        fetch(`http://10.0.2.2:80/api/instrument/details/${item.InstrumentId}`, requestOptions)
+        fetch(`http://35.154.235.224:80/api/instrument/details/${item.InstrumentId}`, requestOptions)
           .then(res => res.json())
       );
 

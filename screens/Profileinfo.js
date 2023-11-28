@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { View, Image, Text, StyleSheet, TouchableOpacity, ScrollView, Style } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-//import { FontAwesomeIcon } from 'react-native-fontawesome';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigation } from '@react-navigation/native';
 //import { Clipboard } from '@react-native-clipboard/clipboard'; // Import Clipboard
 //import Toast from 'react-native-toast-message';
@@ -74,11 +72,8 @@ const Profileinfo = () => {
     {
       icon: "check-circle",
       text: "User Active",
-      // onPress: handleBackVerification,
       icon2: "chevron-right",
       styles: {
-        // iconColor: 'blue',
-        // textColor: 'green',
         infoColor: 'black',
       },
     },
@@ -97,11 +92,9 @@ const Profileinfo = () => {
       info: apiData.ids,
       icon4: "content-copy",
       onPress: () => {
-        // Add the logic for this button here
       },
       styles: {
-        // iconColor: 'blue',
-        // textColor: 'green',
+        paddingLeft: 4, 
         infoColor: 'black',
       },
     },
@@ -112,12 +105,8 @@ const Profileinfo = () => {
       info: isHidden ? apiData.Email : 'vamsi@gmail.com',
       onPress: toggleVisibility,
       styles: {
-        // iconColor: 'blue',
-        // textColor: 'green',
         infoColor: 'black',
-
-      },
-
+     },
     },
     {
       icon1: "calendar",
@@ -125,12 +114,10 @@ const Profileinfo = () => {
       info: apiData.CreatedAt,
       icon4: "",
       styles: {
-        // iconColor: 'blue',
-        // textColor: 'green',
         infoColor: 'black',
+        paddingLeft: 2, 
 
       },
-
     },
     {
       icon: "update",
@@ -138,12 +125,8 @@ const Profileinfo = () => {
       info: apiData.UpdatedAt,
       icon4: "",
       styles: {
-        // iconColor: 'blue',
-        // textColor: 'green',
         infoColor: 'black',
-
       },
-
     },
     {
       icon: "account-balance",
@@ -151,12 +134,8 @@ const Profileinfo = () => {
       info: apiData.Balance,
       icon4: "",
       styles: {
-        // iconColor: 'blue',
-        // textColor: 'green',
         infoColor: 'black',
-
       },
-
     },
     {
       icon: "login",
@@ -164,12 +143,8 @@ const Profileinfo = () => {
       info: apiData.LastLogin,
       icon4: "",
       styles: {
-        // iconColor: 'blue',
-        // textColor: 'green',
         infoColor: 'black',
-
       },
-
     },
     {
       icon: "edit",
@@ -177,23 +152,19 @@ const Profileinfo = () => {
       info: apiData.PasswordUpdatedAt,
       icon4: "",
       styles: {
-        // iconColor: 'blue',
-        // textColor: 'green',
         infoColor: 'black',
-
-      },
-
     },
-  ];
+  },
+];
 
   const mappedButtons = buttonData.map((button, index) => (
     <TouchableOpacity key={index} style={styles.button} onPress={button.onPress}>
       <View style={styles.buttonContent}>
         <View style={styles.iconContainer}>
-          <MaterialIcons style={styles.icon} name={button.icon} size={30} />
-          {/* {button.icon1 && ( */}
-          <Icon style={styles.diamond} name={button.icon1} size={25} color="black" />
-          {/* )} */}
+        <View style={[styles.iconContainer, { paddingLeft: button.styles.paddingLeft || 0 }]}>
+        <MaterialIcons style={styles.icon} name={button.icon} size={27} />
+        <Icon style={styles.diamond} name={button.icon1} size={25} color="black" />
+      </View>
         </View>
         <View style={styles.textContainer}>
           <Text style={[styles.text, { numberOfLines: 1 }]}>{button.text}</Text>
@@ -215,14 +186,14 @@ const Profileinfo = () => {
             name={button.icon2}
             size={17}
             color="black"
-            style={{ position: 'absolute', left: '300%', top: -7, transform: [{ rotate: '0deg' }] }}
+            style={{ position: 'absolute', left: '310%', marginTop: -7 , transform: [{ rotate: '0deg' }] }}
           />
         </View>
         <View style={styles.copy}>
           <MaterialIcons
             name={button.icon4}
             size={20}
-            style={{ position: 'absolute', left: '195%', top: -7, }} />
+            style={{ position: 'absolute', left: '200%', top: -7, }} />
         </View>
         <View style={styles.regInfoContainer}>
           <TouchableOpacity style={styles.textButton}>
@@ -265,23 +236,20 @@ const Profileinfo = () => {
 const styles = StyleSheet.create({
   buttonList: {
     flex: 1,
-    width: '100%'
+    marginRight: 1,
+    width: '99%'
   },
 
   button: {
     top: 1,
     //backgroundColor: 'lightblue', // Background color of the button
     margin: 5,
-    // padding: 10,
-    // borderRadius: 10, // Border radius for rounded corners
-    // borderWidth: 1, // Border width
-    // borderColor: 'white', // Border color
-    width: '155%',
-    marginLeft: 16,
-
+    padding: 2,
+    width: '152%',
+   // marginLeft: 20,
+    paddingLeft: 15
   },
   Nav: {
-    width: '98%',
     height: '16',
     backgroundColor: 'green'
   },
@@ -289,10 +257,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     width: '60%',
-    left: -7
-  },
-  iconContainer: {
-    marginRight: 10,
+    left: -8
   },
   diamond: {
     top: -20,
@@ -300,31 +265,23 @@ const styles = StyleSheet.create({
   icon: {
     textAlign: 'center',
     top: 18,
-
   },
   copy: {
     flex: 1
   },
   textContainer: {
     flex: 1,
-    //flexDirection: 'row'
     zIndex: 1,
     position: 'absolute',
     left: 37
 
   },
   text: {
-    // zIndex: 1,
     flexDirection: 'row',
-    // fontSize: 18,
-    // fontWeight: 'bold'
     fontSize: 18,
     fontWeight: '600',
     lineHeight: 19.09,
     color: 'rgba(28, 30, 50, 1)',
-    // color:'red',
-
-
   },
   info: {
     flexDirection: 'row',
@@ -332,39 +289,23 @@ const styles = StyleSheet.create({
   },
   chevronContainer: {
     flex: 1,
-
-  },
-  chevron: {
-    //left: 100,
-
-    //Chevron icon styles
   },
   regInfoContainer: {
     flex: 1,
     flexDirection: 'row'
   },
   regInfo: {
-    // Registration Info text styles
   },
   eyeContainer: {
-    //marginLeft: 10,
   },
   eyeIcon: {
-    left: 13,
-    // Eye icon styles
+    left: 20,
   },
-  // buttonList: {
-  //   flex: 1, // Use flex to take up all available space
-  //   justifyContent: 'center', // Center the content vertically
-  //   alignItems: 'center', // Center the content horizontally
-  //  // padding: 10
-  // },
   logButton: {
-    //  height: 'vh', // Set the height to 10% of the viewport height
     backgroundColor: '#8f8bcc',
     justifyContent: 'center',
     alignItems: 'center',
-    // marginTop: 5,
+     marginTop: 5,
     padding: 10,
     borderRadius: 6,
     marginHorizontal: 3
