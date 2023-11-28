@@ -2,16 +2,6 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 const AssetCard = ({ data, onPress }) => {
-
-
-  const formatValue = (value) => {
-    return parseFloat(value).toFixed(2);
-  };
-  // const formatValue = (value) => {
-  //   const formattedValue = parseFloat(value).toFixed(3); // Fixed to 4 decimal places
-  //   const lastThreeDigits = formattedValue.slice(-8); // Display only the last three digits
-  //   return lastThreeDigits;
-  // };
   return (
     <TouchableOpacity style={styles.container} onPress={() => onPress(data)}>
       <View style={styles.nameContainer}>
@@ -23,12 +13,11 @@ const AssetCard = ({ data, onPress }) => {
         </View>
       </View>
       <View style={styles.quantityContainer}>
-        {/* <Text style={styles.quantityLabel}>QUANTITY:</Text> */}
+        <Text style={styles.quantityLabel}>QUANTITY:</Text>
         <Text style={styles.decimal}>{data.decimalValue}</Text>
       </View>
       <View style={styles.valueContainer}>
-        {/* <Text style={styles.value}>{data.value}</Text> */}
-        <Text style={styles.value}>{formatValue(data.value)}</Text>
+        <Text style={styles.value}>{data.value}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -49,7 +38,7 @@ const styles = StyleSheet.create({
   },
   nameContainer: {
     flexDirection: 'row',
-    flex: 3,
+    flex: 2,
     alignItems: 'center',
   },
   name2Wrapper: {
@@ -66,7 +55,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    flex: 3,
+    flex: 2.5,
   },
   valueContainer: {
     flexDirection: 'row',
@@ -78,7 +67,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '700',
     color: 'rgba(28, 30, 50, 0.6)',
-    // marginRight: 4,
+    marginRight: 4,
   },
   decimal: {
     fontSize: 16,

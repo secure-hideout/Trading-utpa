@@ -36,7 +36,7 @@ const LoginForm = ({ navigation, onSuccessfulLogin }) => {
       }
 
       // Make an API request for authentication
-      const response = await fetch("http://35.154.235.224:9000/api/auth/login", {
+      const response = await fetch("http://10.0.2.2:9000/api/auth/login", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,6 +1,6 @@
 
 // assetApi.js
-const baseURL = 'http://35.154.235.224:9000';
+const baseURL = 'http://10.0.2.2:9000';
 
 // assetApi.js
 export const fetchWatchlistData = async (token) => {

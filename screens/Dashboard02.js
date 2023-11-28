@@ -50,32 +50,17 @@ const Dashboard = () => {
     });
   };
 
-  const getSelectedCardColor = (selectedCard) => {
-    switch (selectedCard) {
-      case 'Crypto':
-        return '#C1C2EB';
-      case 'NSE':
-        return '#B7DDD2';
-      case 'BSE':
-        return '#C1C2EB';
-      case 'Commodity':
-        return '#B7DDD2';
-      default:
-        return '#FFFFFF';
-    }
-  };
-
   useEffect(() => {
     var myHeaders = new Headers();
     myHeaders.append("Authorization", `Bearer ${token}`);
 
     var requestOptions = {
-      method: 'POST',
+      method: 'POST', //get
       headers: myHeaders,
       redirect: 'follow'
     };
 
-    fetch("http://35.154.235.224:9000/api/user/getZtokens", requestOptions)
+    fetch("http://10.0.2.2:9000/api/user/getZtokens", requestOptions)
       .then(response => response.json())
       .then(result => {
         const transformedData = result.map(item => ({
@@ -179,7 +164,6 @@ const Dashboard = () => {
             selectedCard={selectedCard}
             updateTotalValue={updateTotalValue}
             updateChangePercentage={updateChangePercentage}
-            selectedCardColor={getSelectedCardColor(selectedCard)}
           />
         </CriptoAssets>
       </ScrollView>
