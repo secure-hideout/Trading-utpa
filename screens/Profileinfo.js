@@ -83,7 +83,9 @@ const ProfileInfo = () => {
       icon: "check-circle",
       text: "User Active",
       icon2: "chevron-right",
-
+      styles: {
+        infoColor: 'black',
+      },
     },
     {
       icon: "account-circle",
@@ -98,40 +100,70 @@ const ProfileInfo = () => {
 
       onPress: () => {
       },
+      styles: {
+        paddingLeft: 4, 
+        infoColor: 'black',
+      },
 
     },
     {
       icon: "account-circle",
       text: "Registration Info",
-      info: '',
-
+      icon3: isHidden ? 'visibility-off' : 'remove-red-eye',
+      info: isHidden ? apiData.Email : 'vamsi@gmail.com',
+      onPress: toggleVisibility,
+      styles: {
+        infoColor: 'black',
+     },
     },
     {
       icon: "check-circle",
       text: "CreatedAt",
       info: apiData.CreatedAt,
+      icon4: "",
+      styles: {
+        infoColor: 'black',
+        paddingLeft: 2, 
+
+      },
     },
     {
       icon: "update",
       text: "UpdatedAt",
       info: apiData.UpdatedAt,
+      icon4: "",
+      styles: {
+        infoColor: 'black',
+      },
     },
     {
       icon: "account-balance",
       text: "Balance",
       info: apiData.Balance,
+      icon4: "",
+      styles: {
+        infoColor: 'black',
+      },
     },
     {
       icon: "login",
       text: "LastLogin",
       info: apiData.LastLogin,
+      icon4: "",
+      styles: {
+        infoColor: 'black',
+      },
     },
     {
       icon: "edit",
       text: "PasswordUpdatedAt",
       info: apiData.PasswordUpdatedAt,
+      icon4: "",
+      styles: {
+        infoColor: 'black',
     },
-  ];
+  },
+];
 
   const mappedButtons = buttonData.map((button, index) => (
     <TouchableOpacity key={index} style={styles.button} onPress={button.onPress}>

@@ -38,6 +38,12 @@ const Dashboard = () => {
     }));
   };
 
+  const fetchData = async (url, options) => {
+    const response = await fetch(url, options);
+    const data = await response.json();
+    return data;
+  };
+
   const updateChangePercentage = (category, changePercentage) => {
     setCardData((prevCardData) => {
       return prevCardData.map((item) => {
@@ -66,34 +72,40 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    var myHeaders = new Headers();
-    myHeaders.append("Authorization", `Bearer ${token}`);
+    const fetchData1 = async () => {
+      try {
+        const response1 = await fetchData("http://35.154.235.224:9000/api/user/getZtokens", {
+          method: "POST",
+          headers: new Headers({ "Authorization": "Bearer " + token }),
+          redirect: "follow",
+        });
 
-    var requestOptions = {
-      method: 'POST',
-      headers: myHeaders,
-      redirect: 'follow'
-    };
+        console.log("Response1:", response1);
 
-    fetch("http://35.154.235.224:9000/api/user/getZtokens", requestOptions)
-      .then(response => response.json())
-      .then(result => {
-        const transformedData = result.map(item => ({
-          name2: item.Name,
-          value: `$${item.LastPrice.toFixed(2)}`,
-          name3: item.Exchange,
+        const response2 = await fetchData("http://35.154.235.224:9000/api/user/getPortfolio", {
+          method: "GET",
+          headers: new Headers({ "Authorization": "Bearer " + token }),
+          body: "",
+          redirect: "follow",
+        });
 
-          //todisplay graph
+        console.log("Response2:", response2);
 
+        const mergedArray = response1.map((item1) => {
+          const matchingItem = response2.find((item2) => item2.FinancialInstrumentID === item1.Zid);
+          // const matchingItem = response2.find((item2) => item2.Zid === item1.FinancialInstrumentID);
+          return {
+          name2: item1.Name,
+          value: `$${item1.LastPrice.toFixed(2)}`,
+          name3: item1.Exchange,
           press: 'Allgraphs',
-          Name: item.Name,
-
+          Name: item1.Name,
           Open: "open",
           openValue: 1,
           Close: "Close",
           closeValue: 50,
           High: "High",
-          symbol: item.Tradingsymbol,
+          symbol: item1.Tradingsymbol,
           Hvalue: 150,
           Low: "Low",
           Lvalue: 25,
@@ -106,29 +118,99 @@ const Dashboard = () => {
           volUsdt: "vol USDT",
           value3: "10,000",
 
-          priceVal: item.LastPrice,
+          priceVal: item1.LastPrice,
 
-          sname: item.Name,
-          instrumentId: item.Zid,
-          instrumentType: item.Segment,
-          //quantity: "1",
-          LastPrice: item.LastPrice,
+          sname: item1.Name,
+          instrumentId: item1.Zid,
+          instrumentType: item1.Segment,
+          Quantities: matchingItem ? matchingItem.Quantity : null,
+          LastPrice: item1.LastPrice,
 
 
 
           //addtowatchlist 
-          InstrumentId: item.Zid,
-          InstrumentType: item.Segment,
-
-          // logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg', 
-        }));
-        setAssetData(transformedData);
-      })
-      .catch(error => console.log('this error', error));
+          InstrumentId: item1.Zid,
+          InstrumentType: item1.Segment,
 
 
 
-  }, []);
+          };
+        });
+        setAssetData(mergedArray);
+      } catch (error) {
+        console.log("Error in API calls:", error);
+      }
+    };
+
+    fetchData1();
+  }, [token]);
+
+  
+
+
+
+
+
+  // useEffect(() => {
+  //   var myHeaders = new Headers();
+  //   myHeaders.append("Authorization", `Bearer ${token}`);
+
+  //   var requestOptions = {
+  //     method: 'POST', //get
+  //     headers: myHeaders,
+  //     redirect: 'follow'
+  //   };
+
+  //   fetch("http://35.154.235.224:9000/api/user/getZtokens", requestOptions)
+  //     .then(response => response.json())
+  //     .then(result => {
+  //       const transformedData = result.map(item => ({
+  //         name2: item.Name,
+  //         value: `$${item.LastPrice.toFixed(2)}`,
+  //         name3: item.Exchange,
+  //         press: 'Allgraphs',
+  //         Name: item.Name,
+  //         Open: "open",
+  //         openValue: 1,
+  //         Close: "Close",
+  //         closeValue: 50,
+  //         High: "High",
+  //         symbol: item.Tradingsymbol,
+  //         Hvalue: 150,
+  //         Low: "Low",
+  //         Lvalue: 25,
+  //         Dval: "Daily Vol",
+  //         Value: "140.03B",
+  //         Market: "Market",
+  //         value1: "200.03B",
+  //         volBtc: "vol BTC",
+  //         value2: "10,000",
+  //         volUsdt: "vol USDT",
+  //         value3: "10,000",
+
+  //         priceVal: item.LastPrice,
+
+  //         sname: item.Name,
+  //         instrumentId: item.Zid,
+  //         instrumentType: item.Segment,
+  //         //quantity: "1",
+  //         LastPrice: item.LastPrice,
+
+
+
+  //         //addtowatchlist 
+  //         InstrumentId: item.Zid,
+  //         InstrumentType: item.Segment,
+
+  //         // logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg', 
+  //       }));
+  //       setAssetData(transformedData);
+  //     })
+  //     .catch(error => console.log('this error', error));
+
+
+
+  // }, []);
 
   //for scroll bottom minus icon 
 

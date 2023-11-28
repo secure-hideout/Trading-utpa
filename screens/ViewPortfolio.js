@@ -23,6 +23,7 @@ const ViewPortfolio = ({
   const navigation = useNavigation();
   const [nseData, setNseData] = useState([]);
 
+  
   useEffect(() => {
     const fetchData1 = async () => {
       try {
@@ -63,7 +64,7 @@ const ViewPortfolio = ({
             Price: matchingItem ? matchingItem.Name : null,
             priceVal: item1.AveragePrice,
             Quantities: item1.Quantity,
-            logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg',
+          //  logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg',
             Open: "open",
             openValue: 10000,
             Close: "Close",
@@ -80,7 +81,7 @@ const ViewPortfolio = ({
             value2: "10,000",
             volUsdt: "vol USDT",
             value3: "10,000",
-
+            
 
 
           };
