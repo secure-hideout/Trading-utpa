@@ -53,23 +53,18 @@ class Rectangleboxes1 extends Component {
 const styles = StyleSheet.create({
 
   info: {
-    top: 530,
-    marginLeft: 1,
-    marginRight: 2
+   // flex: 1,
   },
 
   rectangleboxes: {
-    bottom: 510,
-    right: 103,
     flexDirection: 'row',
-    // borderRadius: Border.br_3xs,
-
+   // marginLeft: 15,
+    padding: 4
   },
 
   detailsbox: {
-    width: '50%',
+    width: '49.3%',
     height: 80,
-    left: 104,
     borderWidth: 1,
     borderColor: '#BEBEBE',
     borderRadius: Border.br_3xs,
@@ -78,33 +73,33 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     top: 13,
   },
+
   open: {
     flex: 1,
-    left: 20,
+    marginLeft: 20,
     color: '#1C1E32',
   },
   openvalue: {
-    left: -22,
+    paddingRight: 19,
     fontWeight: 'bold',
   },
   openclose1: {
     flexDirection: 'row',
-    top: 26,
+    paddingTop: 26,
   },
   close: {
     flex: 1,
-    left: 20,
+    marginLeft: 20,
     color: '#1C1E32',
   },
   closevalue: {
-    left: -25,
+    marginRight: 20,
     fontWeight: 'bold',
   },
 
   detailsbox1: {
-    width: '49%',
-    height: 80,
-    left: 108,
+    marginLeft: 4,
+    width: '49.3%',
     borderWidth: 1,
     borderColor: '#BEBEBE',
     borderRadius: Border.br_3xs,
@@ -116,11 +111,11 @@ const styles = StyleSheet.create({
 
   high: {
     flex: 1,
-    left: 18,
+    paddingLeft: 18,
     color: '#1C1E32',
   },
   highvalue: {
-    left: -20,
+    paddingRight: 17,
     fontWeight: 'bold',
   },
   hightlow1: {
@@ -129,11 +124,11 @@ const styles = StyleSheet.create({
   },
   low: {
     flex: 1,
-    left: 18,
+    paddingLeft: 18,
     color: '#1C1E32',
   },
   lowvalue: {
-    right: 23,
+    paddingRight: 18,
     fontWeight: 'bold',
   },
 

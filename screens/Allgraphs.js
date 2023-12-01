@@ -6,6 +6,7 @@ import Rectangleboxes2 from './Rectangleboxes2';
 import Graphbox from './Graphbox';
 import Graphnavbar from './Graphnavbar';
 import Payments from './Payments';
+import TradingCalendar from './TradingCalender';
 
 const Allgraph = ({ route, navigation }) => {
   const {
@@ -45,10 +46,11 @@ const Allgraph = ({ route, navigation }) => {
 
   return (
 
-    <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={true}>
-      <View style={styles.container}>
-        <Graphnavbar Name={Name} Price={Price} priceVal={priceVal} pricePer={pricePer} goBack={goBack} />
-        <View style={styles.componentContainer}>
+    
+      <View style={[styles.container,styles.container1]}>
+        <ScrollView  contentContainerStyle={[styles.scrollContent,styles.container1]} showsVerticalScrollIndicator={true}>
+        <Graphnavbar  Name={Name} Price={Price} priceVal={priceVal} pricePer={pricePer} goBack={goBack} />
+        
           <Rectangleboxes1
             style={styles.Apple2}
             Open={Open}
@@ -71,11 +73,15 @@ const Allgraph = ({ route, navigation }) => {
             value3={value3}
           />
           <Graphbox symbol={symbol} />
+          {/* <TradingCalendar /> */}
           {/* <Payments /> */}
-          <Payments sname={sname} LastPrice={LastPrice} instrumentType={instrumentType} instrumentId={instrumentId} quantity={quantity} Quantities={Quantities} />
+          </ScrollView>
+           <Payments sname={sname} LastPrice={LastPrice} instrumentType={instrumentType} instrumentId={instrumentId} quantity={quantity} Quantities={Quantities} />
         </View>
-      </View>
-    </ScrollView>
+       
+       
+      
+    
   );
 };
 
@@ -83,6 +89,12 @@ const Allgraph = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'white',
+    alignItems: 'center',
+    //height: 900
+  },
+  container1: {
+   // flex: 1,
     backgroundColor: 'white',
     alignItems: 'center',
     //height: 900
