@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Modal from 'react-native-modal';
 import { TextInput } from '@react-native-material/core';
-import {  Card, Title, Paragraph, Button, Provider  } from 'react-native-paper';
+import { Card, Title, Paragraph, Button, Provider } from 'react-native-paper';
 import { Input } from 'react-native-elements';
 import { useSelector } from 'react-redux';
 import { Border, Color, FontFamily, FontSize } from "../GlobalStyles";
@@ -14,7 +14,7 @@ const Payments = ({ Instrument = "Sell", sname, LastPrice, instrumentType, instr
   const navigation = useNavigation();
   const [isBuyConfirmationVisible, setIsBuyConfirmationVisible] = useState(false);
   const [isConfirmationVisible, setConfirmationVisible] = useState(false);
-  const [quantiti, setQuantity] = useState(0); 
+  const [quantiti, setQuantity] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [isRegistered, setIsRegistered] = useState(false);
@@ -23,20 +23,20 @@ const Payments = ({ Instrument = "Sell", sname, LastPrice, instrumentType, instr
   const [isCardVisible, setIsCardVisible] = useState(true);
 
 
-    const { token } = useSelector((state) => state.auth);
-    console.log('Payments', token);
-
-   
-    // const performTransactionAPI = (type) => {
-    //   // Your transaction logic here...
-  
-    //   // Close the confirmation modal after the transaction
-    //   hideConfirmation();
-    // };
-  
+  const { token } = useSelector((state) => state.auth);
+  console.log('Payments', token);
 
 
-    
+  // const performTransactionAPI = (type) => {
+  //   // Your transaction logic here...
+
+  //   // Close the confirmation modal after the transaction
+  //   hideConfirmation();
+  // };
+
+
+
+
 
   const performTransaction = (sellType) => {
     performTransactionAPI(sellType);
@@ -44,7 +44,7 @@ const Payments = ({ Instrument = "Sell", sname, LastPrice, instrumentType, instr
     // Your transaction logic goes here
     console.log('Transaction performed');
     hideConfirmation();
- };
+  };
 
 
   const showConfirmation = (type) => {
@@ -96,12 +96,12 @@ const Payments = ({ Instrument = "Sell", sname, LastPrice, instrumentType, instr
       if (transactionType === 'sell') {
         if (parseInt(quantiti) > availableQuantity) {
           //setError(`Cannot sell more than available quantity (${availableQuantity}).`);
-           
-           Toast.show({
-           type: "error",
-           text1: `Cannot sell more than available quantity ${availableQuantity}`,
-          
-        });
+
+          Toast.show({
+            type: "error",
+            text1: `Cannot sell more than available quantity ${availableQuantity}`,
+
+          });
           hideConfirmation();
           setLoading(false);
           return;
@@ -114,7 +114,7 @@ const Payments = ({ Instrument = "Sell", sname, LastPrice, instrumentType, instr
           body: raw,
           redirect: 'follow',
         };
-        
+
         console.log("Response2:", performTransactionAPI);
 
         const response = await fetch('http://35.154.235.224:9000/api/user/sellSymbol', requestOptions);
@@ -122,7 +122,7 @@ const Payments = ({ Instrument = "Sell", sname, LastPrice, instrumentType, instr
         console.log(`${transactionType} API response:`, response.status, response.statusText);
 
         if (response.ok) {
-          
+
           //const response:
 
           hideConfirmation();
@@ -130,15 +130,15 @@ const Payments = ({ Instrument = "Sell", sname, LastPrice, instrumentType, instr
           Toast.show({
             type: "success",
             text1: `Sell Succesfull`,
-         });
+          });
           //const data = await response.json();
-        //  return data.quantities;
+          //  return data.quantities;
           const data = await response.json();
 
           const updatedQuantities = data.quantities;
           setLatestQuantities(updatedQuantities);
-          console.log('latest value',data?.quantity);
-          
+          console.log('latest value', data?.quantity);
+
         } else {
           console.error(`${transactionType} API error response:`, await response.text());
           setError(`Please enter Quantity`);
@@ -156,7 +156,7 @@ const Payments = ({ Instrument = "Sell", sname, LastPrice, instrumentType, instr
         console.log(`${transactionType} API response:`, response.status, response.statusText);
 
         if (response.ok) {
-         
+
 
           setIsRegistered(true);
           hideConfirmation();
@@ -164,8 +164,8 @@ const Payments = ({ Instrument = "Sell", sname, LastPrice, instrumentType, instr
           Toast.show({
             type: "success",
             text1: `Buy Succesfull`,
-         });
-        
+          });
+
         } else {
           console.error(`${transactionType} API error response:`, await response.text());
           setError(`Please enter Quantity`);
@@ -194,69 +194,69 @@ const Payments = ({ Instrument = "Sell", sname, LastPrice, instrumentType, instr
       >
         <Text style={styles.buy}>Buy</Text>
       </TouchableOpacity>
-       
-        {/* Confirmation Modal */}
-        <Modal isVisible={isConfirmationVisible}>
 
-        
-          <Card style={styles.cardContainer4}>
-            <View style={styles.Price1}>
-              <Text style={styles.Price}>Lastprice:</Text>
-              <Text style={styles.Price2}>{LastPrice}</Text>
-            </View>
-            <View style={styles.Quantities}>
-              <Text style={[styles.Price,styles.Quantities]}>Current Stocks:</Text>
-              <Text style={[styles.Price2,styles.Quantities]}>{Quantities}</Text>
+      {/* Confirmation Modal */}
+      <Modal isVisible={isConfirmationVisible}>
+
+
+        <Card style={styles.cardContainer4}>
+          <View style={styles.Price1}>
+            <Text style={styles.Price}>Lastprice:</Text>
+            <Text style={styles.Price2}>{LastPrice}</Text>
           </View>
-    
-         <View style={styles.Quantities}> 
-           <Text style={styles.Price3}>Enter {sellType} Quantity:</Text>
-           <TextInput
-            variant="outlined"
-            label="#No."
-            value={quantity}
-            onChangeText={(text) => setQuantity(text)}
-            keyboardType="numeric"
-            style={{
-            width: 90,
-            height: 50,
-            marginLeft: 21,
-            marginHorizontal: 9,
-            borderBottomWidth: 2,
-            textAlign: 'center',
-           // inputStyle={{ width: 100, textAlign: 'center'  }}
-        }}
-      />
-        </View>
+          <View style={styles.Quantities}>
+            <Text style={[styles.Price, styles.Quantities]}>Current Stocks:</Text>
+            <Text style={[styles.Price2, styles.Quantities]}>{Quantities}</Text>
+          </View>
 
-       
-        <View style={styles.buttons}>
-        <View style={styles.button1}>
-        <Button onPress={() => performTransactionAPI(sellType)} labelStyle={styles.buttonText} >
-          {sellType === 'sell' ? 'Sell' : 'Buy'}
-        </Button>
-        </View>
-      <View style={styles.button2}>
-         <Button onPress={hideConfirmation}  labelStyle={styles.buttonText1} >
-         Cancel
-      </Button>
-     </View>
+          <View style={styles.Quantities}>
+            <Text style={styles.Price3}>Enter {sellType} Quantity:</Text>
+            <TextInput
+              variant="outlined"
+              label="#No."
+              value={quantity}
+              onChangeText={(text) => setQuantity(text)}
+              keyboardType="numeric"
+              style={{
+                width: 90,
+                height: 50,
+                marginLeft: 21,
+                marginHorizontal: 9,
+                borderBottomWidth: 2,
+                textAlign: 'center',
+                // inputStyle={{ width: 100, textAlign: 'center'  }}
+              }}
+            />
+          </View>
+
+
+          <View style={styles.buttons}>
+            <View style={styles.button1}>
+              <Button onPress={() => performTransactionAPI(sellType)} labelStyle={styles.buttonText} >
+                {sellType === 'sell' ? 'Sell' : 'Buy'}
+              </Button>
+            </View>
+            <View style={styles.button2}>
+              <Button onPress={hideConfirmation} labelStyle={styles.buttonText1} >
+                Cancel
+              </Button>
+            </View>
+          </View>
+        </Card>
+
+      </Modal>
     </View>
-  </Card>
-       
-</Modal>
-</View>
-);
+  );
 };
 
 
 const styles = StyleSheet.create({
   sellandbuy: {
-    
+
     flexDirection: 'row',
     padding: 10,
     //marginBottom: 10
-   },
+  },
   button: {
     marginRight: 2,
     backgroundColor: '#EAC9B1',
@@ -271,14 +271,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#EAC9B1',
     borderRadius: 50,
   },
-  button2:{
+  button2: {
     left: 10,
     width: '47%',
     height: 47,
     backgroundColor: '#b1a4ff',
     borderRadius: 50,
   },
-  button3:{
+  button3: {
     left: 3,
     width: '47%',
     height: 47,
@@ -299,7 +299,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontSize: 18,
   },
-  cardContainer4:{
+  cardContainer4: {
     backgroundColor: 'white',
     width: '90%',
     marginHorizontal: 20,
@@ -318,7 +318,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     left: 8
   },
-  Price3:{
+  Price3: {
     fontSize: 16,
     fontWeight: 'bold',
     color: 'gray',
@@ -333,55 +333,55 @@ const styles = StyleSheet.create({
     fontSize: 16,
     Left: 15,
   },
-  Price1:{
+  Price1: {
     //fontWeight: '700',
     padding: 17,
     flexDirection: 'row',
     justifyContent: 'space-between'
   },
-  Quantities:{
+  Quantities: {
     fontWeight: 'bold',
     // fontWeight: 'bold',
-     paddingBottom: 9,
-  //  padding: 7,
-     paddingRight: 8,
-     paddingLeft: 8,
+    paddingBottom: 9,
+    //  padding: 7,
+    paddingRight: 8,
+    paddingLeft: 8,
     //backgroundColor: 'red',
     paddingBottom: 9,
     flexDirection: 'row',
     justifyContent: 'space-between'
   },
   buttons: {
-   paddingTop: 17,
-     flexDirection: 'row',
+    paddingTop: 17,
+    flexDirection: 'row',
     marginLeft: 10
     //justifyContent: 'space-between'
   },
-  cardContainer1:{
-     marginLeft: 80,
-     width : '49%',
-     alignItems: 'center',
-     justifyContent: 'center',
-     textAlign: 'center',
-     height: 80,
-     marginVertical: 5,
-     paddingVertical: 5,
-     borderRadius: 10,
-     backgroundColor: '#fff', 
-   },
-   input: {
+  cardContainer1: {
+    marginLeft: 80,
+    width: '49%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+    height: 80,
+    marginVertical: 5,
+    paddingVertical: 5,
+    borderRadius: 10,
+    backgroundColor: '#fff',
+  },
+  input: {
     top: 5,
     left: 9,
     flex: 1,
-    flexDirection:'row',
+    flexDirection: 'row',
     //height: 40, // Adjust this value to make it smaller
     borderColor: 'gray',
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 20,
   },
-  Price:{
-    
+  Price: {
+
     fontSize: 16,
     fontWeight: '600',
     color: 'gray'
@@ -390,7 +390,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontSize: 16,
   },
-  label1:{
+  label1: {
     fontWeight: 'bold',
     color: 'gray'
   }
@@ -429,17 +429,17 @@ export default Payments;
 //     const { token } = useSelector((state) => state.auth);
 //     console.log('Payments', token);
 
-   
+
 //     // const performTransactionAPI = (type) => {
 //     //   // Your transaction logic here...
-  
+
 //     //   // Close the confirmation modal after the transaction
 //     //   hideConfirmation();
 //     // };
-  
 
 
-    
+
+
 
 //   const performTransaction = (sellType) => {
 //     performTransactionAPI(sellType);
@@ -499,11 +499,11 @@ export default Payments;
 //       if (transactionType === 'sell') {
 //         if (parseInt(quantiti) > availableQuantity) {
 //           //setError(`Cannot sell more than available quantity (${availableQuantity}).`);
-           
+
 //            Toast.show({
 //            type: "error",
 //            text1: `Cannot sell more than available quantity ${availableQuantity}`,
-          
+
 //         });
 //           hideConfirmation();
 //           setLoading(false);
@@ -517,7 +517,7 @@ export default Payments;
 //           body: raw,
 //           redirect: 'follow',
 //         };
-        
+
 //         console.log("Response2:", performTransactionAPI);
 
 //         const response = await fetch('http://35.154.235.224:9000/api/user/sellSymbol', requestOptions);
@@ -536,8 +536,8 @@ export default Payments;
 //           const data = await response.json();
 //           const updatedQuantities = data.quantities;
 //           setLatestQuantities(updatedQuantities);
-          
-          
+
+
 //         } else {
 //           console.error(`${transactionType} API error response:`, await response.text());
 //           setError(`Please enter Quantity`);
@@ -562,7 +562,7 @@ export default Payments;
 //             type: "success",
 //             text1: `Buy Succesfull`,
 //          });
-        
+
 //         } else {
 //           console.error(`${transactionType} API error response:`, await response.text());
 //           setError(`Please enter Quantity`);
@@ -591,11 +591,11 @@ export default Payments;
 //       >
 //         <Text style={styles.buy}>Buy</Text>
 //       </TouchableOpacity>
-       
+
 //         {/* Confirmation Modal */}
 //         <Modal isVisible={isConfirmationVisible}>
 
-        
+
 //           <Card style={styles.cardContainer4}>
 //             <View style={styles.Price1}>
 //               <Text style={styles.Price}>Lastprice:</Text>
@@ -605,7 +605,7 @@ export default Payments;
 //               <Text style={[styles.Price,styles.Quantities]}>Current Stocks:</Text>
 //               <Text style={[styles.Price2,styles.Quantities]}>{Quantities}</Text>
 //           </View>
-    
+
 //         <Card style={styles.cardContainer1}>
 //            <Text style={styles.label1}>Enter {sellType} Quantity:</Text>
 //              <Input
@@ -621,7 +621,7 @@ export default Payments;
 //         />
 //         </Card>
 
-       
+
 //         <View style={styles.buttons}>
 //         <View style={styles.button1}>
 //         <Button onPress={() => performTransactionAPI(sellType)} labelStyle={styles.buttonText} >
@@ -635,7 +635,7 @@ export default Payments;
 //      </View>
 //     </View>
 //   </Card>
-       
+
 // </Modal>
 // </View>
 // );
@@ -644,7 +644,7 @@ export default Payments;
 
 // const styles = StyleSheet.create({
 //   sellandbuy: {
-    
+
 //     flexDirection: 'row',
 //     padding: 10,
 //     //marginBottom: 10
@@ -765,7 +765,7 @@ export default Payments;
 //     paddingHorizontal: 20,
 //   },
 //   Price:{
-    
+
 //     fontSize: 16,
 //     fontWeight: '600',
 //     color: 'gray'
@@ -914,7 +914,7 @@ export default Payments;
 //         if (parseInt(quantiti) > availableQuantity) {
 //           setError(`Cannot sell more than available quantity (${availableQuantity}).`);
 
-          
+
 //           setLoading(false);
 //           return;
 //         }
@@ -926,7 +926,7 @@ export default Payments;
 //           body: raw,
 //           redirect: 'follow',
 //         };
-        
+
 //         console.log("Response2:", performTransactionAPI);
 
 //         const response = await fetch('http://35.154.235.224:9000/api/user/sellSymbol', requestOptions);
@@ -934,15 +934,15 @@ export default Payments;
 //         console.log(`${transactionType} API response:`, response.status, response.statusText);
 
 //         if (response.ok) {
-          
+
 //           setIsRegistered(true);
 //           //const data = await response.json();
 //         //  return data.quantities;
 //           const data = await response.json();
 //           const updatedQuantities = data.quantities;
 //           setLatestQuantities(updatedQuantities);
-          
-          
+
+
 //         } else {
 //           console.error(`${transactionType} API error response:`, await response.text());
 //           setError(`Please enter Quantity`);
@@ -963,7 +963,7 @@ export default Payments;
 //           setIsRegistered(true);
 //           const updatedPortfolio = await portfolioResponse.json();
 //           navigation.navigate('ViewPortfolio', { portfolio: updatedPortfolio });
-        
+
 //         } else {
 //           console.error(`${transactionType} API error response:`, await response.text());
 //           setError(`Please enter Quantity`);
@@ -975,7 +975,7 @@ export default Payments;
 //     } finally {
 //       setLoading(false);
 //     }
-   
+
 //   };
 
 //   return (
@@ -991,7 +991,7 @@ export default Payments;
 //         >
 //         <Text style={styles.buy}>Buy</Text>
 //       </TouchableOpacity>
-       
+
 //         {/* Confirmation Modal */}
 //         <Modal isVisible={isConfirmationVisible}>
 //           <Card style={styles.cardContainer4}>
@@ -1003,7 +1003,7 @@ export default Payments;
 //               <Text style={[styles.Price,styles.Quantities]}>Current Stocks:</Text>
 //               <Text style={[styles.Price2,styles.Quantities]}>{Quantities}</Text>
 //           </View>
-       
+
 //         <Card style={styles.cardContainer1}>
 //            <Text style={styles.label1}>Enter Sell Quantity:</Text>
 //              <Input
@@ -1034,7 +1034,7 @@ export default Payments;
 // </Modal>
 
 
- 
+
 //   </View>
 // );
 // };
@@ -1042,7 +1042,7 @@ export default Payments;
 
 // const styles = StyleSheet.create({
 //   sellandbuy: {
-    
+
 //     flexDirection: 'row',
 //     marginBottom: 10
 //    },
@@ -1163,7 +1163,7 @@ export default Payments;
 //   Price2: {
 //     fontWeight: '600',
 //     fontSize: 16,
-    
+
 //   }
 // })
 
@@ -1262,7 +1262,7 @@ export default Payments;
 
 // const styles = StyleSheet.create({
 //   sellandbuy: {
-    
+
 //     flexDirection: 'row',
 //     marginBottom: 10
 //    },

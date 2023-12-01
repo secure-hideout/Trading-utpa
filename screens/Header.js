@@ -1,17 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, Text, Image, TouchableOpacity, TextInput, SafeAreaView, StyleSheet, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import AssetDataContext from './AssetDataContext';
+
 
 const Header = ({ assetData }) => {
   const navigation = useNavigation();
   const [isSearchVisible, setSearchVisible] = useState(false);
+  const { firstName } = useContext(AssetDataContext);
 
   const toggleNotifications = () => {
     navigation.navigate('NotificationPage');
   };
 
   const toggleUser = () => {
-    navigation.navigate('UserDetails');
+    navigation.navigate('UserDetails', { fromBottomTab: true });
   };
 
   return (
@@ -25,7 +28,7 @@ const Header = ({ assetData }) => {
                 source={require("../assets/mask-group.png")}
               />
               <Text style={styles.welcomeText}>Welcome </Text>
-              <Text style={styles.userName}>Satyam</Text>
+              <Text style={styles.userName}>{firstName || 'User'}</Text>
             </View>
           </TouchableOpacity>
           <View style={styles.rightImageContainer}>
