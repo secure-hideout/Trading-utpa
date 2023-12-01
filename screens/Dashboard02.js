@@ -137,42 +137,43 @@ const Dashboard = () => {
           const matchingItem = response2.find((item2) => item2.FinancialInstrumentID === item1.Zid);
           // const matchingItem = response2.find((item2) => item2.Zid === item1.FinancialInstrumentID);
           return {
-          name2: item1.Name,
-          value: `$${item1.LastPrice.toFixed(2)}`,
-          name3: item1.Exchange,
-          press: 'Allgraphs',
-          Name: item1.Name,
-          Open: "open",
-          openValue: 1,
-          Close: "Close",
-          closeValue: 50,
-          High: "High",
-          symbol: item1.Tradingsymbol,
-          Hvalue: 150,
-          Low: "Low",
-          Lvalue: 25,
-          Dval: "Daily Vol",
-          Value: "140.03B",
-          Market: "Market",
-          value1: "200.03B",
-          volBtc: "vol BTC",
-          value2: "10,000",
-          volUsdt: "vol USDT",
-          value3: "10,000",
+            name2: item1.Name,
+            value: `$${item1.LastPrice.toFixed(2)}`,
+            name3: item1.Exchange,
 
-          priceVal: item1.LastPrice,
+            press: 'Allgraphs',
+            Name: item1.Name,
+            Open: "open",
+            openValue: 1,
+            Close: "Close",
+            closeValue: 50,
+            High: "High",
+            symbol: item1.Tradingsymbol,
+            Hvalue: 150,
+            Low: "Low",
+            Lvalue: 25,
+            Dval: "Daily Vol",
+            Value: "140.03B",
+            Market: "Market",
+            value1: "200.03B",
+            volBtc: "vol BTC",
+            value2: "10,000",
+            volUsdt: "vol USDT",
+            value3: "10,000",
 
-          sname: item1.Name,
-          instrumentId: item1.Zid,
-          instrumentType: item1.Segment,
-          Quantities: matchingItem ? matchingItem.Quantity : null,
-          LastPrice: item1.LastPrice,
+            priceVal: item1.LastPrice,
+
+            sname: item1.Name,
+            instrumentId: item1.Zid,
+            instrumentType: item1.Segment,
+            Quantities: matchingItem ? matchingItem.Quantity : null,
+            LastPrice: item1.LastPrice,
 
 
 
-          //addtowatchlist 
-          InstrumentId: item1.Zid,
-          InstrumentType: item1.Segment,
+            //addtowatchlist 
+            InstrumentId: item1.Zid,
+            InstrumentType: item1.Segment,
 
 
 
@@ -187,7 +188,7 @@ const Dashboard = () => {
     fetchData1();
   }, [token]);
 
-  
+
 
 
 
