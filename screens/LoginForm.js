@@ -12,8 +12,8 @@ import { useDispatch } from 'react-redux';
 import { setToken } from '../redux/actions/authActions';
 const LoginForm = ({ navigation, onSuccessfulLogin }) => {
 
-  const dispatch = useDispatch(); const [email, setEmail] = useState('karthiabega@gmail.com');
-  const [password, setPassword] = useState('12345');
+  const dispatch = useDispatch(); const [email, setEmail] = useState('user9@gmail.com');
+  const [password, setPassword] = useState('pass');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isRegistered, setIsRegistered] = useState(false);

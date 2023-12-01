@@ -1,74 +1,9 @@
-// import React from 'react';
-// import { View, Text, TouchableOpacity, Image } from 'react-native';
-// import { useNavigation } from '@react-navigation/native';
-// import { Ionicons } from '@expo/vector-icons';
-// //import Dashboard02 from './Dashboard02';
-
-// const UserDetails = () => {
-//   const navigation = useNavigation();
-
-//   const goBack = () => {
-//     // navigation.goBack('Dashboard02'); rewritten like below for navigate 
-//     // navigation.navigate('Home'); without home
-//     navigation.navigate('WatchList');
-//   };
-
-//   return (
-//     <View style={styles.container}>
-//       <TouchableOpacity onPress={goBack} style={styles.backButton}>
-//         {/* <Image source={require("../assets/back-icon.png")} style={styles.backIcon} /> */}
-//         <Ionicons name="arrow-back-outline" size={24} color="black" style={styles.backIcon} />
-//       </TouchableOpacity>
-//       <Text style={styles.title}>User Details</Text>
-//     </View>
-//   );
-// };
-
-
-// // import React from 'react';
-// // import { View, Text, TouchableOpacity, Image } from 'react-native';
-// // import { useNavigation } from '@react-navigation/native';
-// // import { Ionicons } from '@expo/vector-icons';
-// // import { connect } from 'react-redux'; // Import connect from react-redux
-
-// // const UserDetails = (props) => {
-// //   const navigation = useNavigation();
-
-// //   const goBack = () => {
-// //     navigation.navigate('WatchList');
-// //   };
-
-// //   // Log Redux state
-// //   console.log('Redux State - User:', props.user);
-// //   // You can add more console.log statements for other Redux state properties if needed
-
-// //   return (
-// //     <View style={styles.container}>
-// //       <TouchableOpacity onPress={goBack} style={styles.backButton}>
-// //         <Ionicons name="arrow-back-outline" size={24} color="black" style={styles.backIcon} />
-// //       </TouchableOpacity>
-// //       <Text style={styles.title}>User Details</Text>
-// //     </View>
-// //   );
-// // };
-
-// // const mapStateToProps = (state) => ({
-// //   user: state.user, // Map the 'user' state property to props.user
-// // });
-
-
-import React, { useState, useEffect } from 'react';
-import { View, Image, Text, StyleSheet, TouchableOpacity, ScrollView, TextInput } from 'react-native';
-import { Button } from 'react-native-paper';
-import { Image as expoImage } from "expo-image";
+import React, { } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-// import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-//import { FontAwesomeIcon } from 'react-native-fontawesome';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Profileinfo from "../screens/Profileinfo";
 import { Ionicons } from '@expo/vector-icons';
-//import ImagePicker from 'react-native-image-picker';
+
 
 
 const Profile = () => {
@@ -79,24 +14,35 @@ const Profile = () => {
   //   navigation.navigate('WatchList');
   // };
 
+  // const goBack = () => {
+  //   if (route.params?.fromBottomTab) {
+  //     navigation.navigate('WatchList'); // If navigated from bottom tab
+  //   } else {
+  //     navigation.goBack(); // Otherwise, go back to the previous screen
+  //   }
+  // };
+
   const goBack = () => {
     if (route.params?.fromBottomTab) {
-      navigation.navigate('WatchList'); // If navigated from bottom tab
+      // If navigated from the bottom tab, go back to the previous screen in the tab navigator
+      navigation.goBack();
     } else {
-      navigation.goBack(); // Otherwise, go back to the previous screen
+      // If navigated from the header, go back to the WatchList screen
+      navigation.navigate('WatchList');
     }
   };
+
 
   return (
     <View style={styles.container}>
       <View style={styles.backButton1}>
         <TouchableOpacity onPress={goBack} style={styles.backButton}>
-          {/* <Image source={require("../assets/back-icon.png")} style={styles.backIcon} /> */}
+
           <Ionicons name="arrow-back-outline" size={25} color="black" style={styles.backIcon} />
         </TouchableOpacity>
         <Text style={styles.userInfo}>User Details</Text>
       </View>
-      < Profileinfo />
+      < Profileinfo navigation={navigation} />
     </View>
   );
 }
@@ -140,8 +86,32 @@ export default Profile;
 
 
 
+//mine
+// import React from 'react';
+// import { View, Text, TouchableOpacity, Image } from 'react-native';
+// import { useNavigation } from '@react-navigation/native';
+// import { Ionicons } from '@expo/vector-icons';
+// //import Dashboard02 from './Dashboard02';
 
+// const UserDetails = () => {
+//   const navigation = useNavigation();
 
+//   const goBack = () => {
+//     // navigation.goBack('Dashboard02'); rewritten like below for navigate
+//     // navigation.navigate('Home'); without home
+//     navigation.navigate('WatchList');
+//   };
+
+//   return (
+//     <View style={styles.container}>
+//       <TouchableOpacity onPress={goBack} style={styles.backButton}>
+//         {/* <Image source={require("../assets/back-icon.png")} style={styles.backIcon} /> */}
+//         <Ionicons name="arrow-back-outline" size={24} color="black" style={styles.backIcon} />
+//       </TouchableOpacity>
+//       <Text style={styles.title}>User Details</Text>
+//     </View>
+//   );
+// };
 
 // const styles = {
 //   container: {

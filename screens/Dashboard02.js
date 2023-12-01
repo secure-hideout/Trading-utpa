@@ -14,7 +14,7 @@ import { useSelector } from 'react-redux';
 
 
 const Dashboard = () => {
-
+  const { setFirstName } = useContext(AssetDataContext);
   const { token } = useSelector(state => state.auth)
   console.log("Dashboard", token)
   const [cardData, setCardData] = useState([
@@ -64,6 +64,48 @@ const Dashboard = () => {
         return '#FFFFFF';
     }
   };
+
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const response = await fetch('http://35.154.235.224:9000/api/user/profile', {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          setFirstName(result.FirstName);
+        } else {
+          console.error('Error fetching profile:', response.status);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+
+    if (token) {
+      fetchProfile();
+    }
+  }, [token, setFirstName]);
+
+
+
+  const [overallTotalValue, setOverallTotalValue] = useState(0);
+
+  const handleOverallTotalValueUpdate = (value) => {
+    setOverallTotalValue(value);
+  };
+
+  const [overallChangePercentage, setOverallChangePercentage] = useState(0);
+
+  const updateOverallChangePercentage = (value) => {
+    setOverallChangePercentage(value);
+  };
+
+
+
 
   useEffect(() => {
     var myHeaders = new Headers();
@@ -143,7 +185,11 @@ const Dashboard = () => {
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView ref={scrollViewRef} style={styles.root} stickyHeaderIndices={[0]}>
         <Header assetData={assetData} />
-        <MyPortfolio />
+        {/* <MyPortfolio /> */}
+        <MyPortfolio totalValue={overallTotalValue}
+          changePercentage={overallChangePercentage}
+        />
+
         <Deposit />
         <MyWatchList />
         <View style={styles.container5}>
@@ -180,6 +226,8 @@ const Dashboard = () => {
             updateTotalValue={updateTotalValue}
             updateChangePercentage={updateChangePercentage}
             selectedCardColor={getSelectedCardColor(selectedCard)}
+            updateOverallTotalValue={handleOverallTotalValueUpdate}
+            updateOverallChangePercentage={updateOverallChangePercentage}
           />
         </CriptoAssets>
       </ScrollView>

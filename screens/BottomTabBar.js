@@ -10,7 +10,6 @@ import Settings from "../screens/Settings";
 import SeeAllItems from '../screens/SeeAllItems';
 import AssetDataContext from "../screens/AssetDataContext";
 import { TAB_ICONS } from '../screens/TabIcons'; // Import the tab icons
-import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 const Tab = createBottomTabNavigator();
 
 const BottomTabBar = ({ isLoggedIn, onSuccessfulLogin }) => {
@@ -45,8 +44,8 @@ const BottomTabBar = ({ isLoggedIn, onSuccessfulLogin }) => {
       </Tab.Screen>
 
       <Tab.Screen name="WatchList" component={SeeAllItems} />
-      {/* <Tab.Screen name="Profile" component={UserDetails} /> */}
-      <Tab.Screen
+      <Tab.Screen name="Profile" component={UserDetails} />
+      {/* <Tab.Screen
         name="Profile"
         component={UserDetails}
         listeners={({ navigation, route }) => ({
@@ -58,7 +57,7 @@ const BottomTabBar = ({ isLoggedIn, onSuccessfulLogin }) => {
             navigation.navigate('UserDetails', { fromBottomTab: true });
           },
         })}
-      />
+      /> */}
       <Tab.Screen name="Setting" component={Settings} />
     </Tab.Navigator>
   );

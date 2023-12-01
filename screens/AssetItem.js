@@ -40,19 +40,19 @@ const AssetItem = ({
 
   const handleRemove = () => {
     if (swipeRowRef.current) {
-      swipeRowRef.current.closeRow(); // Close the swipe action
+      swipeRowRef.current.closeRow();
       setTimeout(() => {
-        onRemove(); // Perform the remove action after a delay
-      }, 300); // Adjust the delay as needed
+        onRemove();
+      }, 300);
     }
   };
 
   const handleAdd = () => {
     if (swipeRowRef.current) {
-      swipeRowRef.current.closeRow(); // Close the swipe action
+      swipeRowRef.current.closeRow();
       setTimeout(() => {
-        onAdd(); // Perform the add action after a delay
-      }, 300); // Adjust the delay as needed
+        onAdd();
+      }, 300);
     }
   };
 
