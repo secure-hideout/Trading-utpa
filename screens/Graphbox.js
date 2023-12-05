@@ -137,10 +137,6 @@ console.log(selectedInterval);
 const { width, height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
-  // depthbutton01: {
-  //   zIndex: 2,
-  //   marginLeft: 6,
-  // },
   container: {
     flexDirection: 'row',
    
@@ -148,7 +144,7 @@ const styles = StyleSheet.create({
   graphbox: {
     //flex: 1,
     //display: 'flex',
-    marginTop: 5,
+    marginTop: 4,
     height: 497,
     borderWidth: 1,
     borderColor: 'black',
@@ -156,15 +152,13 @@ const styles = StyleSheet.create({
     borderRadius: Border.br_3xs,
   },
   forRow:{
-    width: '98%',
+    width: '98.38%',
   },
   chartBar1: {
     flex:1 ,
     paddingTop: 13,
-    //width: '98%',
     height: 10,
     flexDirection: 'row',
-   // display: 'flex',
     alignContent: 'center',
   },
 
@@ -175,7 +169,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
     display: 'flex',
     flexDirection: 'row',
-    //right: 240,
     zIndex: 1,
     paddingHorizontal: width * 0.00,
   },
@@ -218,12 +211,8 @@ const styles = StyleSheet.create({
   },
   container1:{
     display:'flex' ,
-    //width: '98%',
-    //height: 20,
     flexDirection: 'row',
-   // display: 'flex',
-    //justifyContent: 'space-between',
-   // display: 'flex',
+   // marginBottom: 10
   },
   setting: {
     marginLeft: 5,
@@ -258,45 +247,15 @@ const styles = StyleSheet.create({
   intervel: {
     marginRight: 10,
     paddingTop: 10,
-  //   bottom: 45,
-  //  // paddingHorizontal: 10,
-  //   paddingLeft: 0,
-  // //  flexDirection: 'row', // Ensure a horizontal layout
-  // //  justifyContent: 'flex-end',
-  //   alignItems: 'center', // Align items to the center vertically (adjust as needed)
-  //   zIndex: 1,
-  //   flex: 1,
-  //   justifyContent: 'right',
-  //   justifyContent: 'flex-end',
-  //   backgroundColor: '#fff',
-       width: 80,
-  //  // height: 40,
-  //   zIndex: 1,
+    width: 80,
   },
   range: {
     marginRight: 10,
     paddingTop: 20,
-    // right: 50,
-    // top: 20
-    // paddingBottom: 20,
-    // flexDirection: 'row', // Ensure a horizontal layout
     justifyContent: 'flex-end',
-    // alignItems: 'center', // Align items to the center vertically (adjust as needed)
-    // zIndex: 1,
-    // fontSize: 17,
-    // color: '#747474',
-    // position: 'absolute'
   },
   range12: {
-   // marginLeft: 20,
     flexDirection: 'row',
-    //paddingTop: -90,
-   // display: 'flex',
-    // paddingLeft: 150,
-    // justifyContent: 'flex-end',
-    // alignItems: 'center', /* Adjust as needed */
-    // flex: 1,
-    /* Additional styling for the range1 container goes here */
   }
 
 })

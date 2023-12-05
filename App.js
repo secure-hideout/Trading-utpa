@@ -15,7 +15,7 @@ import UserDetails from './screens/UserDetails';
 import ViewPortfolio from './screens/ViewPortfolio';
 // import AssetListDetails from './screens/AssetListDetails';
 import Allgraphs from "./screens/Allgraphs";
-
+import Deposit from "./screens/Deposit"
 import MyWatchList from './screens/MyWatchList';
 import CryptoAssets from './screens/CriptoAssets';
 import SeeAllItems from './screens/SeeAllItems';
@@ -48,7 +48,7 @@ function MainStack({ isLoggedIn, setIsLoggedIn }) {
       <Stack.Screen name='CryptoAssets' component={CryptoAssets} />
       <Stack.Screen name='SeeAllItems' component={SeeAllItems} />
       <Stack.Screen name='SearchBarList' component={SearchBarList} />
-
+      <Stack.Screen name='Deposit' component={Deposit} />
       <Stack.Screen name="Allgraphs" component={Allgraphs} />
       {/* <Stack.Screen name="TradingCalendar" component={TradingCalendar} /> */}
       <Stack.Screen name="Buy" component={Buy} />

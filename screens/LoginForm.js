@@ -6,6 +6,7 @@ import { TextInput } from '@react-native-material/core';
 import { connect } from 'react-redux';
 import { loginUser } from '../redux/actions/authActions';
 import CheckBox from 'react-native-check-box';
+import Toast from "react-native-toast-message"
 
 import { useDispatch } from 'react-redux';
 
@@ -66,8 +67,11 @@ const LoginForm = ({ navigation, onSuccessfulLogin }) => {
         // Dispatch the token to the Redux store
         console.log('Dispatching Token:', token);
         dispatch(setToken(token));
-
-        setIsRegistered(true);
+        Toast.show({
+          type: "success",
+          text1: `Login Succesfull`,
+       });
+       // setIsRegistered(true);
         onSuccessfulLogin();
 
         // Log the token to the console
@@ -126,7 +130,7 @@ const LoginForm = ({ navigation, onSuccessfulLogin }) => {
       <View style={styles.head1}>
       <View>
       <TouchableOpacity onPress={() => handleLoginPress()}>
-        <Text style={[styles.head1, styles.blueText]}>login</Text>
+        <Text style={[styles.head1, styles.blueText]}>Login</Text>
       </TouchableOpacity>
       </View>
       <View>
@@ -139,11 +143,11 @@ const LoginForm = ({ navigation, onSuccessfulLogin }) => {
       </View>
       </View>
       {networkError && <Text style={styles.error1}>{networkError}</Text>}
-      {isRegistered && (
+      {/* {isRegistered && (
         <Text style={{ color: '#d68760', textAlign: 'center', top: 25 }}>
           Login successfully!
         </Text>
-      )}
+      )} */}
       <View style={styles.head2}>
       <TextInput
         label="Email"
@@ -226,12 +230,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     flex: 1,
     paddingTop: 150,
-    //paddingTop: 80,
     paddingLeft: 9,
-   // alignItems: 'center',
-  //  justifyContent: 'center',
     alignItems: 'center',
-   // textAlign: 'center'
+   // backgroundColor: 'powderblue'
   },
   head:{
      fontWeight: 'bold',
@@ -239,14 +240,9 @@ const styles = StyleSheet.create({
      fontSize: 20
   },
   head1:{
-   // fontWeight: 16,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    //flex: 1
     marginRight: 16
-  },
-  head2:{
-   // paddingTop:,
   },
   error1:{
     color: '#d68760'
@@ -259,11 +255,11 @@ const styles = StyleSheet.create({
   },
   blueText: {
     fontSize: 20,
-
     fontWeight: 'bold', 
     color: 'black', // Color when text is active
   },
   buttonText2: {
+    paddingTop: 1.80,
     color: 'gray', // Default text color
     fontSize: 18,
     fontWeight: 'bold', 
@@ -275,12 +271,10 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     display: 'flex',
     flexDirection: 'row',
-// marginLeft: -11
   },
   button1: {
    // Left: -30,
     width: '60%',
-   // borderRadius: 1,
   },
   button2:
   {
@@ -308,23 +302,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
     left: 8
   },
-  // buttonText1: {
-  //   color: 'white',
-  //   fontSize: 16,
-  //   Left: 15,
-  // },
   signupContent: {
   //  paddingTop: 17,
   },
   signupText: {
     fontWeight: 'bold',
-   // paddingTop: 15,
     color: '#28A745', // Customize the text color
   },
   error: {
     width: '80%',
     color: '#d68760',
-   // marginBottom: 10,
     left: 17,
   },
   
