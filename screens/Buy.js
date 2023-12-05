@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { Ionicons } from '@expo/vector-icons';
-import {  Card, Title, Paragraph, Button, Provider  } from 'react-native-paper';
-import { TextInput } from '@react-native-material/core';
+import {  Card, Button  } from 'react-native-paper';
 import { Input } from 'react-native-elements';
 import Modal from 'react-native-modal';
 
