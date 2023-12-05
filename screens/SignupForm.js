@@ -8,6 +8,7 @@ import axios from 'axios';
 import { TextInput } from "@react-native-material/core";
 import { useNavigation } from '@react-navigation/native';
 import { ScrollView } from 'react-native-gesture-handler';
+import Toast from "react-native-toast-message"
 
 const SignupForm = ({ }) => {
   const navigation = useNavigation();
@@ -68,8 +69,15 @@ const SignupForm = ({ }) => {
       //   return;
       // }
 
-      const emailPattern = /\S+@gmail\.com$/;
-      if (!emailPattern.test(email)) {
+      // const emailPattern = /\S+@gmail\.com$/;
+      // if (!emailPattern.test(email)) {
+      //   setEmailError('Please enter a valid email address.');
+      //   setLoading(false);
+      //   return;
+      // }
+
+      const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+        if (!emailPattern.test(email)) {
         setEmailError('Please enter a valid email address.');
         setLoading(false);
         return;
@@ -82,7 +90,7 @@ const SignupForm = ({ }) => {
 
 
 
-      const response = await fetch('http://35.154.235.224:9000/api/auth/register', {
+      const response = await fetch('http://10.0.2.2:9000/api/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -94,10 +102,17 @@ const SignupForm = ({ }) => {
       if (response.ok) {
         // Signup successful, you can navigate to another screen or show a success message
         setIsRegistered(true);
-        setFirstname('');
-        setLastname('');
-        setEmail('');
-        setPassword('');
+          setIsRegistered(true);
+          Toast.show({
+            type: "success",
+            text1: `Register Succesfull`,
+         });
+         navigation.navigate('Login');
+
+         setFirstname('');
+         setLastname('');
+         setEmail('');
+         setPassword('');
       } else {
         // Signup failed, handle error
         // navigation.navigate('Login');
@@ -168,7 +183,7 @@ const SignupForm = ({ }) => {
         )}
         <TextInput
           //mode="outlined" // Set the mode to "outlined" for standard text input
-          label="firstname"
+          label="Firstname"
           value={firstname}
           onChangeText={(text) => {
             setFirstname(text);
@@ -180,7 +195,7 @@ const SignupForm = ({ }) => {
 
         <TextInput
           //mode="outlined" // Set the mode to "outlined" for standard text input
-          label="lastname"
+          label="Lastname"
           value={lastname}
           onChangeText={(text) => {
             setLastname(text);
@@ -236,7 +251,7 @@ const SignupForm = ({ }) => {
               contentStyle={styles.buttonContent1}
               labelStyle={styles.buttonText1}
             >
-              Cancel
+              Reset
             </Button>
           </View>
         </View>
@@ -313,7 +328,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#7bb2b5',
     paddingVertical: 4,
-    paddingHorizontal: 35,
+    paddingHorizontal: 39,
   },
   buttonText1: {
     color: 'white',

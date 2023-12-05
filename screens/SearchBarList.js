@@ -169,33 +169,8 @@ const SearchBarList = ({ route }) => {
                 changePercentage={item.changePercentage}
                 // onPress={() => navigation.navigate('AssetListDetails')}
                 onPress={() => navigation.navigate(item.press, {
-                  symbol: item.symbol,
-
-                  Open: item.Open,
-                  Name: item.Name,
-                  openValue: item.openValue,
-                  Close: item.Close,
-                  closeValue: item.closeValue,
-                  High: item.High,
-                  Hvalue: item.Hvalue,
-                  Low: item.Low,
-                  Lvalue: item.Lvalue,
-                  Name: item.Name,
-                  Dval: item.Dval,
-                  Value: item.Value,
-                  Market: item.Market,
-                  value1: item.value1,
-                  volBtc: item.volBtc,
-                  value2: item.value2,
-                  volUsdt: item.volUsdt,
-                  value3: item.value3,
-                  Price: item.Name,
-                  priceVal: item.priceVal,
-                  sname: item.Name,
                   instrumentId: item.instrumentId,
                   instrumentType: item.instrumentType,
-                  Quantities: item.Quantities,
-                  LastPrice: item.LastPrice,
                 })}
                 onAdd={() => handleAddIconClick(item)}
                 showRemoveIcon={false}

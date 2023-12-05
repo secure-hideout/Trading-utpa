@@ -5,6 +5,8 @@ import { Button } from 'react-native-paper';
 import { TextInput } from '@react-native-material/core';
 import { connect } from 'react-redux';
 import { loginUser } from '../redux/actions/authActions';
+import CheckBox from 'react-native-check-box';
+import Toast from "react-native-toast-message"
 
 import ChangePasswordModal from './ChangePasswordModal';
 
@@ -74,8 +76,11 @@ const LoginForm = ({ navigation, onSuccessfulLogin }) => {
         // Dispatch the token to the Redux store
         console.log('Dispatching Token:', token);
         dispatch(setToken(token));
-
-        setIsRegistered(true);
+        Toast.show({
+          type: "success",
+          text1: `Login Succesfull`,
+        });
+        // setIsRegistered(true);
         onSuccessfulLogin();
 
         // Log the token to the console
@@ -158,11 +163,11 @@ const LoginForm = ({ navigation, onSuccessfulLogin }) => {
         </View>
       </View>
       {networkError && <Text style={styles.error1}>{networkError}</Text>}
-      {isRegistered && (
+      {/* {isRegistered && (
         <Text style={{ color: '#d68760', textAlign: 'center', top: 25 }}>
           Login successfully!
         </Text>
-      )}
+      )} */}
       <View style={styles.head2}>
         <TextInput
           label="Email"
@@ -246,6 +251,7 @@ const styles = StyleSheet.create({
     paddingTop: 150,
     paddingLeft: 9,
     alignItems: 'center',
+    // backgroundColor: 'powderblue'
   },
   head: {
     fontWeight: 'bold',
@@ -276,7 +282,8 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   buttonText2: {
-    color: 'gray',
+    paddingTop: 1.80,
+    color: 'gray', // Default text color
     fontSize: 18,
     fontWeight: 'bold',
   },
@@ -320,6 +327,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     left: 8
   },
+  signupContent: {
+    //  paddingTop: 17,
+  },
 
 
   signupText: {
@@ -330,7 +340,7 @@ const styles = StyleSheet.create({
   error: {
     width: '80%',
     color: '#d68760',
-
+    // marginBottom: 10,
     left: 17,
   },
 

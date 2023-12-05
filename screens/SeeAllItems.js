@@ -166,36 +166,10 @@ const SeeAllItems = ({ navigation }) => {
                 symbol={item.symbol}
                 value={item.value}
                 onPress={() => {
-                  console.log('Navigating to Allgraphs with symbol:', item.symbol);
+                  console.log('Navigating to Allgraphs with symbol:', );
                   navigation.navigate('Allgraphs', {
-                    symbol: item.symbol,
-                    Open: item.Open,
-                    Name: item.Name,
-                    openValue: item.openValue,
-                    Close: item.Close,
-                    closeValue: item.closeValue,
-                    High: item.High,
-                    Hvalue: item.Hvalue,
-                    Low: item.Low,
-                    Lvalue: item.Lvalue,
-                    Dval: item.Dval,
-                    Value: item.Value,
-                    Market: item.Market,
-                    value1: item.value1,
-                    volBtc: item.volBtc,
-                    value2: item.value2,
-                    volUsdt: item.volUsdt,
-                    value3: item.value3,
-                    Price: item.Name,
-                    priceVal: item.value,
-
-
-                   sname: item.Name,
-                   LastPrice: item.value,
-                   instrumentType: item.name3,
-                   instrumentId: item.InstrumentId,
-                  quantity: item.quantity,
-                  Quantities: item.Quantities,
+                     instrumentId: item?.instrumentId,
+                  instrumentType: item?.instrumentType,
                   });
                 }}
                 onRemove={() => {

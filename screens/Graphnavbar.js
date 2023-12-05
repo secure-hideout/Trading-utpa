@@ -9,6 +9,7 @@ import { Ionicons } from '@expo/vector-icons';
 const Graphnavbar = ({
   Name,
   Price,
+  Quantities,
   priceVal,
   pricePer = "-7.35",
   goBack,
@@ -22,7 +23,7 @@ const Graphnavbar = ({
 
   return (
     <View style={styles.container}>
-      <View style={[styles.box1]}>
+      {/* <View style={[styles.box1]}>
         <TouchableOpacity style={styles.backbutton} onPress={handleBackPress}>
           <View style={styles.backicon1}>
             <Ionicons name="arrow-back-outline" size={25} color="black " />
@@ -31,18 +32,26 @@ const Graphnavbar = ({
         <View style={styles.text1}>
           <Text style={styles.bitcoin}>{Name}</Text>
         </View>
-      </View>
+      </View> */}
 
       <View style={styles.forRow}>
         <View style={styles.box0} >
-          <Text style={styles.bitcoinprice}>{Price} PRICE</Text>
+          <View>
+          <Text style={styles.bitcoinprice}> PRICE</Text>
            <View style={styles.bitcoinprice2}>
             <Text style={styles.bitcoinprice1}>{priceVal}</Text>
               <View style={styles.valuep}>
                <Text style={styles.value}>{pricePer}</Text>
-              </View>
+               </View>
              </View>
+             </View>
+             <View style={styles.Quantity}>
+             <Text style={styles.Quantity1}>Quantity</Text>
+             <Text style={styles.Quantity2}>12</Text>
+             </View>
+            
             </View>
+           
           </View>
        </View>
 
@@ -72,7 +81,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   forRow: {
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   bitcoin: {
    
@@ -82,16 +91,19 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   box0: {
-    marginTop: 10,
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    marginTop: 5,
     height: 76,
-    width: '99%',
-    left: 3,
+    width: '98.71%',
+    left: 2,
     backgroundColor: Color.powderblue,
     borderRadius: Border.br_3xs,
   },
   bitcoinprice: {
-    fontSize: 15,
-    paddingLeft: 10,
+    fontWeight:'500',
+    fontSize: 17,
+    paddingLeft: 5,
     paddingTop: 10,
     alignItems: 'center'
   },
@@ -109,6 +121,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: Border.br_3xs,
     justifyContent: 'center',
+    //justifyContent: 'flex-end',
   },
   value: {
     textAlign: 'center',
@@ -117,6 +130,37 @@ const styles = StyleSheet.create({
   },
   bitcoinprice2:{
     flexDirection: 'row'
+  },
+  Quantity:{
+    //flex: 1,
+    //justifyContent: 'spce-between',
+    width: 110,
+    height: 57,
+    marginTop: 10,
+    right: 10,
+    paddingRight: 10,
+   // marginLeft: 10,
+   // marginTop: 8,
+    backgroundColor: 'white',
+    borderRadius: Border.br_3xs,
+    //justifyContent: 'center',
+  },
+  Quantity1:{
+   // flex: 1,
+   fontWeight: '700',
+    fontSize: 15,
+    paddingLeft: 5,
+    paddingTop: 4,
+    textAlign: 'center'
+   // justifyContent: 'space-between'
+  },
+  Quantity2:{
+    color: 'green',
+    textAlign: 'center',
+    fontWeight: '600',
+    paddingTop: 2,
+    fontSize: 15,
+
   }
 })
 

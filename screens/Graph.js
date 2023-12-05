@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { WebView } from 'react-native-webview';
-
+import { widthPercentageToDP, heightPercentageToDP } from 'react-native-responsive-screen';
 
 
 const Graph = ({ symbol, selectedInterval, isCandleChart, isCompressed, }) => {
@@ -9,9 +9,10 @@ const Graph = ({ symbol, selectedInterval, isCandleChart, isCompressed, }) => {
 
   const style = isCandleChart ? '1' : '10';
 
-  const width = isCompressed ? 400 : 500;
+ // const width = isCompressed ? 400 : 500;
 
 
+ const width = isCompressed ? widthPercentageToDP('100%') : widthPercentageToDP('100%');
 
 
 
@@ -65,8 +66,9 @@ const styles = StyleSheet.create({
   graph: {
     paddingTop: 5,
    display: 'flex',
-    height: 498,
-    right: 6,
+   // height: 498,
+   height: heightPercentageToDP('60%'), // Set the height as needed
+    right:6,
     //marginbottom: 1,
    // marginRight: 10,
    // paddingRight: 10,
