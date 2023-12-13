@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, Text,TouchableOpacity, StyleSheet, TouchableWithoutFeedback} from 'react-native';
 import { Button } from 'react-native-paper';
 import { TextInput } from '@react-native-material/core';
@@ -7,9 +7,8 @@ import { connect } from 'react-redux';
 import { loginUser } from '../redux/actions/authActions';
 import CheckBox from 'react-native-check-box';
 import Toast from "react-native-toast-message"
-import SplashScreen from './Splashscreen'; // Adjust the path accordingly
+
 import { useDispatch } from 'react-redux';
-import LottieView from 'lottie-react-native';
 
 import { setToken } from '../redux/actions/authActions';
 const LoginForm = ({ navigation, onSuccessfulLogin }) => {
@@ -24,8 +23,6 @@ const LoginForm = ({ navigation, onSuccessfulLogin }) => {
   const [emailError, setEmailError] = useState('');
   const [networkError, setNetError] = useState('');
   const [isPressed, setIsPressed] = useState(false);
-  const [showSplash, setShowSplash] = useState(true);
-
 
   const handleLogin = async () => {
     setLoading(true);
@@ -94,26 +91,6 @@ const LoginForm = ({ navigation, onSuccessfulLogin }) => {
     }
   };
 
-  useEffect(() => {
-    // Simulate an asynchronous operation (e.g., checking authentication)
-    const checkAuthentication = async () => {
-      // Replace this with your authentication logic
-      await new Promise((resolve) => setTimeout(resolve, 5000)); // Simulate a 2-second delay
-
-      // Once authentication is checked, hide the splash screen
-      setShowSplash(false);
-    };
-
-    checkAuthentication();
-  }, []); // Empty dependency array to run the effect only once
-  
-
-  if (showSplash) {
-    return <SplashScreen />;
-  }
-
-
-
   const handleLoginPress = () => {
     setActiveButton('login');
     // Handle login button press logic
@@ -146,14 +123,6 @@ const LoginForm = ({ navigation, onSuccessfulLogin }) => {
           Login successfully!
         </Text>
       )} */}
-      <LottieView
-        style={{ width: 400, height: 200 }}
-        source={require('../Animation - 1702457284029.json')}
-        autoPlay
-        loop
-      />
-
-
       {error && <Text style={styles.error}>{error}</Text>}
      
 
@@ -242,7 +211,6 @@ const LoginForm = ({ navigation, onSuccessfulLogin }) => {
           </Button>
         </View> */}
       </View>
-      
     </View>
   );
 };
@@ -261,7 +229,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     flex: 1,
-    paddingTop: 40,
+    paddingTop: 150,
     paddingLeft: 9,
     alignItems: 'center',
    // backgroundColor: 'powderblue'
