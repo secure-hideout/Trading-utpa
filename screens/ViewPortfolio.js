@@ -67,26 +67,7 @@ const ViewPortfolio = ({
             priceVal: item1.AveragePrice,
             Quantities: item1.Quantity,
           //  logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg',
-            Open: "open",
-            openValue: 10000,
-            Close: "Close",
-            closeValue: 50,
-            High: "High",
-            Hvalue: 1500000,
-            Low: "Low",
-            Lvalue: 25,
-            Dval: "Daily Vol",
-            Value: "140.03B",
-            Market: "Market",
-            value1: "200.3B",
-            volBtc: "vol BTC",
-            value2: "10,000",
-            volUsdt: "vol USDT",
-            value3: "10,000",
-            
-
-
-          };
+         };
         });
         setNseData(mergedArray);
       } catch (error) {
@@ -167,13 +148,14 @@ const ViewPortfolio = ({
   const cardData = {
     Crypto: [
 
-
     ],
 
     NSE: nseData,
 
     BSE: [
+
     ],
+    
     Commodity: [
 
     ],

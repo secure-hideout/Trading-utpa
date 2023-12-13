@@ -47,7 +47,7 @@ const Graphnavbar = ({
              </View>
              <View style={styles.Quantity}>
              <Text style={styles.Quantity1}>Quantity</Text>
-             <Text style={styles.Quantity2}>12</Text>
+             <Text style={styles.Quantity2}>{Quantities}</Text>
              </View>
             
             </View>

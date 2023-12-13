@@ -23,7 +23,7 @@ import SearchBarList from './screens/SearchBarList';
 import store from './redux/store';
 // import TradingCalendar from './screens/TradingCalender';
 
-import Buy from "./screens/Buy";
+//import Buy from "./screens/Buy";
 
 // import Toast from 'react-native-toast-message'; // Import Toast Library
 import Toast, { BaseToast } from 'react-native-toast-message'; // Updated import
@@ -51,7 +51,7 @@ function MainStack({ isLoggedIn, setIsLoggedIn }) {
       <Stack.Screen name='Deposit' component={Deposit} />
       <Stack.Screen name="Allgraphs" component={Allgraphs} />
       {/* <Stack.Screen name="TradingCalendar" component={TradingCalendar} /> */}
-      <Stack.Screen name="Buy" component={Buy} />
+      {/* <Stack.Screen name="Buy" component={Buy} /> */}
 
     </Stack.Navigator>
   );

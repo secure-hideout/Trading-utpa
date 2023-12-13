@@ -83,13 +83,6 @@ const SignupForm = ({ }) => {
         return;
       }
 
-      
-
-
-
-
-
-
       const response = await fetch('http://10.0.2.2:9000/api/auth/register', {
         method: 'POST',
         headers: {
