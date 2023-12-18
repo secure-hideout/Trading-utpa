@@ -15,18 +15,12 @@ import UserDetails from './screens/UserDetails';
 import ViewPortfolio from './screens/ViewPortfolio';
 // import AssetListDetails from './screens/AssetListDetails';
 import Allgraphs from "./screens/Allgraphs";
-import Deposit from "./screens/Deposit"
 import MyWatchList from './screens/MyWatchList';
 import CryptoAssets from './screens/CriptoAssets';
 import SeeAllItems from './screens/SeeAllItems';
 import SearchBarList from './screens/SearchBarList';
 import store from './redux/store';
-// import TradingCalendar from './screens/TradingCalender';
-
-import Buy from "./screens/Buy";
-
-// import Toast from 'react-native-toast-message'; // Import Toast Library
-import Toast, { BaseToast } from 'react-native-toast-message'; // Updated import
+import Toast, { BaseToast } from 'react-native-toast-message';
 
 const Stack = createNativeStackNavigator();
 
@@ -48,19 +42,19 @@ function MainStack({ isLoggedIn, setIsLoggedIn }) {
       <Stack.Screen name='CryptoAssets' component={CryptoAssets} />
       <Stack.Screen name='SeeAllItems' component={SeeAllItems} />
       <Stack.Screen name='SearchBarList' component={SearchBarList} />
-      <Stack.Screen name='Deposit' component={Deposit} />
       <Stack.Screen name="Allgraphs" component={Allgraphs} />
       {/* <Stack.Screen name="TradingCalendar" component={TradingCalendar} /> */}
-      <Stack.Screen name="Buy" component={Buy} />
 
-    </Stack.Navigator>
+   </Stack.Navigator>
   );
 }
+
+
 const toastConfig = {
   success: (props) => (
     <BaseToast
       {...props}
-      style={{ borderLeftColor: 'green', backgroundColor: '#B7DDD2' }}
+      style={{ borderLeftColor: 'green', backgroundColor: '#FFFFF' }}
       contentContainerStyle={{ paddingHorizontal: 15 }}
       text1Style={{
         fontSize: 15,
@@ -74,20 +68,21 @@ const toastConfig = {
       }}
     />
   ),
+  
   error: (props) => (
     <BaseToast
       {...props}
-      style={{ borderLeftColor: 'red', backgroundColor: '#B7DDD2' }}
+      style={{ borderLeftColor: 'red', backgroundColor: '#FFFFFF' }}
       contentContainerStyle={{ paddingHorizontal: 15 }}
       text1Style={{
         fontSize: 15,
         fontWeight: 'bold',
-        color: 'black',
+        color: 'red',
       }}
       text2Style={{
         fontSize: 15,
         fontWeight: 'bold',
-        color: 'red',
+        color: 'black',
       }}
     />
   ),

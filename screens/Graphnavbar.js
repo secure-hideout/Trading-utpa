@@ -16,7 +16,7 @@ const Graphnavbar = ({
 
 }) => {
 
- 
+
   const handleBackPress = () => {
     goBack(); // Call the provided goBack function
   };
@@ -37,23 +37,23 @@ const Graphnavbar = ({
       <View style={styles.forRow}>
         <View style={styles.box0} >
           <View>
-          <Text style={styles.bitcoinprice}> PRICE</Text>
-           <View style={styles.bitcoinprice2}>
-            <Text style={styles.bitcoinprice1}>{priceVal}</Text>
+            <Text style={styles.bitcoinprice}> PRICE</Text>
+            <View style={styles.bitcoinprice2}>
+              <Text style={styles.bitcoinprice1}>{priceVal}</Text>
               <View style={styles.valuep}>
-               <Text style={styles.value}>{pricePer}</Text>
-               </View>
-             </View>
-             </View>
-             <View style={styles.Quantity}>
-             <Text style={styles.Quantity1}>Quantity</Text>
-             <Text style={styles.Quantity2}>12</Text>
-             </View>
-            
+                <Text style={styles.value}>{pricePer}</Text>
+              </View>
             </View>
-           
           </View>
-       </View>
+          <View style={styles.Quantity}>
+            <Text style={styles.Quantity1}>Quantity</Text>
+            <Text style={styles.Quantity2}>{Quantities}</Text>
+          </View>
+
+        </View>
+
+      </View>
+    </View>
 
   );
 };
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     right: 3,
     flexDirection: 'row',
-   },
+  },
   backicon1: {
     paddingRight: 10,
   },
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   bitcoin: {
-   
+
     display: 'flex',
     paddingTop: 3,
     fontWeight: '700',
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     borderRadius: Border.br_3xs,
   },
   bitcoinprice: {
-    fontWeight:'500',
+    fontWeight: '500',
     fontSize: 17,
     paddingLeft: 5,
     paddingTop: 10,
@@ -128,10 +128,10 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontWeight: 'bold'
   },
-  bitcoinprice2:{
+  bitcoinprice2: {
     flexDirection: 'row'
   },
-  Quantity:{
+  Quantity: {
     //flex: 1,
     //justifyContent: 'spce-between',
     width: 110,
@@ -139,22 +139,22 @@ const styles = StyleSheet.create({
     marginTop: 10,
     right: 10,
     paddingRight: 10,
-   // marginLeft: 10,
-   // marginTop: 8,
+    // marginLeft: 10,
+    // marginTop: 8,
     backgroundColor: 'white',
     borderRadius: Border.br_3xs,
     //justifyContent: 'center',
   },
-  Quantity1:{
-   // flex: 1,
-   fontWeight: '700',
+  Quantity1: {
+    // flex: 1,
+    fontWeight: '700',
     fontSize: 15,
     paddingLeft: 5,
     paddingTop: 4,
     textAlign: 'center'
-   // justifyContent: 'space-between'
+    // justifyContent: 'space-between'
   },
-  Quantity2:{
+  Quantity2: {
     color: 'green',
     textAlign: 'center',
     fontWeight: '600',

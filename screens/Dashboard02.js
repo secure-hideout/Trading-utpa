@@ -21,7 +21,7 @@ const Dashboard = () => {
 
     { name: 'Crypto', value: '', changePercentage: '', color: '', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: "#C1C2EB" },
     { name: 'NSE', value: '', changePercentage: '', color: '', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: '#B7DDD2' },
-    { name: 'BSE', value: '', changePercentage: '', color: '', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: "#C1C2EB" },
+    { name: 'NASDAQ', value: '', changePercentage: '', color: '', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: "#C1C2EB" },
     { name: 'Commodity', value: '', changePercentage: '', color: '', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: '#B7DDD2' }
   ]);
 
@@ -62,7 +62,7 @@ const Dashboard = () => {
         return '#C1C2EB';
       case 'NSE':
         return '#B7DDD2';
-      case 'BSE':
+      case 'NASDAQ'://BSETONASTAG
         return '#C1C2EB';
       case 'Commodity':
         return '#B7DDD2';
@@ -138,7 +138,7 @@ const Dashboard = () => {
           // const matchingItem = response2.find((item2) => item2.Zid === item1.FinancialInstrumentID);
           return {
           name2: item1.Name,
-          value: `$${item1.LastPrice.toFixed(2)}`,
+          value: `₹ ${item1.LastPrice.toFixed(2)}`,
           name3: item1.Exchange,
           press: 'Allgraphs',
           Name: item1.Name,
