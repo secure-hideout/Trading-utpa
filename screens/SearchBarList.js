@@ -171,6 +171,7 @@ const SearchBarList = ({ route }) => {
                 onPress={() => navigation.navigate(item.press, {
                   instrumentId: item.instrumentId,
                   instrumentType: item.instrumentType,
+                  Quantities: item. Quantities,
                 })}
                 onAdd={() => handleAddIconClick(item)}
                 showRemoveIcon={false}

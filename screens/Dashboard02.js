@@ -142,35 +142,13 @@ const Dashboard = () => {
           name3: item1.Exchange,
           press: 'Allgraphs',
           Name: item1.Name,
-          // Open: "open",
-          // openValue: 1,
-          // Close: "Close",
-          // closeValue: 50,
-          // High: "High",
-          // symbol: item1.Tradingsymbol,
-          // Hvalue: 150,
-          // Low: "Low",
-          // Lvalue: 25,
-          // Dval: "Daily Vol",
-          // Value: "140.03B",
-          // Market: "Market",
-          // value1: "200.03B",
-          // volBtc: "vol BTC",
-          // value2: "10,000",
-          // volUsdt: "vol USDT",
-          // value3: "10,000",
-
+         // Quantities: matchingItem.Quantity,
           priceVal: item1.LastPrice,
-
           sname: item1.Name,
           instrumentId: item1.Zid,
           instrumentType: item1.Segment,
-          Quantities: matchingItem ? matchingItem.Quantity : null,
-          LastPrice: item1.LastPrice,
-
-
-
-          //addtowatchlist 
+          Quantities: matchingItem ? matchingItem.Quantity : 0,
+          LastPrice: matchingItem ? matchingItem.LastPrice : 0, 
           InstrumentId: item1.Zid,
           InstrumentType: item1.Segment,
 

@@ -45,8 +45,14 @@ const Allgraph = ({ route, navigation, fetchData, Name }) => {
     instrumentType: "",
     instrumentId: "",
     quantity: "",
+    // Quantities: "",
+  });
+
+  const [apiqData, setQData] = useState({
     Quantities: "",
   });
+
+  useEffect(() => {
 
   const fetchInstrumentDetails = async () => {
        
@@ -65,6 +71,7 @@ const Allgraph = ({ route, navigation, fetchData, Name }) => {
 
       if (response.ok) {
         const data = await response.json();
+        
         //console.log(data);
         setApiData({
          // quantity: data.ExchangeDetails.last_quantity,
@@ -93,10 +100,10 @@ const Allgraph = ({ route, navigation, fetchData, Name }) => {
       console.error("Error fetching instrument details:", error.message);
     }
   };
+  fetchInstrumentDetails();
+},[]);
+   
 
-  useEffect(() => {
-    fetchInstrumentDetails();
-  },[]); 
 
   
   const goBack = () => {
@@ -131,7 +138,7 @@ const Allgraph = ({ route, navigation, fetchData, Name }) => {
           Price={apiData.Price}
           priceVal={apiData.priceVal}
           pricePer={apiData.pricePer}
-          Quantities={apiData.Quantities}
+          Quantities={apiqData.Quantities}
           goBack={goBack}
         />
 
@@ -167,7 +174,8 @@ const Allgraph = ({ route, navigation, fetchData, Name }) => {
         instrumentType={apiData.instrumentType}
         instrumentId={instrumentId}
         quantity={apiData.quantity}
-        Quantities={apiData.Quantities}
+        Quantities={apiqData.Quantities}
+        setQData={setQData}
       />
     </View>
   );

@@ -11,7 +11,7 @@ const Graphnavbar = ({
   Price,
   Quantities,
   priceVal,
-  pricePer = "-7.35",
+   pricePer = "-7.35",
   goBack,
 
 }) => {
@@ -40,9 +40,9 @@ const Graphnavbar = ({
           <Text style={styles.bitcoinprice}> PRICE</Text>
            <View style={styles.bitcoinprice2}>
             <Text style={styles.bitcoinprice1}>{priceVal}</Text>
-              <View style={styles.valuep}>
+              {/* <View style={styles.valuep}>
                <Text style={styles.value}>{pricePer}</Text>
-               </View>
+               </View> */}
              </View>
              </View>
              <View style={styles.Quantity}>

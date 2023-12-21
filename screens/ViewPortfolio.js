@@ -65,7 +65,7 @@ const ViewPortfolio = ({
             instrumentType: matchingItem ? matchingItem.Segment : null,
             Price: matchingItem ? matchingItem.Name : null,
             priceVal: item1.AveragePrice,
-            Quantities: item1.Quantity,
+           // Quantities: item1.Quantity,
           //  logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg',
          };
         });
@@ -193,7 +193,7 @@ const ViewPortfolio = ({
             
               instrumentType: data?.instrumentType,
               instrumentId: data?.instrumentId,
-             
+            // Quantities: data?.Quantities,
             })} />
         ))
       ) : (

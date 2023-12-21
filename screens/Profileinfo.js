@@ -210,6 +210,7 @@ const ProfileInfo = () => {
     {
       id: 4,
       icon1: "diamond",
+      set: { right: 5 },
       text: "Regular",
       info: "Use BNB to get discount",
       icon2: "chevron-right",
@@ -219,8 +220,9 @@ const ProfileInfo = () => {
       id: 5,
       icon1: "user",
       text: "ID",
-      info: apiData.ID,
       styles: { paddingLeft: 13 },
+      info: apiData.ID,
+      
     },
     {
       id: 6,
@@ -233,6 +235,7 @@ const ProfileInfo = () => {
       id: 7,
       icon1: "calendar",
       text: "CreatedAt",
+      set: { right: 4 },
       info: apiData.CreatedAt,
       styles: { paddingLeft: 4 },
     },
@@ -285,7 +288,10 @@ const ProfileInfo = () => {
         <View style={styles.rowContainer}>
           <View style={styles.iconContainer}>
             <MaterialIcons style={styles.icon} name={button.icon} size={30} />
-            <Icon style={styles.icon1} name={button.icon1} size={30} />
+            <Icon style={[
+                styles.icon1,
+                { right: button.set?.right || 0 },
+              ]} name={button.icon1} size={30} />
           </View>
           <View style={styles.textContainer}>
             <Text

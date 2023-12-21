@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Modal from 'react-native-modal';
@@ -10,7 +10,7 @@ import { Border, Color, FontFamily, FontSize } from "../GlobalStyles";
 import Toast from "react-native-toast-message"
 
 
-const Payments = ({ Instrument = "Sell", sname, LastPrice, instrumentType, instrumentId, quantity, Quantities, quantity1 }) => {
+const Payments = ({ Instrument = "Sell", sname, LastPrice, instrumentType, instrumentId, quantity, Quantities, quantity1, setQData }) => {
   const navigation = useNavigation();
   const [isBuyConfirmationVisible, setIsBuyConfirmationVisible] = useState(false);
   const [isConfirmationVisible, setConfirmationVisible] = useState(false);
@@ -127,6 +127,7 @@ const Payments = ({ Instrument = "Sell", sname, LastPrice, instrumentType, instr
 
           hideConfirmation();
           setIsRegistered(true);
+          fetchData1()
           Toast.show({
             type: "success",
             text1: `Sell Succesfull`,
@@ -160,7 +161,7 @@ const Payments = ({ Instrument = "Sell", sname, LastPrice, instrumentType, instr
 
           setIsRegistered(true);
           hideConfirmation();
-
+          fetchData1()
           Toast.show({
             type: "success",
             text1: `Buy Succesfull`,
@@ -178,6 +179,39 @@ const Payments = ({ Instrument = "Sell", sname, LastPrice, instrumentType, instr
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    
+    fetchData1();
+  },[]); 
+
+
+  const fetchData1 = async () => {
+    try {
+      const response = await fetch("http://10.0.2.2:9000/api/user/getPortfolio", {
+        method: "GET",
+        headers: new Headers({ Authorization: `Bearer ${token}` }),
+        redirect: "follow",
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+
+       
+        const filteredResult = result.filter(item => item.FinancialInstrumentID === instrumentId);
+        const quantities = filteredResult.map(item => item.Quantity);
+        setQData({
+          Quantities: quantities,
+        })
+        console.log("Filtered Results:", quantities);
+      } else {
+        console.error("Error fetching portfolio data:", response.status);
+      }
+    } catch (error) {
+      console.error("Error in API calls:", error.message);
+    }
+  };
+
 
 
 
