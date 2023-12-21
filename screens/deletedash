@@ -1,3 +1,69 @@
+// const deleteConform = () => {
+  //   const myHeaders = new Headers();
+  //   myHeaders.append("Authorization", `Bearer ${token}`);
+  //   myHeaders.append("Content-Type", "application/json");
+
+  //   const Id = apiData.ID;
+  //   console.log("ID to delete:", Id);
+
+  //   const requestOptions = {
+  //     method: 'DELETE',
+  //     headers: myHeaders,
+  //     redirect: 'follow',
+  //   };
+
+  //   fetch(`http://192.168.0.116:9000/user/delete?Id=${encodeURIComponent(Id)}`, requestOptions)
+  //     .then((response) => {
+  //       console.log('Response status:', response.status);
+
+  //       if (!response.ok) {
+  //         throw new Error(`HTTP status ${response.status}`);
+  //       }
+
+  //       return response.json();
+  //     })
+  //     .then((result) => {
+  //       console.log('Delete response:', result);
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error deleting account:', error);
+  //       console.error('Error', 'Failed to delete. Please try again.');
+  //     });
+  // };
+
+  // const deleteConform = () => {
+  //   var myHeaders = new Headers();
+  //   myHeaders.append("Authorization", `Bearer ${token}`);
+  //   myHeaders.append("Content-Type", "application/json");
+
+  //   const requestOptions = {
+  //     method: 'DELETE',
+  //     headers: myHeaders,
+  //    // body: JSON.stringify(payload),
+  //     redirect: 'follow',
+  //   };
+
+  //   console.log("------------------>",apiData.ID)
+  //   // Assuming Id is a variable containing the ID you want to delete
+  //   //const Id = IU-JH101; // Replace this with the actual ID or retrieve it from your state
+
+  //   fetch(`http://192.168.0.116:9000/user/delete?${apiData.ID}`, requestOptions)
+  //     .then((response) => {
+  //       if (!response.ok) {
+  //         throw new Error(`HTTP status ${response.status}`);
+  //       }
+  //       return response.json();
+  //     })
+  //     .then((result) => {
+  //       console.log('Delete response:', result);
+  //       // Handle the API response here
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error deleting account:', error);
+  //       Alert.alert('Error', 'Failed to delete. Please try again.');
+  //     });
+  // };
+
 
 
 // //withaddtowatchlistapiassetdatacontext

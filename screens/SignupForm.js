@@ -12,8 +12,8 @@ import Toast from "react-native-toast-message"
 
 const SignupForm = ({ }) => {
   const navigation = useNavigation();
-  const [firstname, setFirstname] = useState('');
-  const [lastname, setLastname] = useState('');
+  const [firstName, setFirstname] = useState('');
+  const [lastName, setLastname] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -35,14 +35,14 @@ const SignupForm = ({ }) => {
 
     try {
 
-      if (!firstname) {
+      if (!firstName) {
         setFirstnameError('Please fill in your firstname.');
         return;
       } else {
         setFirstnameError('');
       }
 
-      if (!lastname) {
+      if (!lastName) {
         setLastnameError('Please fill in your lastname.');
         return;
       } else {
@@ -88,7 +88,7 @@ const SignupForm = ({ }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ firstname, lastname, email, password }),
+        body: JSON.stringify({ firstName, lastName, email, password }),
       });
 
 
@@ -177,7 +177,7 @@ const SignupForm = ({ }) => {
         <TextInput
           //mode="outlined" // Set the mode to "outlined" for standard text input
           label="Firstname"
-          value={firstname}
+          value={firstName}
           onChangeText={(text) => {
             setFirstname(text);
             setFirstnameError('');
@@ -189,7 +189,7 @@ const SignupForm = ({ }) => {
         <TextInput
           //mode="outlined" // Set the mode to "outlined" for standard text input
           label="Lastname"
-          value={lastname}
+          value={lastName}
           onChangeText={(text) => {
             setLastname(text);
             setLastnameError('');
