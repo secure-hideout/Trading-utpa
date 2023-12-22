@@ -261,7 +261,8 @@ useEffect(() => {
             animation="zoomIn"
             style={styles.cardDataText}
           >
-            You Have No Stock In {selectedCard}
+          {/* Make Your First Investment {selectedCard} */}
+          Make Your First Investment
           </Animatable.Text>
         </View>
       )}

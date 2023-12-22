@@ -15,8 +15,8 @@ import NetworkErrorModal from './NetworkErrorModal';
 const LoginForm = ({ navigation, onSuccessfulLogin }) => {
   const animationRef = useRef(null);
   const dispatch = useDispatch();
-  const [email, setEmail] = useState('user4@gmail.com');
-  const [password, setPassword] = useState('pass');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [emailError, setEmailError] = useState('');
@@ -146,11 +146,11 @@ const LoginForm = ({ navigation, onSuccessfulLogin }) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <View style={styles.overlay}>
-        <LottieView
+        {/* <LottieView
           ref={animationRef}
           source={require('../assets/animations/Animationf.json')}
           style={styles.animationBackground}
-        />
+        /> */}
         <View style={styles.tabsContainer}>
           <TouchableOpacity onPress={handleLoginPress} style={[styles.tab]}>
             <Text style={[styles.tabText, { color: '#B7DDD2' }]}>Login</Text>
@@ -209,9 +209,9 @@ const LoginForm = ({ navigation, onSuccessfulLogin }) => {
         )}
 
         <View style={styles.actionsContainer}>
-          <TouchableOpacity onPress={handleChangePasswordPress}>
+          {/* <TouchableOpacity onPress={handleChangePasswordPress}>
             <Text style={styles.linkText}>Change Password</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity onPress={handleForgetPasswordPress}>
             <Text style={styles.linkText}>Forget Password?</Text>
           </TouchableOpacity>

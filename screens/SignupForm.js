@@ -1,52 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableWithoutFeedback, ScrollView, Animated } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableWithoutFeedback, ScrollView } from 'react-native';
 import { Button } from 'react-native-paper';
 import { TextInput } from '@react-native-material/core';
 import Toast from 'react-native-toast-message';
-import OtpModal from './OtpModal';
-import { Ionicons } from '@expo/vector-icons';
+import ResetPassword from './ResetPassword';  // Import your reset password modal component
 import { useNavigation } from '@react-navigation/native';
 
 const SignupForm = () => {
   const navigation = useNavigation();
-  // const [scaleAnim] = useState(new Animated.Value(0));
 
   const [formData, setFormData] = useState({
-    firstname: '',
-    lastname: '',
+    first_name: '',
+    last_name: '',
     email: '',
-    password: '',
-    confirmPassword: '',
+    oversee_user: '',
   });
-  const [loading, setLoading] = useState(false);
-  const [isOtpModalVisible, setOtpModalVisible] = useState(false);
-  const [userOtp, setUserOtp] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  const [loading, setLoading] = useState(false);
+  const [isResetPasswordModalVisible, setResetPasswordModalVisible] = useState(false);
   const [validationErrors, setValidationErrors] = useState({
     firstname: '',
     email: '',
-    password: '',
-    confirmPassword: '',
-    otp: '',
   });
-
-  // useEffect(() => {
-  //   Animated.timing(scaleAnim, {
-  //     toValue: 1,
-  //     duration: 1000, // Adjust the duration as needed
-  //     useNativeDriver: true,
-  //   }).start();
-  // }, [scaleAnim]);
-
-  const toggleShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const toggleShowConfirmPassword = () => {
-    setShowConfirmPassword(!showConfirmPassword);
-  };
 
   const handleInputChange = (name, value) => {
     setFormData({ ...formData, [name]: value });
@@ -66,9 +41,6 @@ const SignupForm = () => {
     setValidationErrors({
       firstname: '',
       email: '',
-      password: '',
-      confirmPassword: '',
-      otp: '',
     });
 
     for (const field in formData) {
@@ -92,36 +64,13 @@ const SignupForm = () => {
       return;
     }
 
-    if (formData.password !== formData.confirmPassword) {
-      setValidationErrors({
-        ...validationErrors,
-        confirmPassword: 'Passwords do not match.',
-      });
-      setLoading(false);
-      return;
-    }
-
-    setOtpModalVisible(true);
-    setLoading(false);
-  };
-
-  const handleOtpSubmit = async () => {
-    if (userOtp === '0000') {
-      await registerUser();
-      setOtpModalVisible(false);
-    } else {
-      setValidationErrors({ ...validationErrors, otp: 'Incorrect OTP' });
-    }
-  };
-
-  const registerUser = async () => {
     try {
-      const response = await fetch('http://35.154.235.224:9000/api/auth/register', {
+      const response = await fetch('http://35.154.235.224:8000/user', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({...formData,user_role:'IU'}),
       });
 
       if (response.ok) {
@@ -130,33 +79,27 @@ const SignupForm = () => {
         handleRegistrationFailure();
       }
     } catch (err) {
-      setError('Check your internet connection');
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Check your internet connection',
+        visibilityTime: 3000,
+      });
     } finally {
       setLoading(false);
     }
   };
 
   const handleRegistrationSuccess = () => {
-    Toast.show({
-      type: 'success',
-      text1: 'Success',
-      text2: 'Register Successful',
-      visibilityTime: 3000,
-    });
-    navigation.navigate('Login');
-    setFormData({
-      firstname: '',
-      lastname: '',
-      email: '',
-      password: '',
-    });
+    setResetPasswordModalVisible(true);
+    // Additional success handling or navigation if needed
   };
 
   const handleRegistrationFailure = () => {
     Toast.show({
       type: 'error',
       text1: 'Error',
-      text2: 'Email Address Already Exist',
+      text2: 'Registration failed. Please try again.',
       visibilityTime: 3000,
     });
   };
@@ -166,32 +109,21 @@ const SignupForm = () => {
       firstname: '',
       lastname: '',
       email: '',
-      password: '',
-      confirmPassword: '',
+      oversee_user: '',
     });
   };
 
-  const handleOtpCancel = () => {
-    setOtpModalVisible(false);
-    setUserOtp('');
-    setValidationErrors({ ...validationErrors, otp: '' });
+  const handleResetPasswordModalClose = () => {
+    setResetPasswordModalVisible(false);
+    navigation.navigate('Login');  // Navigate to the login screen or any other screen as needed
   };
-
-  const handleLoginPress = () => {
-    navigation.navigate('Login');
-  };
-
 
   return (
-    // <Animated.ScrollView
-    //   style={{ ...styles.container, transform: [{ scale: scaleAnim }] }}
-    //   contentContainerStyle={styles.contentContainer}
-    // >
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
       <View style={styles.centeredContent}>
         <View style={styles.container1}>
           <View style={styles.head1}>
-            <TouchableWithoutFeedback onPress={handleLoginPress}>
+            <TouchableWithoutFeedback onPress={() => navigation.navigate('Login')}>
               <Text style={styles.tabTextLogin}>Login</Text>
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={() => { }}>
@@ -207,37 +139,9 @@ const SignupForm = () => {
                   value={formData[field]}
                   onChangeText={(text) => handleInputChange(field, text)}
                   style={styles.inputField}
-                  secureTextEntry={
-                    (field === 'password' && !showPassword) ||
-                    (field === 'confirmPassword' && !showConfirmPassword)
-                  }
                 />
-                {(field === 'password' || field === 'confirmPassword') && (
-                  <TouchableWithoutFeedback
-                    onPress={
-                      field === 'password'
-                        ? toggleShowPassword
-                        : toggleShowConfirmPassword
-                    }
-                  >
-                    <View style={styles.iconContainer}>
-                      <Ionicons
-                        name={
-                          field === 'password'
-                            ? showPassword
-                              ? 'eye'
-                              : 'eye-off'
-                            : showConfirmPassword
-                              ? 'eye'
-                              : 'eye-off'
-                        }
-                        size={24}
-                        color="#555"
-                      />
-                    </View>
-                  </TouchableWithoutFeedback>
-                )}
               </View>
+              
               {validationErrors[field] && (
                 <Text style={styles.error}>{validationErrors[field]}</Text>
               )}
@@ -267,12 +171,9 @@ const SignupForm = () => {
           </View>
         </View>
 
-        <OtpModal
-          isVisible={isOtpModalVisible}
-          onConfirm={handleOtpSubmit}
-          onClose={handleOtpCancel}
-          onOtpChange={setUserOtp}
-          otpError={validationErrors.otp}
+        <ResetPassword
+          isVisible={isResetPasswordModalVisible}
+          onClose={handleResetPasswordModalClose}
         />
       </View>
     </ScrollView>
@@ -353,6 +254,317 @@ const styles = StyleSheet.create({
 });
 
 export default SignupForm;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//registerapi 
+// import React, { useState } from 'react';
+// import { View, Text, StyleSheet, TouchableWithoutFeedback, ScrollView } from 'react-native';
+// import { Button } from 'react-native-paper';
+// import { TextInput } from '@react-native-material/core';
+// import Toast from 'react-native-toast-message';
+// import OtpModal from './OtpModal';
+// import { Ionicons } from '@expo/vector-icons';
+// import { useNavigation } from '@react-navigation/native';
+
+// const SignupForm = () => {
+//   const navigation = useNavigation();
+
+//   const [formData, setFormData] = useState({
+//     firstname: '',
+//     lastname: '',
+//     email: '',
+//     agentId: '',  // Added agentId field
+//   });
+
+//   const [loading, setLoading] = useState(false);
+//   const [isOtpModalVisible, setOtpModalVisible] = useState(false);
+//   const [userOtp, setUserOtp] = useState('');
+  
+//   const [validationErrors, setValidationErrors] = useState({
+//     firstname: '',
+//     email: '',
+//     otp: '',
+//   });
+
+//   const handleInputChange = (name, value) => {
+//     setFormData({ ...formData, [name]: value });
+
+//     if (name === 'firstname' && !/^[a-zA-Z]+$/.test(value)) {
+//       setValidationErrors({
+//         ...validationErrors,
+//         firstname: 'First name should only contain alphabets.',
+//       });
+//     } else {
+//       setValidationErrors({ ...validationErrors, [name]: '' });
+//     }
+//   };
+
+//   const handleSignup = async () => {
+//     setLoading(true);
+//     setValidationErrors({
+//       firstname: '',
+//       email: '',
+//       otp: '',
+//     });
+
+//     for (const field in formData) {
+//       if (!formData[field]) {
+//         setValidationErrors({
+//           ...validationErrors,
+//           [field]: `Please Enter Your ${field.charAt(0).toUpperCase() + field.slice(1)}.`,
+//         });
+//         setLoading(false);
+//         return;
+//       }
+//     }
+
+//     const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+//     if (!emailPattern.test(formData.email)) {
+//       setValidationErrors({
+//         ...validationErrors,
+//         email: 'Please enter a valid email address.',
+//       });
+//       setLoading(false);
+//       return;
+//     }
+
+//     setOtpModalVisible(true);
+//     setLoading(false);
+//   };
+
+//   const handleOtpSubmit = async () => {
+//     if (userOtp === '0000') {
+//       await registerUser();
+//       setOtpModalVisible(false);
+//     } else {
+//       setValidationErrors({ ...validationErrors, otp: 'Incorrect OTP' });
+//     }
+//   };
+
+//   const registerUser = async () => {
+//     try {
+//       const response = await fetch('http://35.154.235.224:9000/api/auth/register', {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify(formData),
+//       });
+
+//       if (response.ok) {
+//         handleRegistrationSuccess();
+//       } else {
+//         handleRegistrationFailure();
+//       }
+//     } catch (err) {
+//       setError('Check your internet connection');
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   const handleRegistrationSuccess = () => {
+//     Toast.show({
+//       type: 'success',
+//       text1: 'Success',
+//       text2: 'Register Successful',
+//       visibilityTime: 3000,
+//     });
+//     navigation.navigate('Login');
+//     setFormData({
+//       firstname: '',
+//       lastname: '',
+//       email: '',
+//       agentId: '',  // Added agentId field
+//     });
+//   };
+
+//   const handleRegistrationFailure = () => {
+//     Toast.show({
+//       type: 'error',
+//       text1: 'Error',
+//       text2: 'Email Address Already Exist',
+//       visibilityTime: 3000,
+//     });
+//   };
+
+//   const handleCancel = () => {
+//     setFormData({
+//       firstname: '',
+//       lastname: '',
+//       email: '',
+//       agentId: '',  // Added agentId field
+//     });
+//   };
+
+//   const handleOtpCancel = () => {
+//     setOtpModalVisible(false);
+//     setUserOtp('');
+//     setValidationErrors({ ...validationErrors, otp: '' });
+//   };
+
+//   const handleLoginPress = () => {
+//     navigation.navigate('Login');
+//   };
+
+//   return (
+//     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+//       <View style={styles.centeredContent}>
+//         <View style={styles.container1}>
+//           <View style={styles.head1}>
+//             <TouchableWithoutFeedback onPress={handleLoginPress}>
+//               <Text style={styles.tabTextLogin}>Login</Text>
+//             </TouchableWithoutFeedback>
+//             <TouchableWithoutFeedback onPress={() => { }}>
+//               <Text style={styles.tabText}>Register</Text>
+//             </TouchableWithoutFeedback>
+//           </View>
+
+//           {Object.keys(formData).map((field) => (
+//             <React.Fragment key={field}>
+//               {field !== 'password' && field !== 'confirmPassword' && (
+//                 <View style={styles.inputContainer}>
+//                   <TextInput
+//                     label={field.charAt(0).toUpperCase() + field.slice(1)}
+//                     value={formData[field]}
+//                     onChangeText={(text) => handleInputChange(field, text)}
+//                     style={styles.inputField}
+//                   />
+//                 </View>
+//               )}
+//               {validationErrors[field] && (
+//                 <Text style={styles.error}>{validationErrors[field]}</Text>
+//               )}
+//             </React.Fragment>
+//           ))}
+
+//           <View style={styles.buttons}>
+//             <Button
+//               mode="contained"
+//               onPress={handleSignup}
+//               disabled={loading}
+//               contentStyle={styles.buttonContent}
+//               labelStyle={styles.buttonText}
+//               style={styles.button}
+//             >
+//               Signup
+//             </Button>
+//             <Button
+//               onPress={handleCancel}
+//               disabled={loading}
+//               contentStyle={styles.buttonContent}
+//               labelStyle={styles.buttonText}
+//               style={styles.button}
+//             >
+//               Reset
+//             </Button>
+//           </View>
+//         </View>
+// {/* 
+//         <OtpModal
+//           isVisible={isOtpModalVisible}
+//           onConfirm={handleOtpSubmit}
+//           onClose={handleOtpCancel}
+//           onOtpChange={setUserOtp}
+//           otpError={validationErrors.otp}
+//         /> */}
+//       </View>
+//     </ScrollView>
+//   );
+// };
+// const styles = StyleSheet.create({
+//   container: {
+//     flexGrow: 1,
+//     backgroundColor: '#FFFFFF',
+//   },
+//   contentContainer: {
+//     flexGrow: 1,
+//     justifyContent: 'center',
+
+//   },
+//   centeredContent: {
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//   },
+//   inputContainer: {
+//     position: 'relative',
+//   },
+//   container1: {
+//     width: '100%',
+//     maxWidth: 350,
+//   },
+//   head1: {
+//     flexDirection: 'row',
+//     justifyContent: 'center',
+//     marginBottom: 16,
+//   },
+
+//   tabTextLogin: {
+//     color: 'black',
+//     fontWeight: 'bold',
+//     fontSize: 20,
+//   },
+//   tabText: {
+//     color: '#B7DDD2',
+//     fontWeight: 'bold',
+//     fontSize: 20,
+//     marginHorizontal: 15,
+//   },
+//   error: {
+//     color: 'red',
+//     fontWeight: '600',
+//     fontSize: 14,
+//     textAlign: 'center',
+//   },
+//   inputField: {
+//     marginVertical: 8,
+//     fontSize: 16,
+//   },
+//   buttons: {
+//     flexDirection: 'row',
+//     justifyContent: 'space-between',
+//     marginTop: 16,
+//   },
+//   button: {
+//     flex: 1,
+//     marginHorizontal: 4,
+//     maxWidth: '40%',
+//   },
+//   buttonContent: {
+//     flex: 1,
+//     backgroundColor: '#B7DDD2',
+//   },
+//   buttonText: {
+//     fontSize: 16,
+//     color: 'black',
+//     fontWeight: '600',
+//   },
+//   iconContainer: {
+//     position: 'absolute',
+//     top: 25,
+//     right: 10,
+//   },
+// });
+
+// export default SignupForm;
 
 
 
