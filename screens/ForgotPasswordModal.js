@@ -1,9 +1,99 @@
+// import React, { useState, useEffect } from 'react';
+// import { View, Text, TextInput, TouchableOpacity, Modal, StyleSheet } from 'react-native';
+// import Ionicons from 'react-native-vector-icons/Ionicons';
+// import ResetPassword from './ResetPassword';
+
+// const ForgotPasswordModal = ({ isVisible, onClose, onSendOTP }) => {
+//   const [email, setEmail] = useState('');
+//   const [isEmailValid, setIsEmailValid] = useState(false);
+//   const [showSuccessModal, setShowSuccessModal] = useState(false);
+
+//   useEffect(() => {
+//     // Reset input fields when the modal becomes visible
+//     if (isVisible) {
+//       setEmail('');
+//       setIsEmailValid(false);
+//     }
+//   }, [isVisible]);
+
+//   const handleSendOTP = () => {
+//     // You can perform any necessary actions before sending OTP, such as validation
+//     onSendOTP(email);
+//     // Show success modal
+//     setShowSuccessModal(true);
+//   };
+
+//   const validateEmail = (email) => {
+//     // Add your email validation logic here
+//     const emailPattern = /\S+@\S+\.\S+/;
+//     const isValid = emailPattern.test(email);
+//     setIsEmailValid(isValid);
+//   };
+
+//   const handleClose = () => {
+//     // Close the modals and reset input fields
+//     onClose();
+//     setShowSuccessModal(false);
+//     setEmail('');
+//     setIsEmailValid(false);
+//   };
+
+//   return (
+//     <View>
+//       {/* Main Modal */}
+//       <Modal visible={isVisible} animationType="slide" transparent={true} onRequestClose={handleClose}>
+//         <View style={styles.modalBackground}>
+//           <View style={styles.modalContainer}>
+//             <View style={styles.modalHeader}>
+//               <View style={styles.textContainer}>
+//                 <Text style={styles.modalTitle}>Forgot Password</Text>
+//               </View>
+//               <TouchableOpacity onPress={handleClose} style={styles.closeButton}>
+//                 <Ionicons name="ios-close" size={28} color="black" />
+//               </TouchableOpacity>
+//             </View>
+//             <View style={styles.inputContainer}>
+//               <TextInput
+//                 placeholder="Enter your email address"
+//                 value={email}
+//                 onChangeText={(text) => {
+//                   setEmail(text);
+//                   validateEmail(text);
+//                 }}
+//                 style={styles.input}
+//               />
+//             </View>
+//             <View style={styles.buttonContainer}>
+//               <TouchableOpacity
+//                 onPress={handleSendOTP}
+//                 disabled={!isEmailValid}
+//                 style={!isEmailValid ? styles.disabledButton : styles.confirmButton}
+//               >
+//                 <Text style={styles.buttonText}>Send password</Text>
+//               </TouchableOpacity>
+//               <TouchableOpacity onPress={handleClose} style={styles.cancelButton}>
+//                 <Text style={styles.buttonText}>Cancel</Text>
+//               </TouchableOpacity>
+//             </View>
+//           </View>
+//         </View>
+//       </Modal>
+
+//       {/* Success Modal */}
+//       <ResetPassword isVisible={showSuccessModal} onClose={handleClose} />
+//     </View>
+//   );
+// };
+
+
+
+
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Modal, StyleSheet } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ResetPassword from './ResetPassword';
 
-const ForgotPasswordModal = ({ isVisible, onClose, onSendOTP }) => {
+const ForgotPasswordModal = ({ isVisible, onClose }) => {
   const [email, setEmail] = useState('');
   const [isEmailValid, setIsEmailValid] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -16,11 +106,35 @@ const ForgotPasswordModal = ({ isVisible, onClose, onSendOTP }) => {
     }
   }, [isVisible]);
 
-  const handleSendOTP = () => {
-    // You can perform any necessary actions before sending OTP, such as validation
-    onSendOTP(email);
-    // Show success modal
-    setShowSuccessModal(true);
+  const handleSendOTP = async () => {
+    try {
+      // Make a POST request to the forgot-password endpoint
+      const response = await fetch('http://192.168.0.77:8000/forgot-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email,
+        }),
+      });
+
+      // Check if the request was successful (status code 2xx)
+      if (response.ok) {
+        // Assuming the API response contains relevant information, you can handle it here
+        const responseData = await response.json();
+        console.log('Password sent successfully:', responseData);
+
+        // Show success modal after successful API call
+        setShowSuccessModal(true);
+      } else {
+        // Handle non-successful responses, e.g., show an error message to the user
+        console.error('Error sending password. Status:', response.status);
+      }
+    } catch (error) {
+      // Handle network errors or exceptions
+      console.error('Error sending password:', error);
+    }
   };
 
   const validateEmail = (email) => {
@@ -84,6 +198,9 @@ const ForgotPasswordModal = ({ isVisible, onClose, onSendOTP }) => {
     </View>
   );
 };
+
+
+
 
 const styles = StyleSheet.create({
     modalBackground: {
