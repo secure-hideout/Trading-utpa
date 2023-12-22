@@ -59,7 +59,7 @@ const Allgraph = ({ route, navigation, fetchData, Name }) => {
         console.log("------------------>",instrumentId,instrumentType)
     try {
       const response = await fetch(
-        `http://10.0.2.2:9000/api/user/getSymbol?instrumentId=${instrumentId}&instrumentType=${instrumentType}`,
+        `http://35.154.235.224:9000/api/user/getSymbol?instrumentId=${instrumentId}&instrumentType=${instrumentType}`,
         {
           method: "GET",
           headers: {
