@@ -143,6 +143,11 @@ const Payments = ({ Instrument = "Sell", sname, LastPrice, instrumentType, instr
         } else {
           console.error(`${transactionType} API error response:`, await response.text());
           setError(`Please enter Quantity`);
+          Toast.show({
+            type: "error",
+            text1: `Failed To Sell`,
+          });
+          hideConfirmation();
         }
       } else if (transactionType === 'buy') {
         requestOptions = {
@@ -170,6 +175,11 @@ const Payments = ({ Instrument = "Sell", sname, LastPrice, instrumentType, instr
         } else {
           console.error(`${transactionType} API error response:`, await response.text());
           setError(`Please enter Quantity`);
+          Toast.show({
+            type: "error",
+            text1: `Insufficient Funds!`,
+          });
+          hideConfirmation();
         }
       }
     } catch (err) {
@@ -199,9 +209,12 @@ const Payments = ({ Instrument = "Sell", sname, LastPrice, instrumentType, instr
 
        
         const filteredResult = result.filter(item => item.FinancialInstrumentID === instrumentId);
-        const quantities = filteredResult.map(item => item.Quantity);
+
+      // Extract quantities and default to 0 if the array is empty
+      const quantities = filteredResult.map(item => item.Quantity);
+      const defaultQuantity = quantities.length > 0 ? quantities[0] : 0;
         setQData({
-          Quantities: quantities,
+          Quantities: defaultQuantity,
         })
         console.log("Filtered Results:", quantities);
       } else {

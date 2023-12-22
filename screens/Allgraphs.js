@@ -55,7 +55,7 @@ const Allgraph = ({ route, navigation, fetchData, Name }) => {
   });
 
   const [apiqData, setQData] = useState({
-    Quantities: "",
+    Quantities: "0",
   });
 
 

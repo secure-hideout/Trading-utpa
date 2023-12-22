@@ -93,7 +93,7 @@ const Tools = ({}) => {
               onChangeText={handleInputChange}
               style={{
                 height: 40,
-                width: 300,
+                width: '91%',
                 marginLeft: 14,
                 borderColor: 'gray',
                 borderWidth: 2,
