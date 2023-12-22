@@ -122,7 +122,7 @@ const Dashboard = () => {
           redirect: "follow",
         });
 
-       // console.log("Response1:", response1);
+       console.log("Response1:", response1);
 
         const response2 = await fetchData("http://35.154.235.224:9000/api/user/getPortfolio", {
           method: "GET",
@@ -142,6 +142,7 @@ const Dashboard = () => {
           name3: item1.Exchange,
           press: 'Allgraphs',
           Name: item1.Name,
+          Tradingsymbol: item1.Tradingsymbol,
           // Open: "open",
           // openValue: 1,
           // Close: "Close",

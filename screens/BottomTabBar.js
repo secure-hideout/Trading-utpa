@@ -19,7 +19,7 @@ const BottomTabBar = ({ isLoggedIn, onSuccessfulLogin }) => {
 
   return (
     <Tab.Navigator
-      shifting={true}
+      // shifting={true}
       sceneAnimationEnabled={false}
       barStyle={{ backgroundColor: colors.background }}
     >

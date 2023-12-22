@@ -1,19 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TextInput } from "react-native";
 import AssetCard from "./AssetCard";
 import { useSelector } from "react-redux";
 import { useNavigation } from '@react-navigation/native';
 import LottieView from 'lottie-react-native';
-
 import * as Animatable from 'react-native-animatable';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const fetchData = async (url, options) => {
   const response = await fetch(url, options);
   const data = await response.json();
   return data;
 };
-
 
 const ViewPortfolio = ({
   selectedCard,
@@ -26,9 +23,12 @@ const ViewPortfolio = ({
   const { token } = useSelector((state) => state.auth);
   const navigation = useNavigation();
   const [nseData, setNseData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+
 
 
   useEffect(() => {
+    setSearchTerm('');
     const fetchData1 = async () => {
       try {
         const response1 = await fetchData("http://35.154.235.224:9000/api/user/getPortfolio", {
@@ -94,56 +94,85 @@ const ViewPortfolio = ({
     };
 
     fetchData1();
-  }, [token]);
+  }, [token,selectedCard]);
 
 
-  //to display inside the card 
-  const calculateTotalValue = (cardType) => {
-    const cardTypeData = cardData[cardType];
-    if (cardTypeData) {
-      let totalValue = 0;
-      cardTypeData.forEach((item) => {
-        if (item.decimalValue && item.LastPrice) {
-          totalValue += item.decimalValue * item.LastPrice;
-        }
-      });
-      return `$${totalValue.toFixed(2)}`;
-    }
-    return "$0.00";
-  };
-
-  const calculateChangePercentage = (cardType) => {
-    const cardTypeData = cardData[cardType];
-    let totalChange = 0;
-    if (cardTypeData) {
-      cardTypeData.forEach((item) => {
-        if (item.changePercentage && typeof item.changePercentage === 'string') {
-          totalChange += parseFloat(item.changePercentage.replace('%', ''));
-        }
-      });
-    }
-
-    // Format the change percentage with the sign
-    return totalChange >= 0 ? `+${totalChange.toFixed(2)}%` : `${totalChange.toFixed(2)}%`;
-  };
-
-  useEffect(() => {
-    let overallChange = 0;
-    const cardTypes = Object.keys(cardData);
-
-    cardTypes.forEach((cardType) => {
-      const totalValue = calculateTotalValue(cardType);
-      const totalChangePercentage = calculateChangePercentage(cardType);
-      updateTotalValue(cardType, totalValue);
-      updateChangePercentage(cardType, totalChangePercentage);
-      overallChange += parseFloat(totalChangePercentage);
+  //to display inside the card value
+  const calculateTotalValue = (cardTypeData) => {
+    let totalValue = 0;
+    cardTypeData.forEach((item) => {
+      if (item.decimalValue && item.LastPrice) {
+        totalValue += item.decimalValue * item.LastPrice;
+      }
     });
+    return `$${totalValue.toFixed(2)}`;
+  };
 
-    const overallChangePercentage = overallChange / cardTypes.length;
-    updateOverallChangePercentage(overallChangePercentage >= 0 ? `+${overallChangePercentage.toFixed(2)}%` : `${overallChangePercentage.toFixed(2)}%`);
-  }, [token, nseData]);
+  //inside the card percentage 
+  // const calculateChangePercentage = (cardTypeData) => {
+  //   let totalChange = 0;
+  //   cardTypeData.forEach((item) => {
+  //     if (item.changePercentage && typeof item.changePercentage === 'string') {
+  //       totalChange += parseFloat(item.changePercentage.replace('%', ''));
+  //     }
+  //   });
+
+  //   return totalChange >= 0 ? `+${totalChange.toFixed(2)}%` : `${totalChange.toFixed(2)}%`;
+  // };
 
 
+  // useEffect(() => {
+  //   let overallChange = 0;
+  //   const cardTypes = Object.keys(cardData);
+
+  //   cardTypes.forEach((cardType) => {
+  //     const totalValue = calculateTotalValue(cardData[cardType]);
+  //     const totalChangePercentage = calculateChangePercentage(cardData[cardType]);
+  //     updateTotalValue(cardType, totalValue);
+  //     updateChangePercentage(cardType, totalChangePercentage);
+  //     overallChange += parseFloat(totalChangePercentage);
+  //   });
+
+  //   const overallChangePercentage = overallChange / cardTypes.length;
+  //   updateOverallChangePercentage(overallChangePercentage >= 0 ? `+${overallChangePercentage.toFixed(2)}%` : `${overallChangePercentage.toFixed(2)}%`);
+  // }, [token, nseData]);
+
+  // Inside the card percentage
+const calculateChangePercentage = (cardTypeData) => {
+  let totalChange = 0;
+  cardTypeData.forEach((item) => {
+    if (item.changePercentage && typeof item.changePercentage === 'string') {
+      totalChange += parseFloat(item.changePercentage.replace('%', ''));
+    }
+  });
+
+  // Check if the total change is exactly 0
+  if (totalChange === 0) {
+    return '0.00%';
+  }
+
+  return totalChange >= 0 ? `+${totalChange.toFixed(2)}%` : `${totalChange.toFixed(2)}%`;
+};
+
+useEffect(() => {
+  let overallChange = 0;
+  const cardTypes = Object.keys(cardData);
+
+  cardTypes.forEach((cardType) => {
+    const totalValue = calculateTotalValue(cardData[cardType]);
+    const totalChangePercentage = calculateChangePercentage(cardData[cardType]);
+    updateTotalValue(cardType, totalValue);
+    updateChangePercentage(cardType, totalChangePercentage);
+    overallChange += parseFloat(totalChangePercentage);
+  });
+
+  const overallChangePercentage = overallChange / cardTypes.length;
+  updateOverallChangePercentage(overallChangePercentage >= 0 ? `+${overallChangePercentage.toFixed(2)}%` : `${overallChangePercentage.toFixed(2)}%`);
+}, [token, nseData]);
+
+
+
+//to pass header total value and the percentage
   const calculateOverallTotalValue = () => {
     let overallTotal = 0;
     Object.values(cardData).forEach((cardTypeData) => {
@@ -156,37 +185,48 @@ const ViewPortfolio = ({
     return overallTotal;
   };
 
-
   useEffect(() => {
     const overallTotal = calculateOverallTotalValue();
     updateOverallTotalValue(overallTotal);
-
   }, [token, nseData]);
+
+
+
 
   const cardData = {
     Crypto: [],
-
     NSE: nseData,
-
-    // BSE: [],
     NASDAQ: [],
-
-
     Commodity: [],
   };
 
+  const filteredData = searchTerm
+    ? cardData[selectedCard].filter(item =>
+        item.Name && item.Name.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    : cardData[selectedCard];
+
+  const getSearchBarStyle = () => ({
+    ...styles.searchBar,
+    borderColor: selectedCardColor,
+  });
+
   return (
     <View style={styles.container}>
+      {cardData[selectedCard] && cardData[selectedCard].length > 0 && (
+        <TextInput
+          placeholder="Search..."
+          value={searchTerm}
+          onChangeText={(text) => setSearchTerm(text)}
+          style={getSearchBarStyle()}
+        />
+      )}
 
-
-      {/* <View style={styles.headerContainer}> */}
       <View style={[styles.headerContainer, { backgroundColor: selectedCardColor }]}>
         <View style={styles.nameContainer}>
           <Text style={styles.headerText}>Name</Text>
         </View>
-        <View style={styles.name3Wrapper}>
-          {/* <Text style={styles.headerText}>Segment</Text> */}
-        </View>
+        <View style={styles.name3Wrapper}></View>
         <Text style={[styles.headerText, styles.selectedCardText]}>{selectedCard}</Text>
         <View style={styles.quantityContainer}>
           <Text style={styles.headerText}>Quantity</Text>
@@ -196,23 +236,18 @@ const ViewPortfolio = ({
         </View>
       </View>
 
-      {/* //todisplay total value and name  */}
-      {/* <Text style={styles.portfolioText}>{selectedCard} Portfolio</Text> */}
-      {/* <Text style={styles.totalValue}>{calculateTotalValue(selectedCard)}</Text> */}
-
-      {/* {cardData[selectedCard] ? ( */}
-      {cardData[selectedCard] && cardData[selectedCard].length > 0 ? (
-        cardData[selectedCard].map((data, index) => (
-          <AssetCard data={data} key={index}
+      {filteredData.length > 0 ? (
+        filteredData.map((data, index) => (
+          <AssetCard
+            data={data}
+            key={index}
             onPress={() => navigation.navigate('Allgraphs', {
-
               instrumentType: data?.instrumentType,
               instrumentId: data?.instrumentId,
-
-            })} />
+            })}
+          />
         ))
       ) : (
-
         <View style={styles.noDataContainer}>
           <LottieView
             source={require('../assets/animations/Animation.json')}
@@ -220,9 +255,7 @@ const ViewPortfolio = ({
             loop
             style={styles.animation}
             onAnimationFinish={() => console.log('Animation finished')}
-
           />
-
           <Animatable.Text
             key={selectedCard}
             animation="zoomIn"
@@ -230,20 +263,16 @@ const ViewPortfolio = ({
           >
             You Have No Stock In {selectedCard}
           </Animatable.Text>
-
         </View>
-
-
-      )
-      }
-    </View >
+      )}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
+    // alignItems: "center",
     justifyContent: "center",
     backgroundColor: "FFFFFF",
   },
@@ -314,6 +343,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  searchBar: {
+    height: 40,
+    // borderColor: 'black',
+    borderWidth: 3,
+    borderRadius: 5,
+    margin: 10,
+    paddingLeft: 10,
+  },
 });
 
 export default ViewPortfolio;
@@ -323,30 +360,27 @@ export default ViewPortfolio;
 
 
 
-// <Text style={styles.cardDataText}>
-//   No data available for {selectedCard}
-// </Text>
 
-// <Animatable.View
-//   // animation="shake" // You can choose any animation type from react-native-animatable
-//   easing="ease-out"
-//   iterationCount="infinite"
-//   style={styles.noDataContainer}
-// >
-//   <Icon name="language" size={300} color="#716f7c" />
-//   <Text style={styles.cardDataText}>
-//     No data available for {selectedCard}
-//   </Text>
-// </Animatable.View>
 
-//wo multiplw with quantity
+
+
+
+
+
+
+
+
+
+//wo search
 // import React, { useState, useEffect } from "react";
 // import { View, Text, StyleSheet } from "react-native";
 // import AssetCard from "./AssetCard";
 // import { useSelector } from "react-redux";
 // import { useNavigation } from '@react-navigation/native';
+// import LottieView from 'lottie-react-native';
 
-
+// import * as Animatable from 'react-native-animatable';
+// import Icon from 'react-native-vector-icons/MaterialIcons';
 
 // const fetchData = async (url, options) => {
 //   const response = await fetch(url, options);
@@ -377,7 +411,6 @@ export default ViewPortfolio;
 //           redirect: "follow",
 //         });
 
-//         // console.log("Response1:", response1);
 
 //         const response2 = await fetchData("http://35.154.235.224:9000/api/user/getZtokens", {
 //           method: "POST",
@@ -385,8 +418,6 @@ export default ViewPortfolio;
 //           body: "",
 //           redirect: "follow",
 //         });
-
-//         // console.log("Response2:", response2);
 
 //         const mergedArray = response1.map((item1) => {
 //           const matchingItem = response2.find((item2) => item2.Zid === item1.FinancialInstrumentID);
@@ -440,22 +471,21 @@ export default ViewPortfolio;
 //   }, [token]);
 
 
-//   //to display inside the card
+//   //to display inside the card 
 //   const calculateTotalValue = (cardType) => {
 //     const cardTypeData = cardData[cardType];
 //     if (cardTypeData) {
 //       let totalValue = 0;
 //       cardTypeData.forEach((item) => {
-//         if (item.value && typeof item.value === 'string') {
-//           totalValue += parseFloat(item.value.replace('$', '').replace(/,/g, ''));
-//         } else if (item.LastPrice && typeof item.LastPrice === 'number') {
-//           totalValue += item.LastPrice;
+//         if (item.decimalValue && item.LastPrice) {
+//           totalValue += item.decimalValue * item.LastPrice;
 //         }
 //       });
 //       return `$${totalValue.toFixed(2)}`;
 //     }
 //     return "$0.00";
 //   };
+
 //   const calculateChangePercentage = (cardType) => {
 //     const cardTypeData = cardData[cardType];
 //     let totalChange = 0;
@@ -488,21 +518,18 @@ export default ViewPortfolio;
 //   }, [token, nseData]);
 
 
-
-//   //to calculate overall total value and pass to header
 //   const calculateOverallTotalValue = () => {
 //     let overallTotal = 0;
 //     Object.values(cardData).forEach((cardTypeData) => {
 //       cardTypeData.forEach((item) => {
-//         if (item.value && typeof item.value === 'string') {
-//           overallTotal += parseFloat(item.value.replace('$', '').replace(/,/g, ''));
-//         } else if (item.LastPrice && typeof item.LastPrice === 'number') {
-//           overallTotal += item.LastPrice;
+//         if (item.decimalValue && item.LastPrice) {
+//           overallTotal += item.decimalValue * item.LastPrice;
 //         }
 //       });
 //     });
 //     return overallTotal;
 //   };
+
 
 //   useEffect(() => {
 //     const overallTotal = calculateOverallTotalValue();
@@ -547,7 +574,8 @@ export default ViewPortfolio;
 //       {/* <Text style={styles.portfolioText}>{selectedCard} Portfolio</Text> */}
 //       {/* <Text style={styles.totalValue}>{calculateTotalValue(selectedCard)}</Text> */}
 
-//       {cardData[selectedCard] ? (
+//       {/* {cardData[selectedCard] ? ( */}
+//       {cardData[selectedCard] && cardData[selectedCard].length > 0 ? (
 //         cardData[selectedCard].map((data, index) => (
 //           <AssetCard data={data} key={index}
 //             onPress={() => navigation.navigate('Allgraphs', {
@@ -558,11 +586,31 @@ export default ViewPortfolio;
 //             })} />
 //         ))
 //       ) : (
-//         <Text style={styles.cardDataText}>
-//           No data available for {selectedCard}
-//         </Text>
-//       )}
-//     </View>
+
+//         <View style={styles.noDataContainer}>
+//           <LottieView
+//             source={require('../assets/animations/Animation.json')}
+//             autoPlay
+//             loop
+//             style={styles.animation}
+//             onAnimationFinish={() => console.log('Animation finished')}
+
+//           />
+
+//           <Animatable.Text
+//             key={selectedCard}
+//             animation="zoomIn"
+//             style={styles.cardDataText}
+//           >
+//             You Have No Stock In {selectedCard}
+//           </Animatable.Text>
+
+//         </View>
+
+
+//       )
+//       }
+//     </View >
 //   );
 // };
 
@@ -588,16 +636,27 @@ export default ViewPortfolio;
 //     lineHeight: 19.09,
 //     color: "rgba(28, 30, 50, 1)",
 //   },
-//   cardDataText: {
-//     fontSize: 16,
-//     fontWeight: "600",
-//     lineHeight: 17.71,
+
+//   noDataContainer: {
+//     flex: 1,
+//     justifyContent: 'center',
+//     alignItems: 'center',
 //   },
+//   animation: {
+//     width: 400,
+//     height: 300,
+//   },
+//   cardDataText: {
+//     color: 'red',
+//     fontSize: 17,
+//     fontWeight: '700',
+//     marginTop: 8,
+//   },
+
 //   nameContainer: {
 //     flexDirection: 'row',
 //     flex: 1.3,
 //     alignItems: 'center',
-//     // Other styling properties...
 //   },
 //   headerContainer: {
 //     flexDirection: 'row',
@@ -632,16 +691,6 @@ export default ViewPortfolio;
 // });
 
 // export default ViewPortfolio;
-
-
-
-
-
-
-
-
-
-
 
 
 

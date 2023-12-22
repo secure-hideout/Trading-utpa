@@ -30,6 +30,10 @@ const ChangePasswordModal = ({ isVisible, onClose, onChangePassword, initialEmai
     const [currentPassword, setCurrentPassword] = useState('');
     const [showCurrentPassword, setShowCurrentPassword] = useState(false);
     const [currentPasswordEntered, setCurrentPasswordEntered] = useState(false);
+    const [showPasswordRequirements, setShowPasswordRequirements] = useState(false);
+    const [isNewPasswordFocused, setNewPasswordFocused] = useState(false);
+
+
 
     useEffect(() => {
         setEmail(initialEmail);
@@ -75,22 +79,22 @@ const ChangePasswordModal = ({ isVisible, onClose, onChangePassword, initialEmai
 
             if (response.ok) {
                 // Password is correct
-                console.log("True")
+                // console.log("True")
                 setPasswordsMatchError(false);
             } else {
                 // Password is incorrect
                 const errorData = await response.json();
                 if (errorData.status === "crypto/bcrypt: hashedPassword is not the hash of the given password") {
                     setPasswordsMatchError(true);
-                    console.log("False")
+                    // console.log("False")
 
                 } else {
                     setPasswordsMatchError(true);
-                    console.log("False 1")
+                    // console.log("False 1")
                 }
             }
         } catch (error) {
-            console.error('Error validating current password:', error);
+            // console.error('Error validating current password:', error);
             // Handle error (e.g., network issue)
             setPasswordsMatchError('Error validating current password. Please Check Your Connection.');
         }
@@ -160,6 +164,8 @@ const ChangePasswordModal = ({ isVisible, onClose, onChangePassword, initialEmai
                                     placeholder="New Password"
                                     value={newPassword}
                                     onChangeText={(text) => setNewPassword(text)}
+                                    onFocus={() => setShowPasswordRequirements(true)}
+                                    onBlur={() => setShowPasswordRequirements(false)}
                                     secureTextEntry={!showPassword}
                                     style={styles.inputWithIcon}
                                 />
@@ -173,6 +179,7 @@ const ChangePasswordModal = ({ isVisible, onClose, onChangePassword, initialEmai
                                         color="#555"
                                     />
                                 </TouchableOpacity>
+
                             </View>
 
                             {/* Render confirm password field */}
@@ -195,7 +202,13 @@ const ChangePasswordModal = ({ isVisible, onClose, onChangePassword, initialEmai
                                         color="#555"
                                     />
                                 </TouchableOpacity>
+
                             </View>
+                            {showPasswordRequirements && (
+    <View style={styles.passwordRequirements}>
+        <Text>Password must be at least 8 characters long and contain at least one uppercase letter and one symbol.</Text>
+    </View>
+)}
                         </>
                     )}
 
@@ -316,9 +329,7 @@ const styles = StyleSheet.create({
         color: 'red',
         fontWeight: 'bold',
     },
-    passwordRequirements: {
-        color: '#555',
-    },
+
     disabledButton: {
         backgroundColor: '#A9A9A9',
         padding: 10,
