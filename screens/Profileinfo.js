@@ -17,7 +17,12 @@ import AssetDataContext from "./AssetDataContext";
 import { Card, Title, Paragraph, Button, Provider } from "react-native-paper";
 import { deleteConform } from "../api/profileApi";
 import { useDispatch } from "react-redux";
-import { setToken } from "../redux/actions/authActions";
+import { setEmail, setToken } from "../redux/actions/authActions";
+import Toast from "react-native-toast-message"
+
+
+
+
 const ProfileInfo = () => {
   const { setFirstName } = useContext(AssetDataContext);
   const [apiData, setApiData] = useState({
@@ -40,11 +45,18 @@ const ProfileInfo = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showDeleteModal1, setShowDeleteModal1] = useState(false);
   const [showUpdateNameModal, setShowUpdateNameModal] = useState(false);
+  
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [selectedItemId1, setSelectedItemId1] = useState(null);
   const [firstname, setFirstname] = useState(apiData.FirstName);
   const [lastname, setLastname] = useState('');
-  const [updateResult, setUpdateResult] = useState('');
+  const [showUpdatePasswordModal, setShowUpdatePasswordModal] = useState(false);
+  const [currentPassword, setcurrentPassword] = useState('');
+  const [newPassword, setnewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  
   const [error, setError] = useState("");
   const [input1, setInput1] = useState('');
   const [input2, setInput2] = useState('');
@@ -63,6 +75,10 @@ const ProfileInfo = () => {
      
   }
 
+  const hideupdatepassword = () => {
+    setShowUpdatePasswordModal(false)
+}
+
   const handleConfirmLogout = () => {
     console.log("Logging out...");
     setLogoutModalVisibility(false);
@@ -78,6 +94,84 @@ const ProfileInfo = () => {
     console.log('Update clicked:', input1, input2);
     // Add your update logic here
   };
+
+
+  const updatepassword = async () => {
+    //const token = 'your_token_here'; // Replace with your actual token
+    if(newPassword === confirmPassword){
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          user_id: apiData.ID, // Replace with the actual firstname
+          current_password: currentPassword, // Replace with the actual lastname
+          new_password: newPassword, // Replace with the actual currency
+          //new_password: newPassword,
+        }),
+      };
+  
+      console.log("------------------>",email,currentPassword,newPassword)
+      try {
+        const response = await fetch(
+          'http://192.168.0.77:8000/update-password', // Replace with your actual API endpoint
+          requestOptions
+        );
+  
+        const result = await response.text();
+       // setUpdateResult(result);
+        hideupdatepassword();
+        hideupdatename();
+        setPassword();
+        //fetchData();
+        Toast.show({
+          type: "success",
+          text1: `Password Changed Succesfull`,
+        });
+        setEmail('');
+        setcurrentPassword('');
+        setConfirmPassword('')
+        setnewPassword('')
+       // setnewPassword('');
+
+      } catch (error) {
+        console.error('Error:', error);
+        Toast.show({
+          type: "error",
+          text1: `Failed Updating Password`,
+        });
+        setcurrentPassword('');
+        setConfirmPassword('')
+        setnewPassword('')
+      }
+    }
+    else{
+      console.error("Password Not Match")
+      // Toast New password and confirm password should me same
+      Toast.show({
+        type: "error",
+        text1: `New password and confirm password should me same`,
+      });
+      setcurrentPassword('');
+      setConfirmPassword('')
+      setnewPassword('')
+    }
+   };
+ 
+  
+
+   useEffect(() => {
+     fetchData();
+   }, [token]);
+
+
+
+
+
+
+
  
 
   const updateName = async () => {
@@ -104,7 +198,7 @@ const ProfileInfo = () => {
       );
 
       const result = await response.text();
-      setUpdateResult(result);
+     // setUpdateResult(result);
       hideupdatename();
       fetchData();
       setFirstname('');
@@ -280,17 +374,23 @@ const ProfileInfo = () => {
 
   const mappedButtons = buttonData.map((button, index) => (
     <TouchableOpacity
-      key={index.id}
-      style={styles.button}
-      onPress={() => {
-        setSelectedItemId(button.id);
-        if (button.id === 13) {
-          setShowDeleteModal(true);
-        } else if (button.id === 3) {
-          setShowUpdateNameModal(true);
-        }
-      }}
-    >
+    key={index}
+    style={styles.button}
+    onPress={() => {
+      setSelectedItemId(button.id);
+      if (button.id === 13) {
+        setShowDeleteModal(true);
+      } else if (button.id === 12) {
+        // Handle setting the password here
+        // For example, setting a default password 'newPassword'
+        // setPassword('newPassword');
+        setShowUpdatePasswordModal(true);
+      } else if (button.id === 3) {
+        setShowUpdateNameModal(true)
+        
+      }
+    }}
+  >
       <View style={styles.buttonContent}>
         <View style={styles.rowContainer}>
           <View style={styles.iconContainer}>
@@ -441,6 +541,68 @@ const ProfileInfo = () => {
             </View>
           </Card>
       </Modal>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        isVisible={showUpdatePasswordModal}
+        onRequestClose={() => setShowUpdateNameModal(false)}
+      >
+         <Card style={styles.cardContainer4}>
+         <Text style={styles.conform}>
+            Update Password
+        </Text>
+
+         <TextInput
+         secureTextEntry={true}
+            variant="standard" 
+            placeholder="Current Passward"
+           // label="Outlined"
+            value={password}
+            // onChangeText={(text) => {
+              onChangeText={(text) => setPassword(text)}
+            style={{ top: 12, margin: 16, width: '87%', left: 5 }}
+          />
+
+          <TextInput
+          secureTextEntry={true}
+            variant="standard" 
+            placeholder="New Password"
+            value={newPassword}
+            onChangeText={(text) => setnewPassword(text)}
+            style={{ top: 4, margin: 16, width: '87%', left: 5  }}
+          />
+
+          {/* Input field 2 */}
+          <TextInput
+            secureTextEntry={true}
+            variant="standard" 
+            placeholder="Confirm New Password"
+            value={confirmPassword}
+            onChangeText={(text) => setConfirmPassword(text)}
+            style={{ top: 4, margin: 16, width: '87%', left: 5  }}
+          />
+            
+             <View style={styles.buttons}>
+                <View style={styles.button1}>
+                  <Button
+                    onPress={updatepassword}
+                    labelStyle={styles.buttonText}
+                  >
+                    Update 
+                  </Button>
+              </View>
+              <View style={styles.button2}>
+                <Button
+                    onPress={() => setShowUpdatePasswordModal(false)}
+                    labelStyle={styles.buttonText1}
+                >
+                    Cancel
+                </Button>
+              </View>
+            </View>
+          </Card>
+      </Modal>
     </ScrollView>
   );
 };
@@ -498,14 +660,14 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     width: "47%",
     height: 47,
-    backgroundColor: "#EAC9B1",
+    backgroundColor: "#C1C2EB",
     borderRadius: 50,
   },
   button2: {
     left: 10,
     width: "47%",
     height: 47,
-    backgroundColor: "#b1a4ff",
+    backgroundColor: "#B7DDD2",
     borderRadius: 50,
   },
   buttonText1: {

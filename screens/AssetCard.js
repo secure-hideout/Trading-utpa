@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   },
   nameContainer: {
     flexDirection: 'row',
-    flex: 3,
+    flex:2,
     alignItems: 'center',
   },
   name2Wrapper: {
