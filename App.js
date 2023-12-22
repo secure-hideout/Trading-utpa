@@ -205,7 +205,7 @@ import SeeAllItems from './screens/SeeAllItems';
 import SearchBarList from './screens/SearchBarList';
 import store from './redux/store';
 // import TradingCalendar from './screens/TradingCalender';
-
+import Calender  from './screens/Calender';
 // import Buy from "./screens/Buy";
 
 // import Toast from 'react-native-toast-message'; // Import Toast Library
@@ -232,6 +232,7 @@ function MainStack({ isLoggedIn, setIsLoggedIn }) {
       <Stack.Screen name='SeeAllItems' component={SeeAllItems} />
       <Stack.Screen name='SearchBarList' component={SearchBarList} />
       <Stack.Screen name="Allgraphs" component={Allgraphs} />
+      <Stack.Screen name="Calender" component={Calender} />
       {/* <Stack.Screen name="TradingCalendar" component={TradingCalendar} /> */}
       {/* <Stack.Screen name="Buy" component={Buy} /> */}
 

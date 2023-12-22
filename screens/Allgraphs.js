@@ -16,7 +16,13 @@ const Allgraph = ({ route, navigation, fetchData, Name }) => {
   const { token } = useSelector((state) => state.auth);
   console.log("Allgraphs", instrumentId);
 
-  
+  const [socket, setSocket] = useState({
+    openValue: "",
+    closeValue: "", 
+    pricePer: "",
+    LastPrice: "",
+  });
+
 
   const [apiData, setApiData] = useState({
     symbol: '',
@@ -51,6 +57,47 @@ const Allgraph = ({ route, navigation, fetchData, Name }) => {
   const [apiqData, setQData] = useState({
     Quantities: "",
   });
+
+
+  useEffect(() => {
+    const newSocket = new WebSocket('ws://35.154.235.224:8766/realtime_data/' + apiData.symbol);
+  
+    newSocket.onopen = () => {
+      console.log('WebSocket connection established.');
+      // setSocket(newSocket);
+    };
+  
+    newSocket.onmessage = (event) => {
+      try {
+        const receivedData = JSON.parse(event.data);
+  
+        setSocket((prevData) => ({
+          ...prevData,
+          openValue: receivedData.open,
+          closeValue: receivedData.close,
+          priceVal: receivedData.lastPrice,
+          LastPrice: receivedData.lastPrice,
+          // Update other values similarly based on your data structure
+        }));
+        
+        console.log(receivedData);
+      } catch (error) {
+        console.error('Error parsing WebSocket message:', error);
+      }
+    };
+  
+    return () => {
+      console.log('Closing WebSocket connection.');
+      newSocket.close();
+      // setSocket();
+    };
+    // ... (rest of the code remains the same)
+  }, [apiData.symbol]); // Ensure that the eff
+
+
+
+
+
 
   useEffect(() => {
 
@@ -136,7 +183,7 @@ const Allgraph = ({ route, navigation, fetchData, Name }) => {
         <Graphnavbar
           // Name={apiData.Name}
           Price={apiData.Price}
-          priceVal={apiData.priceVal}
+          priceVal={socket.priceVal}
           pricePer={apiData.pricePer}
           Quantities={apiqData.Quantities}
           goBack={goBack}
@@ -145,9 +192,9 @@ const Allgraph = ({ route, navigation, fetchData, Name }) => {
         <Rectangleboxes1
           style={styles.Apple2}
           Open={apiData.Open}
-          openValue={apiData.openValue}
+          openValue={socket.openValue}
           Close={apiData.Close}
-          closeValue={apiData.closeValue}
+          closeValue={socket.closeValue}
           High={apiData.High}
           Hvalue={apiData.Hvalue}
           Low={apiData.Low}
@@ -170,7 +217,7 @@ const Allgraph = ({ route, navigation, fetchData, Name }) => {
 
       <Payments
         sname={apiData.sname}
-        LastPrice={apiData.LastPrice}
+        LastPrice={socket.LastPrice}
         instrumentType={apiData.instrumentType}
         instrumentId={instrumentId}
         quantity={apiData.quantity}

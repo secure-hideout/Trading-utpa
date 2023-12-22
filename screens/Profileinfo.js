@@ -99,7 +99,7 @@ const ProfileInfo = () => {
     console.log("------------------>",firstname,lastname)
     try {
       const response = await fetch(
-        'http://10.0.2.2:9000/api/user/updateProfile', // Replace with your actual API endpoint
+        'http://35.154.235.224:9000/api/user/updateProfile', // Replace with your actual API endpoint
         requestOptions
       );
 
@@ -268,7 +268,14 @@ const ProfileInfo = () => {
       info: apiData.PasswordUpdatedAt,
       styles: { paddingLeft: 0 },
     },
-    { id: 12, icon: "delete", text: "Delete Account", styles: { paddingLeft: 0 } },
+    {
+      id: 12,
+      icon: "vpn-key",
+      text: "Updated Password",
+      //info: apiData.PasswordUpdatedAt,
+      styles: { paddingLeft: 0 },
+    },
+    { id: 13, icon: "delete", text: "Delete Account", styles: { paddingLeft: 0 } },
   ];
 
   const mappedButtons = buttonData.map((button, index) => (
@@ -277,7 +284,7 @@ const ProfileInfo = () => {
       style={styles.button}
       onPress={() => {
         setSelectedItemId(button.id);
-        if (button.id === 12) {
+        if (button.id === 13) {
           setShowDeleteModal(true);
         } else if (button.id === 3) {
           setShowUpdateNameModal(true);
@@ -395,7 +402,7 @@ const ProfileInfo = () => {
             value={firstname}
             // onChangeText={(text) => {
               onChangeText={(text) => setFirstname(text)}
-            style={{ top: 12, margin: 16, width: 290, left: 5 }}
+            style={{ top: 12, margin: 16, width: '87%', left: 5 }}
           />
 
           <TextInput
@@ -403,7 +410,7 @@ const ProfileInfo = () => {
             placeholder="Lastname"
             value={lastname}
             onChangeText={(text) => setLastname(text)}
-            style={{ top: 4, margin: 16, width: 290, left: 5  }}
+            style={{ top: 4, margin: 16, width: '87%', left: 5  }}
           />
 
           {/* Input field 2 */}
@@ -520,6 +527,7 @@ const styles = StyleSheet.create({
     padding: 12,
   },
   cardContainer4: {
+    //flex: 1,
     //marginRight: 10,
     backgroundColor: "white",
     width: "95%",
