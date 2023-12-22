@@ -109,7 +109,7 @@ const ForgotPasswordModal = ({ isVisible, onClose }) => {
   const handleSendOTP = async () => {
     try {
       // Make a POST request to the forgot-password endpoint
-      const response = await fetch('http://192.168.0.77:8000/forgot-password', {
+      const response = await fetch('http://35.154.235.224:8000/forgot-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

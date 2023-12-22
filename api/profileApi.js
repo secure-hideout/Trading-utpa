@@ -14,7 +14,7 @@ export const deleteConform = (id, token) => {
   };
 
   return new Promise((resolve, reject) => {
-    fetch(`http://192.168.0.77:8000/users/${Id}`, requestOptions)
+    fetch(`http://35.154.235.224:8000/users/${Id}`, requestOptions)
       .then((response) => {
         if (!response.ok) {
           console.error('delete successful');

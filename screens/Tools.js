@@ -67,7 +67,8 @@ const Tools = ({}) => {
          onSelect={(selectedItem, index) => {
          console.log(selectedItem, index)
        }}
-       dropdownStyle={styles.dropdown} 
+       dropdownStyle={styles.dropdown}
+       defaultButtonText="INR"  
        />
       </View>
      </View>

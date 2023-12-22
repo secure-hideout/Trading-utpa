@@ -116,7 +116,7 @@ const ProfileInfo = () => {
       console.log("------------------>",email,currentPassword,newPassword)
       try {
         const response = await fetch(
-          'http://192.168.0.77:8000/update-password', // Replace with your actual API endpoint
+          'http://35.154.235.224:8000/update-password', // Replace with your actual API endpoint
           requestOptions
         );
   
