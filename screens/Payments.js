@@ -188,7 +188,7 @@ const Payments = ({ Instrument = "Sell", sname, LastPrice, instrumentType, instr
 
   const fetchData1 = async () => {
     try {
-      const response = await fetch("http://10.0.2.2:9000/api/user/getPortfolio", {
+      const response = await fetch("http://35.154.235.224:9000/api/user/getPortfolio", {
         method: "GET",
         headers: new Headers({ Authorization: `Bearer ${token}` }),
         redirect: "follow",
