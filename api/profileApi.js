@@ -38,32 +38,108 @@ export const deleteConform = (id, token) => {
 
 
 
-export const updateName = async () => {
-  //const token = 'your_token_here'; // Replace with your actual token
+// export const updateName = async () => {
+//   //const token = 'your_token_here'; // Replace with your actual token
 
-  const requestOptions = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({
-      firstname1: firstname, // Replace with the actual firstname
-      lastname1: lastname, // Replace with the actual lastname
-      Currenc1y: 'INR', // Replace with the actual currency
-    }),
-  };
+//   const requestOptions = {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/json',
+//       Authorization: `Bearer ${token}`,
+//     },
+//     body: JSON.stringify({
+//       firstname1: firstname, // Replace with the actual firstname
+//       lastname1: lastname, // Replace with the actual lastname
+//       Currenc1y: 'INR', // Replace with the actual currency
+//     }),
+//   };
 
-    console.log("------------------>",firstname,lastname)
-  try {
-    const response = await fetch(
-      'http://10.0.2.2:9000/api/user/updateProfile', // Replace with your actual API endpoint
-      requestOptions
-    );
+//     console.log("------------------>",firstname,lastname)
+//   try {
+//     const response = await fetch(
+//       'http://10.0.2.2:9000/api/user/updateProfile', // Replace with your actual API endpoint
+//       requestOptions
+//     );
 
-    const result = await response.text();
-    setUpdateResult(result);
-  } catch (error) {
-    console.error('Error:', error);
-  }
-};
+//     const result = await response.text();
+//     setUpdateResult(result);
+//   } catch (error) {
+//     console.error('Error:', error);
+//   }
+// };
+
+
+// const updateName = async () => {
+
+//   const requestOptions = {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/json',
+//       Authorization: `Bearer ${token}`,
+//     },
+//     body: JSON.stringify({
+//       firstName: firstname, // Replace with the actual firstname
+//       lastName: lastname, // Replace with the actual lastname
+//       Currenc1y: 'INR', // Replace with the actual currency
+//     }),
+//   };
+
+//   console.log("------------------>",firstname,lastname)
+//   try {
+//     const response = await fetch(
+//       'http://35.154.235.224:9000/api/user/updateProfile', // Replace with your actual API endpoint
+//       requestOptions
+//     );
+
+//     const result = await response.text();
+//    // setUpdateResult(result);
+//     hideupdatename();
+//     Toast.show({
+//       type: "success",
+//       text1: `Name Changed Succesfull`,
+//     });
+//     fetchData();
+//     setFirstname('');
+//     setLastname('');
+//     //setShowDeleteModal(false)
+//   } catch (error) {
+//     console.error('Error:', error);
+//   }
+//  };
+
+
+
+//  useEffect(() => {
+//     fetchData();
+//  }, [token, firstname, lastname]);
+
+
+// export const fetchData = async () => {
+//   try {
+//     const response = await fetch(
+//       "http://35.154.235.224:9000/api/user/profile",
+//       {
+//         method: "POST",
+//         headers: {
+//           Authorization: `Bearer ${token}`,
+//         },
+//         redirect: "follow",
+//       }
+//     );
+
+//     if (response.ok) {
+//       const result = await response.json();
+//       setApiData1({
+//         FirstName: result.FirstName,
+//         LastName: result.LastName,
+//         FirstName: result.LastName,
+//         //console.log("---->",FirstName)
+//       })
+      
+//     } else {
+//       console.error("Error fetching data:", response.status);
+//     }
+//   } catch (error) {
+//     console.error("Error:", error);
+//   }
+// };
