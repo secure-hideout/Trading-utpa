@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
-import { View, ScrollView } from 'react-native';
-import { StyleSheet, SafeAreaView } from 'react-native';
+import { StyleSheet } from 'react-native';
+
+import { View, SafeAreaView } from 'react-native';
+import {  ScrollView } from 'react-native-gesture-handler';
+import { enableScreens } from 'react-native-screens';
 import AssetDataContext from './AssetDataContext';
 import Header from './Header';
 import MyPortfolio from './MyPortfolio';
@@ -11,58 +14,49 @@ import CriptoAssets from './CriptoAssets';
 import ViewPortfolio from './ViewPortfolio';
 import { useSelector } from 'react-redux';
 
-
+enableScreens(); // Enable native screens for performance improvement
 
 const Dashboard = () => {
   const { setFirstName } = useContext(AssetDataContext);
-  const { token } = useSelector(state => state.auth)
-  console.log("Dashboard", token)
+  const { token } = useSelector(state => state.auth);
   const [cardData, setCardData] = useState([
-
     { name: 'Crypto', value: '', changePercentage: '', color: '', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: "#C1C2EB" },
     { name: 'NSE', value: '', changePercentage: '', color: '', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: '#B7DDD2' },
     { name: 'NASDAQ', value: '', changePercentage: '', color: '', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: "#C1C2EB" },
     { name: 'Commodity', value: '', changePercentage: '', color: '', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: '#B7DDD2' }
   ]);
-
   const { assetData, setAssetData } = useContext(AssetDataContext);
   const [watchlist, setWatchlist] = useState([]);
   const [selectedCard, setSelectedCard] = useState('Crypto');
-
   const [totalValues, setTotalValues] = useState({});
-
   const updateTotalValue = (category, totalValue) => {
     setTotalValues((prevTotalValues) => ({
       ...prevTotalValues,
       [category]: totalValue,
     }));
   };
-
   const fetchData = async (url, options) => {
     const response = await fetch(url, options);
     const data = await response.json();
     return data;
   };
-
   const updateChangePercentage = (category, changePercentage) => {
     setCardData((prevCardData) => {
       return prevCardData.map((item) => {
         if (item.name === category) {
-
           return { ...item, changePercentage };
         }
         return item;
       });
     });
   };
-
   const getSelectedCardColor = (selectedCard) => {
     switch (selectedCard) {
       case 'Crypto':
         return '#C1C2EB';
       case 'NSE':
         return '#B7DDD2';
-      case 'NASDAQ'://BSETONASTAG
+      case 'NASDAQ':
         return '#C1C2EB';
       case 'Commodity':
         return '#B7DDD2';
@@ -70,7 +64,6 @@ const Dashboard = () => {
         return '#FFFFFF';
     }
   };
-
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -96,8 +89,6 @@ const Dashboard = () => {
     }
   }, [token, setFirstName]);
 
-
-
   const [overallTotalValue, setOverallTotalValue] = useState(0);
 
   const handleOverallTotalValueUpdate = (value) => {
@@ -110,9 +101,6 @@ const Dashboard = () => {
     setOverallChangePercentage(value);
   };
 
-
-
-
   useEffect(() => {
     const fetchData1 = async () => {
       try {
@@ -122,8 +110,6 @@ const Dashboard = () => {
           redirect: "follow",
         });
 
-       console.log("Response1:", response1);
-
         const response2 = await fetchData("http://35.154.235.224:9000/api/user/getPortfolio", {
           method: "GET",
           headers: new Headers({ "Authorization": "Bearer " + token }),
@@ -131,52 +117,23 @@ const Dashboard = () => {
           redirect: "follow",
         });
 
-      //  console.log("Response2:", response2);
-
         const mergedArray = response1.map((item1) => {
           const matchingItem = response2.find((item2) => item2.FinancialInstrumentID === item1.Zid);
-          // const matchingItem = response2.find((item2) => item2.Zid === item1.FinancialInstrumentID);
           return {
-          name2: item1.Name,
-          value: `₹ ${item1.LastPrice.toFixed(2)}`,
-          name3: item1.Exchange,
-          press: 'Allgraphs',
-          Name: item1.Name,
-          Tradingsymbol: item1.Tradingsymbol,
-          // Open: "open",
-          // openValue: 1,
-          // Close: "Close",
-          // closeValue: 50,
-          // High: "High",
-          // symbol: item1.Tradingsymbol,
-          // Hvalue: 150,
-          // Low: "Low",
-          // Lvalue: 25,
-          // Dval: "Daily Vol",
-          // Value: "140.03B",
-          // Market: "Market",
-          // value1: "200.03B",
-          // volBtc: "vol BTC",
-          // value2: "10,000",
-          // volUsdt: "vol USDT",
-          // value3: "10,000",
-
+            name2: item1.Name,
+            value: `₹ ${item1.LastPrice.toFixed(2)}`,
+            name3: item1.Exchange,
+            press: 'Allgraphs',
+            Name: item1.Name,
+            Tradingsymbol: item1.Tradingsymbol,
             priceVal: item1.LastPrice,
-
             sname: item1.Name,
             instrumentId: item1.Zid,
             instrumentType: item1.Segment,
             Quantities: matchingItem ? matchingItem.Quantity : null,
             LastPrice: item1.LastPrice,
-
-
-
-            //addtowatchlist 
             InstrumentId: item1.Zid,
             InstrumentType: item1.Segment,
-
-
-
           };
         });
         setAssetData(mergedArray);
@@ -188,99 +145,24 @@ const Dashboard = () => {
     fetchData1();
   }, [token]);
 
-
-
-
-
-
-
-  // useEffect(() => {
-  //   var myHeaders = new Headers();
-  //   myHeaders.append("Authorization", `Bearer ${token}`);
-
-  //   var requestOptions = {
-  //     method: 'POST', //get
-  //     headers: myHeaders,
-  //     redirect: 'follow'
-  //   };
-
-  //   fetch("http://35.154.235.224:9000/api/user/getZtokens", requestOptions)
-  //     .then(response => response.json())
-  //     .then(result => {
-  //       const transformedData = result.map(item => ({
-  //         name2: item.Name,
-  //         value: `$${item.LastPrice.toFixed(2)}`,
-  //         name3: item.Exchange,
-  //         press: 'Allgraphs',
-  //         Name: item.Name,
-  //         Open: "open",
-  //         openValue: 1,
-  //         Close: "Close",
-  //         closeValue: 50,
-  //         High: "High",
-  //         symbol: item.Tradingsymbol,
-  //         Hvalue: 150,
-  //         Low: "Low",
-  //         Lvalue: 25,
-  //         Dval: "Daily Vol",
-  //         Value: "140.03B",
-  //         Market: "Market",
-  //         value1: "200.03B",
-  //         volBtc: "vol BTC",
-  //         value2: "10,000",
-  //         volUsdt: "vol USDT",
-  //         value3: "10,000",
-
-  //         priceVal: item.LastPrice,
-
-  //         sname: item.Name,
-  //         instrumentId: item.Zid,
-  //         instrumentType: item.Segment,
-  //         //quantity: "1",
-  //         LastPrice: item.LastPrice,
-
-
-
-  //         //addtowatchlist 
-  //         InstrumentId: item.Zid,
-  //         InstrumentType: item.Segment,
-
-  //         // logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg', 
-  //       }));
-  //       setAssetData(transformedData);
-  //     })
-  //     .catch(error => console.log('this error', error));
-
-
-
-  // }, []);
-
-  //for scroll bottom minus icon 
-
   const scrollViewRef = useRef(null);
 
   const scrollToBottom = () => {
     scrollViewRef.current.scrollToEnd({ animated: true });
   };
 
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView ref={scrollViewRef} style={styles.root} stickyHeaderIndices={[0]}>
         <Header assetData={assetData} />
-        {/* <MyPortfolio /> */}
-        <MyPortfolio totalValue={overallTotalValue}
-          changePercentage={overallChangePercentage}
-        />
-
+        <MyPortfolio totalValue={overallTotalValue} changePercentage={overallChangePercentage} />
         <Deposit />
+       
+
         <MyWatchList />
         <View style={styles.container5}>
           {cardData.map((item, index) => {
             const totalValue = totalValues[item.name] || '';
-
-
-            // console.log(`Item Name: ${item.name}, Total Value: ${totalValue}`);
 
             return (
               <CardItems
@@ -291,8 +173,7 @@ const Dashboard = () => {
                 changePercentage={item.changePercentage}
                 color={item.backgroundColor}
                 onClick={() => setSelectedCard(item.name)}
-
-                selectedCard={selectedCard}//tostyle selected card 
+                selectedCard={selectedCard}
               />
             );
           })}
@@ -300,8 +181,7 @@ const Dashboard = () => {
         <CriptoAssets
           onScrollToBottom={scrollToBottom}
           data={watchlist}
-          //assetData={assetData}
-          selectedCard={selectedCard}//tofetchcardname 
+          selectedCard={selectedCard}
         >
           <ViewPortfolio
             assetData={assetData}
@@ -809,6 +689,16 @@ export default Dashboard;
 
 
 
+
+
+
+
+
+
+
+
+
+//before smoothscroll and uncommand
 // import React, { useState, useEffect, useRef, useContext } from 'react';
 // import { View, ScrollView } from 'react-native';
 // import { StyleSheet, SafeAreaView } from 'react-native';
@@ -825,14 +715,14 @@ export default Dashboard;
 
 
 // const Dashboard = () => {
-
+//   const { setFirstName } = useContext(AssetDataContext);
 //   const { token } = useSelector(state => state.auth)
 //   console.log("Dashboard", token)
 //   const [cardData, setCardData] = useState([
 
 //     { name: 'Crypto', value: '', changePercentage: '', color: '', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: "#C1C2EB" },
 //     { name: 'NSE', value: '', changePercentage: '', color: '', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: '#B7DDD2' },
-//     { name: 'BSE', value: '', changePercentage: '', color: '', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: "#C1C2EB" },
+//     { name: 'NASDAQ', value: '', changePercentage: '', color: '', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: "#C1C2EB" },
 //     { name: 'Commodity', value: '', changePercentage: '', color: '', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: '#B7DDD2' }
 //   ]);
 
@@ -873,7 +763,7 @@ export default Dashboard;
 //         return '#C1C2EB';
 //       case 'NSE':
 //         return '#B7DDD2';
-//       case 'BSE':
+//       case 'NASDAQ'://BSETONASTAG
 //         return '#C1C2EB';
 //       case 'Commodity':
 //         return '#B7DDD2';
@@ -881,6 +771,48 @@ export default Dashboard;
 //         return '#FFFFFF';
 //     }
 //   };
+
+
+//   useEffect(() => {
+//     const fetchProfile = async () => {
+//       try {
+//         const response = await fetch('http://35.154.235.224:9000/api/user/profile', {
+//           method: 'POST',
+//           headers: { Authorization: `Bearer ${token}` },
+//         });
+
+//         if (response.ok) {
+//           const result = await response.json();
+//           setFirstName(result.FirstName);
+//         } else {
+//           console.error('Error fetching profile:', response.status);
+//         }
+//       } catch (error) {
+//         console.error('Error:', error);
+//       }
+//     };
+
+//     if (token) {
+//       fetchProfile();
+//     }
+//   }, [token, setFirstName]);
+
+
+
+//   const [overallTotalValue, setOverallTotalValue] = useState(0);
+
+//   const handleOverallTotalValueUpdate = (value) => {
+//     setOverallTotalValue(value);
+//   };
+
+//   const [overallChangePercentage, setOverallChangePercentage] = useState(0);
+
+//   const updateOverallChangePercentage = (value) => {
+//     setOverallChangePercentage(value);
+//   };
+
+
+
 
 //   useEffect(() => {
 //     const fetchData1 = async () => {
@@ -891,7 +823,7 @@ export default Dashboard;
 //           redirect: "follow",
 //         });
 
-//         console.log("Response1:", response1);
+//        console.log("Response1:", response1);
 
 //         const response2 = await fetchData("http://35.154.235.224:9000/api/user/getPortfolio", {
 //           method: "GET",
@@ -900,48 +832,49 @@ export default Dashboard;
 //           redirect: "follow",
 //         });
 
-//         console.log("Response2:", response2);
+//       //  console.log("Response2:", response2);
 
 //         const mergedArray = response1.map((item1) => {
 //           const matchingItem = response2.find((item2) => item2.FinancialInstrumentID === item1.Zid);
 //           // const matchingItem = response2.find((item2) => item2.Zid === item1.FinancialInstrumentID);
 //           return {
 //           name2: item1.Name,
-//           value: `$${item1.LastPrice.toFixed(2)}`,
+//           value: `₹ ${item1.LastPrice.toFixed(2)}`,
 //           name3: item1.Exchange,
 //           press: 'Allgraphs',
 //           Name: item1.Name,
-//           Open: "open",
-//           openValue: 1,
-//           Close: "Close",
-//           closeValue: 50,
-//           High: "High",
-//           symbol: item1.Tradingsymbol,
-//           Hvalue: 150,
-//           Low: "Low",
-//           Lvalue: 25,
-//           Dval: "Daily Vol",
-//           Value: "140.03B",
-//           Market: "Market",
-//           value1: "200.03B",
-//           volBtc: "vol BTC",
-//           value2: "10,000",
-//           volUsdt: "vol USDT",
-//           value3: "10,000",
+//           Tradingsymbol: item1.Tradingsymbol,
+//           // Open: "open",
+//           // openValue: 1,
+//           // Close: "Close",
+//           // closeValue: 50,
+//           // High: "High",
+//           // symbol: item1.Tradingsymbol,
+//           // Hvalue: 150,
+//           // Low: "Low",
+//           // Lvalue: 25,
+//           // Dval: "Daily Vol",
+//           // Value: "140.03B",
+//           // Market: "Market",
+//           // value1: "200.03B",
+//           // volBtc: "vol BTC",
+//           // value2: "10,000",
+//           // volUsdt: "vol USDT",
+//           // value3: "10,000",
 
-//           priceVal: item1.LastPrice,
+//             priceVal: item1.LastPrice,
 
-//           sname: item1.Name,
-//           instrumentId: item1.Zid,
-//           instrumentType: item1.Segment,
-//           Quantities: matchingItem ? matchingItem.Quantity : null,
-//           LastPrice: item1.LastPrice,
+//             sname: item1.Name,
+//             instrumentId: item1.Zid,
+//             instrumentType: item1.Segment,
+//             Quantities: matchingItem ? matchingItem.Quantity : null,
+//             LastPrice: item1.LastPrice,
 
 
 
-//           //addtowatchlist 
-//           InstrumentId: item1.Zid,
-//           InstrumentType: item1.Segment,
+//             //addtowatchlist
+//             InstrumentId: item1.Zid,
+//             InstrumentType: item1.Segment,
 
 
 
@@ -956,7 +889,7 @@ export default Dashboard;
 //     fetchData1();
 //   }, [token]);
 
-  
+
 
 
 
@@ -1009,11 +942,11 @@ export default Dashboard;
 
 
 
-//   //         //addtowatchlist 
+//   //         //addtowatchlist
 //   //         InstrumentId: item.Zid,
 //   //         InstrumentType: item.Segment,
 
-//   //         // logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg', 
+//   //         // logo: 'https://assets.coingecko.com/coins/images/10365/large/assets/bitcoinsvgrepocom-1.svg',
 //   //       }));
 //   //       setAssetData(transformedData);
 //   //     })
@@ -1023,7 +956,7 @@ export default Dashboard;
 
 //   // }, []);
 
-//   //for scroll bottom minus icon 
+//   //for scroll bottom minus icon
 
 //   const scrollViewRef = useRef(null);
 
@@ -1036,7 +969,11 @@ export default Dashboard;
 //     <SafeAreaView style={{ flex: 1 }}>
 //       <ScrollView ref={scrollViewRef} style={styles.root} stickyHeaderIndices={[0]}>
 //         <Header assetData={assetData} />
-//         <MyPortfolio />
+//         {/* <MyPortfolio /> */}
+//         <MyPortfolio totalValue={overallTotalValue}
+//           changePercentage={overallChangePercentage}
+//         />
+
 //         <Deposit />
 //         <MyWatchList />
 //         <View style={styles.container5}>
@@ -1056,7 +993,7 @@ export default Dashboard;
 //                 color={item.backgroundColor}
 //                 onClick={() => setSelectedCard(item.name)}
 
-//                 selectedCard={selectedCard}//tostyle selected card 
+//                 selectedCard={selectedCard}//tostyle selected card
 //               />
 //             );
 //           })}
@@ -1065,7 +1002,7 @@ export default Dashboard;
 //           onScrollToBottom={scrollToBottom}
 //           data={watchlist}
 //           //assetData={assetData}
-//           selectedCard={selectedCard}//tofetchcardname 
+//           selectedCard={selectedCard}//tofetchcardname
 //         >
 //           <ViewPortfolio
 //             assetData={assetData}
@@ -1073,6 +1010,8 @@ export default Dashboard;
 //             updateTotalValue={updateTotalValue}
 //             updateChangePercentage={updateChangePercentage}
 //             selectedCardColor={getSelectedCardColor(selectedCard)}
+//             updateOverallTotalValue={handleOverallTotalValueUpdate}
+//             updateOverallChangePercentage={updateOverallChangePercentage}
 //           />
 //         </CriptoAssets>
 //       </ScrollView>
@@ -1112,7 +1051,7 @@ export default Dashboard;
 //     marginRight: 10,
 //   },
 //   welcomeText: {
-//     // fontSize: 14,figma font size its look small 
+//     // fontSize: 14,figma font size its look small
 //     fontSize: 18,
 //     fontWeight: 700,
 //     lineHeight: 21,
@@ -1459,7 +1398,7 @@ export default Dashboard;
 
 
 
-//   // asset items 
+//   // asset items
 //   containerAssetItem: {
 
 
@@ -1556,3 +1495,16 @@ export default Dashboard;
 
 
 // export default Dashboard;
+
+
+
+
+
+
+
+
+
+
+
+
+

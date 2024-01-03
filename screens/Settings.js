@@ -35,6 +35,7 @@ container: {
  // backgroundColor: 'white',
   // justifyContent: 'center',
  // alignItems: 'center',
+ backgroundColor: "#f5f5f5",
 },
 backIcon: {
   top: 12,

@@ -292,8 +292,7 @@ const ProfileInfo = () => {
       styles: { paddingLeft: 2 },
     },
 
-    {
-      id: 3,
+    {  id: 3,
       icon: "edit",
       text: "Update name",
       info: `${apiData.FirstName} ${apiData.LastName}`, // Combine FirstName and LastName
