@@ -29,9 +29,9 @@ const TransactionModal = ({ isVisible, onClose, onTransaction, sellType, lastPri
             <View style={styles.textContainer}>
               <Text style={styles.modalTitle}>{sellType === 'buy' ? 'Buy' : 'Sell'}</Text>
             </View>
-            <TouchableOpacity onPress={handleClose} style={styles.closeButton}>
+            {/* <TouchableOpacity onPress={handleClose} style={styles.closeButton}>
               <Ionicons name="ios-close" size={28} color="black" />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
           <View style={styles.infoContainer}>
             <View style={styles.infoRow}>
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalContainer: {
-    width: 350,
+    width: '87%',
     backgroundColor: '#FFFFFF',
     borderRadius: 10,
     padding: 20,
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
   },
   infoLabel: {
     fontSize: 16,
-    color: 'black',
+    color: '#4d4d4d',
     fontWeight: 'bold',
   },
   infoValue: {
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginRight: 10,
     fontWeight: 'bold',
-    color: 'black',
+    color: '#4d4d4d',
     
   },
   input: {

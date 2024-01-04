@@ -37,7 +37,7 @@ export const styles = StyleSheet.create({
   text: {
     marginLeft: width * 0.04,
     fontSize: width * 0.05,
-    fontWeight: '500',
+    fontWeight: '600',
     color: '#1C1E32',
   },
   withdrawText: {
@@ -78,9 +78,11 @@ export const styles = StyleSheet.create({
   },
   conform: {
     textAlign: "center",
-    fontWeight: '900',
     fontSize: 18,
-    top: 10,
+    fontWeight: "700",
+    lineHeight: 19.09,
+    color: "rgba(28, 30, 50, 1)",
+    top: 15,
   },
   conform1: {
     paddingBottom: 20,

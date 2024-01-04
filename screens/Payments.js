@@ -203,16 +203,16 @@ const styles = StyleSheet.create({
   sell: {
     color: 'black',
     textAlign: 'center',
-    marginTop: 10,
+    marginTop: 11,
     fontWeight: 'bold',
-    fontSize: 16,
+    fontSize: 17,
   },
   buy: {
     color: 'black',
     textAlign: 'center',
     fontWeight: 'bold',
-    marginTop: 10,
-    fontSize: 16,
+    marginTop: 11,
+    fontSize: 17,
   },
 });
 
