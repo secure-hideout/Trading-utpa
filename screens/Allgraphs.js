@@ -74,7 +74,7 @@ const Allgraph = ({ route, navigation, fetchData, Name }) => {
         setSocket((prevData) => ({
           ...prevData,
           openValue: receivedData.open,
-          closeValue: receivedData.close,
+          closeValue: receivedData.previousClose,
           priceVal: receivedData.lastPrice,
           LastPrice: receivedData.lastPrice,
           // Update other values similarly based on your data structure

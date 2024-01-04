@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Modal, Button } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { styles } from './Styles';
 import { Ionicons } from '@expo/vector-icons';
-const WithDraw = () => {
+import { Card, Button } from "react-native-paper";
+import { TextInput } from '@react-native-material/core';
+import Modal from "react-native-modal";
+import Deposit from './Deposite';
+
+
+const WithDraw = ({withdraw , setWithdraw}) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [modalText, setModalText] = useState('');
+ // const [setWithdraw ] = useState('');
 
   const handleWithdrawClick = () => {
-    console.log('Withdraw clicked');
-    setModalText('Withdraw clicked');
     setModalVisible(true);
   };
 
@@ -25,12 +30,41 @@ const WithDraw = () => {
           <Ionicons name="arrow-up-outline" size={30} color="black" />
         </View>
       </TouchableOpacity>
-      <Modal visible={isModalVisible} animationType="slide">
-        <View style={styles.modalContainer}>
-          <Text>{modalText}</Text>
-          <Button title="Close" onPress={closeModal} />
-        </View>
-      </Modal>
+
+      <Modal  transparent={true} isVisible={isModalVisible}>
+         <Card style={styles.cardContainer4}>
+         <Text style={styles.conform}>
+            Withdraw
+        </Text>
+
+         <TextInput
+            variant="standard" 
+            placeholder="Enter Amount"
+            value={(Withdraw1)}
+              onChangeText={(text) => setWithdraw(text)}
+            style={{ top: 12, margin: 16, width: '87%', left: 5 }}
+          />
+            
+             <View style={styles.buttons}>
+                <View style={styles.button1}>
+                  <Button
+                    onPress={(withdraw)} 
+                    labelStyle={styles.buttonText}
+                  >
+                    Withdraw
+                  </Button>
+              </View>
+              <View style={styles.button2}>
+                <Button
+                    onPress={closeModal}
+                    labelStyle={styles.buttonText1}
+                >
+                    Cancel
+                </Button>
+              </View>
+            </View>
+          </Card>
+        </Modal>
     </View>
   );
 };

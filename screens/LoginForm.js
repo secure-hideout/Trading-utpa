@@ -15,8 +15,8 @@ import NetworkErrorModal from './NetworkErrorModal';
 const LoginForm = ({ navigation, onSuccessfulLogin }) => {
   const animationRef = useRef(null);
   const dispatch = useDispatch();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('user4@gmail.com');
+  const [password, setPassword] = useState('passs');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [emailError, setEmailError] = useState('');

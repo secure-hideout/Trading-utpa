@@ -239,10 +239,8 @@ const styles = StyleSheet.create({
   },
   userName: {
     fontSize: 18,
-
     fontWeight: 600,
     lineHeight: 21,
-    // fontFamily: 'SFProDisplay',
     color: '#1C1E32',
 
   },

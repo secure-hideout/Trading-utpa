@@ -74,14 +74,14 @@ const Tools = ({}) => {
      </View>
     </Card>
       
-    <Card style={styles.card13}>
+    {/* <Card style={styles.card13}>
      <View style={styles.rowContainer}>
       <Text style={styles.title2}>Dex Address</Text>
         <TouchableOpacity style={styles.Edit} onPress={handleEditPress}>
           <Text style={styles.title1}>Edit</Text>
         </TouchableOpacity>
      </View>
-    </Card>
+    </Card> */}
 
     <Modal isVisible={isModalVisible} >
       <Card style={styles.cardContainer4}>
@@ -241,9 +241,9 @@ const Tools = ({}) => {
       title5:{
         fontSize: 18,
         right: 10,
-        fontWeight: '600',
+        fontWeight: "700",
         lineHeight: 19.09,
-        color: 'rgba(28, 30, 50, 1)',
+        color: "rgba(28, 30, 50, 1)",
       },
       card12: {
         width: '100%',
@@ -285,9 +285,10 @@ const Tools = ({}) => {
       title:{
         fontSize: 18,
         paddingLeft: 10,
-        fontWeight: '600',
+        //fontSize: 18,
+        fontWeight: "700",
         lineHeight: 19.09,
-        color: 'rgba(28, 30, 50, 1)',
+        color: "rgba(28, 30, 50, 1)",
       },
       title2:{
         paddingLeft: 15,
