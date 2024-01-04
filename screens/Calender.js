@@ -112,7 +112,13 @@ const Calender = () => {
 
 
 const goBack = () => {
+  if (route.params?.fromBottomTab) {
+    // If navigated from the bottom tab, go back to the previous screen in the tab navigator
     navigation.goBack();
+  } else {
+    // If navigated from the header, go back to the WatchList screen
+    navigation.navigate('WatchList');
+  }
 };
 
 return (
