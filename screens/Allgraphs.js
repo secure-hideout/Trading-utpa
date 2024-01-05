@@ -60,7 +60,7 @@ const Allgraph = ({ route, navigation, fetchData, Name }) => {
 
 
   useEffect(() => {
-    const newSocket = new WebSocket('ws://35.154.235.224:8766/realtime_data/' + apiData.symbol);
+    const newSocket = new WebSocket('ws://35.154.235.224:8765/realtime_data/' + apiData.symbol);
   
     newSocket.onopen = () => {
       console.log('WebSocket connection established.');

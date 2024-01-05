@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   tabText: {
-    color: '#B7DDD2',
+    color: '#aae6d4',
     fontWeight: 'bold',
     fontSize: 20,
     marginHorizontal: 15,
@@ -262,7 +262,7 @@ const styles = StyleSheet.create({
   },
   buttonContent: {
     flex: 1,
-    backgroundColor: '#B7DDD2',
+    backgroundColor: '#aae6d4',
   },
   buttonText: {
     fontSize: 16,

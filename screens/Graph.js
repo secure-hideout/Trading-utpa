@@ -10,7 +10,7 @@ const Graph = ({ symbol, selectedInterval, isCandleChart, isCompressed }) => {
   const style = isCandleChart ? "1" : "10";
 
   const webViewWidth = isCompressed
-    ? widthPercentageToDP("100%") // Use full width when compressed
+    ? widthPercentageToDP("40%") // Use full width when compressed
     : widthPercentageToDP("90%"); // Use 90% of the width when not compressed
     
   const embedCode = `
@@ -19,7 +19,7 @@ const Graph = ({ symbol, selectedInterval, isCandleChart, isCompressed }) => {
       <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
       <script type="text/javascript">
         new TradingView.widget({
-          "width": "100vh",
+          "width": "49vh"
           "height": 420,
           "symbol": "${symbol}", 
           "interval": "${selectedInterval}",

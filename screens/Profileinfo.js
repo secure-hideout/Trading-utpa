@@ -72,13 +72,7 @@ const ProfileInfo = () => {
 
    useEffect(() => {
      fetchData();
-   }, [token]);
- 
-  
-
-   useEffect(() => {
-     fetchData();
-   }, [token, firstname, lastname]);
+   },[]);
 
  
     const fetchData = async () => {
@@ -150,29 +144,31 @@ const ProfileInfo = () => {
 const buttonData = [
   { id: 1, icon: "check-circle", text: "User Active", info: apiData.IsEnabled ? "Active" : "Inactive", },
 
-  { id: 2, icon: "edit", text: "Update name", info: `${apiData1.FirstName} ${apiData1.LastName}`,},
+  { id: 2, icon: "edit", text: "Update Name", info: `${apiData1.FirstName} ${apiData1.LastName}`,},
+
+  { id: 3, icon: "assignment", text: "Agent Id", info: '',},
   
-  { id: 3, icon: "layers", set: { right: 6 }, text: "Regular",  info: "Use BNB to get discount",},
+  { id: 4, icon: "layers", set: { right: 6 }, text: "Regular",  info: "Use BNB to get discount",},
 
-  { id: 4, icon: "person", text: "ID", info: apiData.ID,},
+  { id: 5, icon: "person", text: "ID", info: apiData.ID,},
 
-  { id: 5, icon: "account-circle", text: "Registration Info", info: apiData1.FirstName,},
+  { id: 6, icon: "account-circle", text: "Registration Info", info: apiData1.FirstName,},
 
-  { id: 6, icon: "date-range", text: "Created At", info: apiData.CreatedAt,},
+  { id: 7, icon: "date-range", text: "Created At", info: apiData.CreatedAt,},
 
-  { id: 7, icon: "update", text: "Updated At", info: apiData.UpdatedAt,  },
+  { id: 8, icon: "update", text: "Updated At", info: apiData.UpdatedAt,  },
 
-  { id: 8, icon: "account-balance", text: "Balance", info: (parseFloat(apiData.Balance) || 0).toFixed(2),},
+  { id: 9, icon: "account-balance", text: "Balance", info: (parseFloat(apiData.Balance) || 0).toFixed(2),},
     
-  { id: 9, icon: "login", text: "Last Login", info: apiData.LastLogin,},
+  { id: 10, icon: "login", text: "Last Login", info: apiData.LastLogin,},
     
-  { id: 10, icon: "edit", text: "Password Updated At", info: apiData.PasswordUpdatedAt,},
+  { id: 11, icon: "edit", text: "Password Updated At", info: apiData.PasswordUpdatedAt,},
     
-  { id: 11, icon: "vpn-key", text: "Update Password",},
+  { id: 12, icon: "vpn-key", text: "Update Password",},
 
-  { id: 12, icon: "delete", text: "Delete Account",},
+  { id: 13, icon: "delete", text: "Delete Account",},
 
-  { id: 13, icon: "", text: "Support",},
+  { id: 14, icon: "", text: "Support",},
 ];
 
 
@@ -182,9 +178,9 @@ const buttonData = [
     style={styles.button}
     onPress={() => {
       setSelectedItemId(button.id);
-      if (button.id === 12) {
+      if (button.id === 13) {
         setShowDeleteModal(true);
-      } else if (button.id === 11) {
+      } else if (button.id === 12) {
         setShowUpdatePasswordModal(true);
       } else if (button.id === 2) {
         setShowUpdateNameModal(true)
@@ -311,9 +307,9 @@ const styles = StyleSheet.create({
     paddingRight: 15,
     justifyContent: "center",
     alignItems: "center",
-    color: "white",
+    color: "black",
     fontSize: 16,
-    fontWeight: "bold",
+    fontWeight: "500",
     left: 5,
   },
   conform: {
@@ -325,29 +321,31 @@ const styles = StyleSheet.create({
   conform1: {
     paddingBottom: 20,
     textAlign: "center",
-    fontWeight: '600',
     fontSize: 16,
+    fontWeight: "500",
+    lineHeight: 19.09,
+    color: "rgba(28, 30, 50, 1)",
     top: 15,
   },
   button1: {
     paddingLeft: 5,
     //width: "47%",
     height: 47,
-    backgroundColor: "#C1C2EB",
+    backgroundColor: "#8c94de",
     borderRadius: 5,
   },
   button2: {
     left: 10,
    // width: "47%",
     height: 47,
-    backgroundColor: "#B7DDD2",
+    backgroundColor: "#aae6d4",
     borderRadius: 5,
   },
   buttonText1: {
-    fontWeight: "bold",
+    fontWeight: "500",
     paddingTop: 4,
     alignItems: "center",
-    color: "white",
+    color: "black",
     fontSize: 16,
     Left: 15,
   },
@@ -400,7 +398,7 @@ const styles = StyleSheet.create({
 
   logButton: {
     marginTop: 10,
-    backgroundColor: "#C1C2EB",
+    backgroundColor: "9093e8",
     padding: 16,
     borderRadius: 8,
     alignItems: "center",

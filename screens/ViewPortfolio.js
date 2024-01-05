@@ -95,7 +95,7 @@ const ViewPortfolio = ({
     };
 
     fetchData1();
-  }, [token,selectedCard]);
+  }, []);
 
 
   //to display inside the card value

@@ -22,7 +22,7 @@ export const styles = StyleSheet.create({
     width: width * 0.12,
     height: width * 0.12,
     borderRadius: width * 0.075,
-    backgroundColor: '#B1A4FF',
+    backgroundColor: '#8c94de',
     position: 'absolute',
     left: 0,
     justifyContent: 'center',
@@ -37,8 +37,10 @@ export const styles = StyleSheet.create({
   text: {
     marginLeft: width * 0.04,
     fontSize: width * 0.05,
-    fontWeight: '500',
+    fontWeight: '600',
     color: '#1C1E32',
+
+    
   },
   withdrawText: {
     marginRight: -width * 0.01,
@@ -78,9 +80,11 @@ export const styles = StyleSheet.create({
   },
   conform: {
     textAlign: "center",
-    fontWeight: '900',
     fontSize: 18,
-    top: 10,
+    fontWeight: "700",
+    lineHeight: 19.09,
+    color: "rgba(28, 30, 50, 1)",
+    top: 15,
   },
   conform1: {
     paddingBottom: 20,
@@ -93,14 +97,14 @@ export const styles = StyleSheet.create({
     paddingLeft: 5,
    // width: "47%",
     height: 47,
-    backgroundColor: "#C1C2EB",
+    backgroundColor: "#8c94de",
     borderRadius: 5,
   },
   button2: {
     left: 10,
     //width: "47%",
     height: 47,
-    backgroundColor: "#B7DDD2",
+    backgroundColor: "#aae6d4",
     borderRadius: 5,
   },
   buttonText1: {
