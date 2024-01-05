@@ -159,7 +159,9 @@ const Dashboard = () => {
         <Deposit />
        
 
-        <MyWatchList />
+        <MyWatchList 
+        selectedCard={selectedCard}
+        />
         <View style={styles.container5}>
           {cardData.map((item, index) => {
             const totalValue = totalValues[item.name] || '';

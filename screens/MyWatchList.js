@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, TextInput, Modal, Button } from 'react-native';
 
 import { StyleSheet } from 'react-native';
-const MyWatchList = () => {
+const MyWatchList = ({selectedCard}) => {
 
   const [isMtdModalVisible, setIsMtdModalVisible] = useState(false);
   const [isYtdModalVisible, setIsYtdModalVisible] = useState(false);
@@ -25,9 +25,10 @@ const MyWatchList = () => {
 
   return (
     <View style={styles.container4}>
-      <Text style={styles.title}>Crypto Asset List</Text>
+      {/* <Text style={styles.title}>{selectedCard} Asset List</Text> */}
+      <Text style={styles.title}></Text>
       <View style={styles.buttonsContainer}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={[styles.button, activeButton === 'MTD' ? styles.buttonActive : {}]}
           onPress={toggleMtdModal}
         >
@@ -38,7 +39,7 @@ const MyWatchList = () => {
           onPress={toggleYtdModal}
         >
           <Text style={activeButton === 'YTD' ? styles.buttonTextActive : styles.buttonText}>YTD</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
 
       </View>
@@ -75,7 +76,7 @@ const MyWatchList = () => {
 
 const styles = StyleSheet.create({
   container4: {
-    padding: 15,
+    // padding: 15,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

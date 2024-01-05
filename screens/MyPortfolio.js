@@ -30,13 +30,9 @@ const MyPortfolio = ({ totalValue, changePercentage }) => {
         <View style={styles.portfolioContainer}>
           <Text style={styles.valueText}>Current Portfolio Value</Text>
           <View style={styles.valueAmount}>
-            {/* <Text style={styles.amountText}>$23,500</Text> */}
             <Text style={styles.amountText}>₹ {mainValue}</Text>
             <Text style={styles.decimalText}>.{decimalValue}</Text>
             <View style={styles.greenBox}>
-              {/* <Text style={styles.percentText}>+5.9%</Text> */}
-
-              {/* <Text style={styles.percentText}>{changePercentage}</Text> */}
               <Text style={[styles.percentText, { color: percentageTextColor }]}>{changePercentage}</Text>
             </View>
           </View>

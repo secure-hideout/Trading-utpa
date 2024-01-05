@@ -14,16 +14,16 @@ const AssetCard = ({ data, onPress }) => {
           <Text style={styles.cardDataText}>{data.name2}</Text>
         </View>
         <View style={styles.name3Wrapper}>
-          <Text style={styles.cardDataText1}>{data.name3}</Text>
+          {/* <Text style={styles.cardDataText1}>{data.name3}</Text> */}
+          <Text style={styles.decimal}>{data.decimalValue}</Text>
         </View>
       </View>
       <View style={styles.quantityContainer}>
-        {/* <Text style={styles.quantityLabel}>QUANTITY:</Text> */}
-        <Text style={styles.decimal}>{data.decimalValue}</Text>
+       <Text style={styles.value}>{formatValue(data.value)}</Text>
       </View>
       <View style={styles.valueContainer}>
         {/* <Text style={styles.value}>{data.value}</Text> */}
-        <Text style={styles.value}>{formatValue(data.value)}</Text>
+        <Text style={styles.value}>{formatValue(data.decimalValue * data.value)}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -65,16 +65,11 @@ const styles = StyleSheet.create({
   },
   valueContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
+    // alignItems: 'center',
     justifyContent: 'flex-end',
-    flex: 1,
+    // flex: 1,
   },
-  quantityLabel: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: 'rgba(28, 30, 50, 0.6)',
-    // marginRight: 4,
-  },
+
   decimal: {
     fontSize: 16,
     fontWeight: '700',

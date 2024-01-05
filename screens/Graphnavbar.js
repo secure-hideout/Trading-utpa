@@ -23,26 +23,12 @@ const Graphnavbar = ({
 
   return (
     <View style={styles.container}>
-      {/* <View style={[styles.box1]}>
-        <TouchableOpacity style={styles.backbutton} onPress={handleBackPress}>
-          <View style={styles.backicon1}>
-            <Ionicons name="arrow-back-outline" size={25} color="black " />
-          </View>
-        </TouchableOpacity>
-        <View style={styles.text1}>
-          <Text style={styles.bitcoin}>{Name}</Text>
-        </View>
-      </View> */}
-
       <View style={styles.forRow}>
         <View style={styles.box0} >
           <View>
             <Text style={styles.bitcoinprice}> PRICE</Text>
             <View style={styles.bitcoinprice2}>
               <Text style={styles.bitcoinprice1}>{priceVal}</Text>
-              {/* <View style={styles.valuep}>
-                <Text style={styles.value}>{pricePer}</Text>
-              </View> */}
             </View>
           </View>
           <View style={styles.Quantity}>

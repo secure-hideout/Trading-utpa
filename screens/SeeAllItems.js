@@ -1,39 +1,67 @@
 import React, { useContext, useState, useEffect } from 'react';
-import AssetDataContext from '../screens/AssetDataContext';
 import { View, Text, TouchableOpacity, ScrollView, Image, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import AssetItem from './AssetItem';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
-
-import { useSelector, useDispatch } from 'react-redux';
-
+import AssetDataContext from '../screens/AssetDataContext';
 import Toast from 'react-native-toast-message';
-
-
 import { fetchWatchlistData, removeFromWatchlistApi } from '../api';
+import { useSelector } from 'react-redux';
 
 const SeeAllItems = ({ navigation }) => {
   const { assetData, watchlist, removeFromWatchlist, setWatchlist } = useContext(AssetDataContext);
   const { token } = useSelector(state => state.auth);
-  // const [watchlist,setWatchlist] = useState([]);
   const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
-
-  // const [watchlistState, setWatchlistState] = useState([]);
+  const [assetValues, setAssetValues] = useState({}); // State to store WebSocket updates
   const [filteredAssetData, setFilteredAssetData] = useState([]);
-
+  const [socket, setSocket] = useState(null);
 
   useEffect(() => {
     const updatedFilteredData = assetData.filter(item =>
       watchlist.some(watchlistItem => watchlistItem.Name === item.Name)
     );
     setFilteredAssetData(updatedFilteredData);
-  }, [watchlist, assetData]); // Depend on watchlist and assetData
+  }, [watchlist, assetData]);
+
+  useEffect(() => {
+    const newSocket = new WebSocket('ws://35.154.235.224:8767/realtime_data');
+
+    newSocket.onopen = () => {
+      console.log('WebSocket connection established.');
+      setSocket(newSocket);
+    };
+
+    newSocket.onmessage = (event) => {
+      console.log('Received message watchlist:', event.data);
+      try {
+        const receivedData = JSON.parse(event.data);
+        setAssetValues((prevValues) => ({
+          ...prevValues,
+          ...receivedData,
+        }));
+      } catch (error) {
+        console.error('Error parsing WebSocket message:', error);
+      }
+    };
+    // Cleanup function
+    return () => {
+      if (newSocket && newSocket.readyState === WebSocket.OPEN) {
+        newSocket.close();
+        console.log('WebSocket connection closed.');
+      }
+    };
+
+  },[]);
 
 
-  // console.log('Filtered Asset Data:', filteredAssetData); // Log filtered data
-
-  // console.log('Asset Data:', assetData);
+  useEffect(() => {
+    if (socket && socket.readyState === WebSocket.OPEN && filteredAssetData.length > 0) {
+      const tradingSymbols = filteredAssetData.map(item => item.Tradingsymbol);
+      console.log("here", JSON.stringify(tradingSymbols))
+      socket.send(JSON.stringify(tradingSymbols));
+    }
+  }, [filteredAssetData, socket]);
 
   const handleBack = () => {
     navigation.navigate('Portfolio');
@@ -47,11 +75,9 @@ const SeeAllItems = ({ navigation }) => {
     navigation.navigate('SearchBarList', { assetData: assetData });
   };
 
-
   const showToast = (message) => {
     Toast.show({
       type: 'success',
-      // position: 'bottom',
       text1: message,
       visibilityTime: 3000,
       autoHide: true,
@@ -68,21 +94,10 @@ const SeeAllItems = ({ navigation }) => {
       console.error('Error fetching watchlist data:', error);
     }
   };
+
   useEffect(() => {
     fetchData();
   }, []);
-
-  useEffect(() => {
-    // console.log('Watchlist in SeeAllItems:', watchlist); // Log watchlist in SeeAllItems
-  }, [watchlist]);
-
-  useEffect(() => {
-    const updatedFilteredData = assetData.filter(item =>
-      watchlist.some(watchlistItem => watchlistItem.Name === item.Name)
-    );
-    setFilteredAssetData(updatedFilteredData);
-  }, [watchlist, assetData]); // Depend on watchlist
-
 
   const showDeleteConfirmation = (item) => {
     setItemToDelete(item);
@@ -92,16 +107,9 @@ const SeeAllItems = ({ navigation }) => {
   const confirmDelete = async () => {
     if (itemToDelete) {
       try {
-        // await removeFromWatchlistApi(itemToDelete, token);
-        await removeFromWatchlist(itemToDelete, token);
+        await removeFromWatchlistApi(itemToDelete, token);
         fetchData();
-        Toast.show({
-          type: 'success',
-          text1: 'Success',
-          text2: 'Removed from watchlist successfully',
-          visibilityTime: 3000,
-        });
-
+        showToast('Removed from watchlist successfully');
       } catch (error) {
         console.error('Error during delete:', error);
       } finally {
@@ -110,24 +118,10 @@ const SeeAllItems = ({ navigation }) => {
     }
   };
 
-  // const confirmDelete = async () => {
-  //   if (itemToDelete) {
-  //     try {
-  //       await removeFromWatchlist(itemToDelete, token); // This should handle both API call and state update
-  //       setDeleteConfirmationVisible(false);
-  //     } catch (error) {
-  //       console.error('Error during delete:', error);
-  //     }
-  //   }
-  // };
-
-
   const cancelDelete = () => {
     setItemToDelete(null);
     setDeleteConfirmationVisible(false);
   };
-
-
 
   return (
     <>
@@ -136,7 +130,6 @@ const SeeAllItems = ({ navigation }) => {
           <TouchableOpacity onPress={handleBack} style={styles.leftContainer}>
             <Ionicons name="arrow-back-outline" size={24} color="black" style={{ marginLeft: -10 }} />
           </TouchableOpacity>
-
           <Text style={styles.title}>My Watch List</Text>
           <View style={styles.searchFilterContainer}>
             <TouchableOpacity onPress={handleSearchIconClick} style={styles.searchIcon}>
@@ -157,25 +150,23 @@ const SeeAllItems = ({ navigation }) => {
       <ScrollView style={styles.scrollView}>
         <View style={styles.containerItem}>
           {filteredAssetData.map((item, index) => {
-            // console.log('Item:', item); // Log the item object
+            const symbol = item.Tradingsymbol;
+            const assetValue = assetValues[symbol]?.lastPrice || item.value;
+
             return (
               <AssetItem
                 key={index}
                 name2={item.name2}
                 name3={item.name3}
-                symbol={item.symbol}
-                value={item.value}
+                symbol={item.Tradingsymbol}
+                value={assetValue}
                 onPress={() => {
-                  // console.log('Navigating to Allgraphs with symbol:',);
                   navigation.navigate('Allgraphs', {
                     instrumentId: item?.instrumentId,
                     instrumentType: item?.instrumentType,
                   });
                 }}
-                onRemove={() => {
-                  console.log('Removing item:', item);
-                  showDeleteConfirmation(item);
-                }}
+                onRemove={() => showDeleteConfirmation(item)}
                 showRemoveIcon={true}
                 showAddIcon={false}
               />
@@ -293,16 +284,7 @@ export default SeeAllItems;
 
 
 
-
-
-
-
-
-
-
-
-
-//before websocket
+//before web socket 
 // import React, { useContext, useState, useEffect } from 'react';
 // import AssetDataContext from '../screens/AssetDataContext';
 // import { View, Text, TouchableOpacity, ScrollView, Image, StyleSheet } from 'react-native';
@@ -336,7 +318,7 @@ export default SeeAllItems;
 //   }, [watchlist, assetData]); // Depend on watchlist and assetData
 
 
-//   console.log('Filtered Asset Data:', filteredAssetData); // Log filtered data
+//   // console.log('Filtered Asset Data:', filteredAssetData); // Log filtered data
 
 //   // console.log('Asset Data:', assetData);
 
@@ -378,7 +360,7 @@ export default SeeAllItems;
 //   }, []);
 
 //   useEffect(() => {
-//     console.log('Watchlist in SeeAllItems:', watchlist); // Log watchlist in SeeAllItems
+//     // console.log('Watchlist in SeeAllItems:', watchlist); // Log watchlist in SeeAllItems
 //   }, [watchlist]);
 
 //   useEffect(() => {
@@ -415,16 +397,7 @@ export default SeeAllItems;
 //     }
 //   };
 
-//   // const confirmDelete = async () => {
-//   //   if (itemToDelete) {
-//   //     try {
-//   //       await removeFromWatchlist(itemToDelete, token); // This should handle both API call and state update
-//   //       setDeleteConfirmationVisible(false);
-//   //     } catch (error) {
-//   //       console.error('Error during delete:', error);
-//   //     }
-//   //   }
-//   // };
+
 
 
 //   const cancelDelete = () => {
@@ -462,7 +435,7 @@ export default SeeAllItems;
 //       <ScrollView style={styles.scrollView}>
 //         <View style={styles.containerItem}>
 //           {filteredAssetData.map((item, index) => {
-//             console.log('Item:', item); // Log the item object
+//             // console.log('Item:', item); // Log the item object
 //             return (
 //               <AssetItem
 //                 key={index}
@@ -471,7 +444,7 @@ export default SeeAllItems;
 //                 symbol={item.symbol}
 //                 value={item.value}
 //                 onPress={() => {
-//                   console.log('Navigating to Allgraphs with symbol:',);
+//                   // console.log('Navigating to Allgraphs with symbol:',);
 //                   navigation.navigate('Allgraphs', {
 //                     instrumentId: item?.instrumentId,
 //                     instrumentType: item?.instrumentType,
@@ -588,9 +561,6 @@ export default SeeAllItems;
 // });
 
 // export default SeeAllItems;
-
-
-
 
 
 
