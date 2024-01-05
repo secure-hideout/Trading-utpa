@@ -209,10 +209,8 @@ backButton1: {
 
 },
 container: {
-  //flex: 1,
-
   backgroundColor: '#fff',
-  padding: 10,
+  padding: 7,
 },
 categoryContainer: {
   marginBottom: 16,
@@ -233,9 +231,9 @@ holidayText: {
     //fontSize: 18,
     //fontWeight: 'bold',
     fontSize: 18,
-    fontWeight: '700',
+    fontWeight: "700",
     lineHeight: 19.09,
-    color: 'rgba(28, 30, 50, 1)',
+    color: "rgba(28, 30, 50, 1)",
 
 },
 sessionText: {
@@ -245,8 +243,6 @@ sessionText: {
 },
 morningSessionText: {
   fontSize: 16,
- // fontWeight: 'bold',
- // color: 'red', // Set a default color if needed
 },
 });
 

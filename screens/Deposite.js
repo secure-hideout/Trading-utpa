@@ -93,7 +93,7 @@ const performTransactionAPI = async (transactionType) => {
 
       console.log("Response2:", performTransactionAPI);
 
-      const response = await fetch('http://192.168.0.73:8000/user/applyBalance', requestOptions);
+      const response = await fetch('http://35.154.235.224:8000/user/applyBalance', requestOptions);
 
       console.log(`${transactionType} API response:`, response.status, response.statusText);
 
@@ -106,7 +106,7 @@ const performTransactionAPI = async (transactionType) => {
         setDeposite('');
         Toast.show({
           type: "success",
-          text1: `Deposit And Request Sent Succesfull`,
+          text1: `Deposit Succesfully Requested`,
         });
         
         const data = await response.json();
@@ -130,7 +130,7 @@ const performTransactionAPI = async (transactionType) => {
         redirect: 'follow',
       };
 
-      const response = await fetch('http://192.168.0.73:8000/user/applyBalance', requestOptions);
+      const response = await fetch('http://35.154.235.224:8000/user/applyBalance', requestOptions);
 
       console.log(`${transactionType} API response:`, response.status, response.statusText);
 
@@ -142,7 +142,7 @@ const performTransactionAPI = async (transactionType) => {
         closeModal1();
         Toast.show({
           type: "success",
-          text1: `Withdraw And Request Sent Succesfull`,
+          text1: `Withdrawal Succesfully Requested`,
         });
 
       } else {

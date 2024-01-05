@@ -71,17 +71,17 @@ const styles = StyleSheet.create({
   },
 
   decimal: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '700',
     color: 'green',
   },
   value: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
     color: '#1C1E32',
   },
   cardDataText: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '700',
     color: 'rgba(28, 30, 50, 1)',
 

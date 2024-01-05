@@ -127,7 +127,7 @@ const Allgraph = ({ route, navigation, fetchData, Name }) => {
           Hvalue: data?.ExchangeDetails?.ohlc?.high,
           Lvalue: data?.ExchangeDetails?.ohlc?.high,
           Open: 'Open',
-          Close: 'Close',
+          Close: 'Prev Close',
           High: 'High',
           Low: 'Low',
           Dval: "Dval",

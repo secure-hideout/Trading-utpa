@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
 
   open: {
     flex: 1,
-    marginLeft: 20,
+    marginLeft: 18,
     color: '#1C1E32',
   },
   openvalue: {
@@ -89,11 +89,11 @@ const styles = StyleSheet.create({
   },
   close: {
     flex: 1,
-    marginLeft: 20,
+    marginLeft: 19,
     color: '#1C1E32',
   },
   closevalue: {
-    marginRight: 20,
+    marginRight: 19,
     fontWeight: 'bold',
   },
 
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     color: '#1C1E32',
   },
   lowvalue: {
-    paddingRight: 18,
+    paddingRight: 17,
     fontWeight: 'bold',
   },
 

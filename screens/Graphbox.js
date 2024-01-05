@@ -22,12 +22,12 @@ const Graphbox = ({
   const [iGreen, setIGreen] = useState(false);
 
   const intervalOptions = [
-    { label: '1D', value: '1 day' },
-    { label: '5D', value: '1 week' },
-    { label: '1M', value: '1 month' },
-    { label: '3M', value: '5M' },
-    { label: '6M', value: '8' },
-    { label: '1Y', value: '9' },
+    { label: '1D', value: '1D' },
+    { label: '5D', value: '1W' },
+    { label: '1M', value: '1M' },
+    { label: '3M', value: '3M' },
+    { label: '6M', value: '6M' },
+    { label: '1Y', value: '12M' },
   ];
 
   const toggleCandleChart = () => {
