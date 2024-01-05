@@ -1,3 +1,7 @@
+
+
+
+//before web socket
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TextInput } from "react-native";
 import AssetCard from "./AssetCard";
@@ -95,7 +99,7 @@ const ViewPortfolio = ({
     };
 
     fetchData1();
-  }, [token,selectedCard]);
+  }, []);
 
 
   //to display inside the card value
@@ -300,10 +304,9 @@ const styles = StyleSheet.create({
   },
 
   headerText: {
-    fontSize: 17,
-    fontWeight: '700',
-    // color: 'rgba(28, 30, 50, 1)',
-    color: 'rgba(28, 30, 50, 0.6)',
+    fontSize: 16,
+    fontWeight: '600',
+    lineHeight: 17.71,
 
   },
   quantityContainer: {
