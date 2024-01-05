@@ -95,7 +95,7 @@ const ViewPortfolio = ({
     };
 
     fetchData1();
-  }, []);
+  }, [token,selectedCard]);
 
 
   //to display inside the card value
@@ -300,9 +300,10 @@ const styles = StyleSheet.create({
   },
 
   headerText: {
-    fontSize: 16,
-    fontWeight: '600',
-    lineHeight: 17.71,
+    fontSize: 17,
+    fontWeight: '700',
+    // color: 'rgba(28, 30, 50, 1)',
+    color: 'rgba(28, 30, 50, 0.6)',
 
   },
   quantityContainer: {

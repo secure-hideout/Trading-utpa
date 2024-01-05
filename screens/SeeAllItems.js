@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Image, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import AssetItem from './AssetItem';
@@ -23,48 +23,61 @@ const SeeAllItems = ({ navigation }) => {
     );
     setFilteredAssetData(updatedFilteredData);
   }, [watchlist, assetData]);
+  console.log("re-rendered")
+  
+  const webSocketRef = useRef(null);
 
+  // Establishing and cleaning up the WebSocket connection
   useEffect(() => {
-    const newSocket = new WebSocket('ws://35.154.235.224:8767/realtime_data');
+    webSocketRef.current = new WebSocket('ws://35.154.235.224:8767/realtime_data');
 
-    newSocket.onopen = () => {
+    webSocketRef.current.onopen = () => {
       console.log('WebSocket connection established.');
-      setSocket(newSocket);
+      setSocket(webSocketRef.current);
     };
 
-    newSocket.onmessage = (event) => {
-      console.log('Received message watchlist:', event.data);
-      try {
-        const receivedData = JSON.parse(event.data);
-        setAssetValues((prevValues) => ({
-          ...prevValues,
-          ...receivedData,
-        }));
-      } catch (error) {
-        console.error('Error parsing WebSocket message:', error);
-      }
-    };
-    // Cleanup function
     return () => {
-      if (newSocket && newSocket.readyState === WebSocket.OPEN) {
-        newSocket.close();
+      // if (webSocketRef.current && webSocketRef.current.readyState === WebSocket.OPEN) {
+        webSocketRef.current.close();
         console.log('WebSocket connection closed.');
-      }
+      // }
     };
+  }, []);
 
-  },[]);
+  // Handling WebSocket messages
+  useEffect(() => {
+    if (socket && socket.readyState === WebSocket.OPEN) {
+      socket.onmessage = (event) => {
+        console.log('Received message watchlist:', event.data);
+        try {
+          const receivedData = JSON.parse(event.data);
+          setAssetValues((prevValues) => ({
+            ...prevValues,
+            ...receivedData,
+          }));
+        } catch (error) {
+          console.error('Error parsing WebSocket message:', error);
+        }
+      };
+    }
+  }, [socket]);
 
-
+  // Sending data through WebSocket
   useEffect(() => {
     if (socket && socket.readyState === WebSocket.OPEN && filteredAssetData.length > 0) {
       const tradingSymbols = filteredAssetData.map(item => item.Tradingsymbol);
-      console.log("here", JSON.stringify(tradingSymbols))
+      console.log("Sending data:", JSON.stringify(tradingSymbols));
       socket.send(JSON.stringify(tradingSymbols));
     }
   }, [filteredAssetData, socket]);
 
   const handleBack = () => {
     navigation.navigate('Portfolio');
+    // if (webSocketRef.current && webSocketRef.current.readyState === WebSocket.OPEN) {
+    //   webSocketRef.current.close();
+    //   console.log('WebSocket connection closed.');
+    //   setSocket(null);
+    // }
   };
 
   const handleFilter = () => {
@@ -73,6 +86,11 @@ const SeeAllItems = ({ navigation }) => {
 
   const handleSearchIconClick = () => {
     navigation.navigate('SearchBarList', { assetData: assetData });
+    // if (webSocketRef.current && webSocketRef.current.readyState === WebSocket.OPEN) {
+    //   webSocketRef.current.close();
+    //   console.log('WebSocket connection closed.');
+    //   setSocket(null);
+    // }
   };
 
   const showToast = (message) => {

@@ -398,7 +398,7 @@ const styles = StyleSheet.create({
 
   logButton: {
     marginTop: 10,
-    backgroundColor: "9093e8",
+    backgroundColor: "#8c94de",
     padding: 16,
     borderRadius: 8,
     alignItems: "center",
