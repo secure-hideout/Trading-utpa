@@ -157,7 +157,7 @@ const SignupForm = () => {
 
             <View style={styles.buttons}>
               <Button
-                mode="contained"
+                //mode="contained"
                 onPress={handleSignup}
                 disabled={loading}
                 contentStyle={styles.buttonContent}
@@ -258,7 +258,7 @@ const styles = StyleSheet.create({
   button: {
     flex: 1,
     marginHorizontal: 4,
-    maxWidth: '40%',
+    //maxWidth: '40%',
   },
   buttonContent: {
     flex: 1,
