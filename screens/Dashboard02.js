@@ -20,10 +20,10 @@ const Dashboard = () => {
   const { setFirstName } = useContext(AssetDataContext);
   const { token } = useSelector(state => state.auth);
   const [cardData, setCardData] = useState([
-    { name: 'Crypto', value: '', changePercentage: '', color: '', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: "#C1C2EB" },
-    { name: 'NSE', value: '', changePercentage: '', color: '', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: '#B7DDD2' },
-    { name: 'NASDAQ', value: '', changePercentage: '', color: '', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: "#C1C2EB" },
-    { name: 'Commodity', value: '', changePercentage: '', color: '', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: '#B7DDD2' }
+    { name: 'Crypto', value: '', changePercentage: '', color: '', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: "#8c94de" },
+    { name: 'NSE', value: '', changePercentage: '', color: '', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: '#aae6d4' },
+    { name: 'NASDAQ', value: '', changePercentage: '', color: '', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: "#8c94de" },
+    { name: 'Commodity', value: '', changePercentage: '', color: '', logo: 'https://assets.coingecko.com/coins/images/10365/large/ethereum.png?1606373430', backgroundColor: '#aae6d4' }
   ]);
   const { assetData, setAssetData } = useContext(AssetDataContext);
   const [watchlist, setWatchlist] = useState([]);
@@ -53,13 +53,13 @@ const Dashboard = () => {
   const getSelectedCardColor = (selectedCard) => {
     switch (selectedCard) {
       case 'Crypto':
-        return '#C1C2EB';
+        return '#8c94de';
       case 'NSE':
-        return '#B7DDD2';
+        return '#aae6d4';
       case 'NASDAQ':
-        return '#C1C2EB';
+        return '#8c94de';
       case 'Commodity':
-        return '#B7DDD2';
+        return '#aae6d4';
       default:
         return '#FFFFFF';
     }

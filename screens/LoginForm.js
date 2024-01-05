@@ -153,7 +153,7 @@ const LoginForm = ({ navigation, onSuccessfulLogin }) => {
         /> */}
         <View style={styles.tabsContainer}>
           <TouchableOpacity onPress={handleLoginPress} style={[styles.tab]}>
-            <Text style={[styles.tabText, { color: '#B7DDD2' }]}>Login</Text>
+            <Text style={[styles.tabText, { color: '#aae6d4' }]}>Login</Text>
           </TouchableOpacity>
           <TouchableWithoutFeedback
             onPress={handleRegisterPress}
@@ -324,7 +324,7 @@ const styles = StyleSheet.create({
   },
   buttonContent: {
     height: 50,
-    backgroundColor: '#B7DDD2',
+    backgroundColor: '#aae6d4',
   },
   buttonText: {
     fontSize: 16,

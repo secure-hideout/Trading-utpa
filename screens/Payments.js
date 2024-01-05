@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
   },
   button: {
     marginRight: 2,
-    backgroundColor: '#C1C2EB',
+    backgroundColor: '#8c94de',
     width: '46%',
     height: 47,
     borderRadius: 50,
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
     left: 3,
     width: '47%',
     height: 47,
-    backgroundColor: '#B7DDD2',
+    backgroundColor: '#ade0d1',
     borderRadius: 50,
   },
   sell: {

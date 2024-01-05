@@ -22,7 +22,7 @@ export const styles = StyleSheet.create({
     width: width * 0.12,
     height: width * 0.12,
     borderRadius: width * 0.075,
-    backgroundColor: '#B1A4FF',
+    backgroundColor: '#8c94de',
     position: 'absolute',
     left: 0,
     justifyContent: 'center',
@@ -39,6 +39,8 @@ export const styles = StyleSheet.create({
     fontSize: width * 0.05,
     fontWeight: '600',
     color: '#1C1E32',
+
+    
   },
   withdrawText: {
     marginRight: -width * 0.01,
@@ -95,14 +97,14 @@ export const styles = StyleSheet.create({
     paddingLeft: 5,
    // width: "47%",
     height: 47,
-    backgroundColor: "#C1C2EB",
+    backgroundColor: "#8c94de",
     borderRadius: 5,
   },
   button2: {
     left: 10,
     //width: "47%",
     height: 47,
-    backgroundColor: "#B7DDD2",
+    backgroundColor: "#aae6d4",
     borderRadius: 5,
   },
   buttonText1: {

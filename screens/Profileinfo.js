@@ -321,8 +321,8 @@ const styles = StyleSheet.create({
   conform1: {
     paddingBottom: 20,
     textAlign: "center",
-    fontSize: 18,
-    fontWeight: "700",
+    fontSize: 16,
+    fontWeight: "500",
     lineHeight: 19.09,
     color: "rgba(28, 30, 50, 1)",
     top: 15,
@@ -338,7 +338,7 @@ const styles = StyleSheet.create({
     left: 10,
    // width: "47%",
     height: 47,
-    backgroundColor: "#B7DDD2",
+    backgroundColor: "#aae6d4",
     borderRadius: 5,
   },
   buttonText1: {
@@ -398,7 +398,7 @@ const styles = StyleSheet.create({
 
   logButton: {
     marginTop: 10,
-    backgroundColor: "#8c94de",
+    backgroundColor: "9093e8",
     padding: 16,
     borderRadius: 8,
     alignItems: "center",
